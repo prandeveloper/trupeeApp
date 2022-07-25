@@ -14,10 +14,10 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import {Image, StyleSheet} from 'react-native';
-import Services from '../screens/Services';
-import Explore from '../screens/Explore';
-import Notification from '../screens/Notification';
-import Profile from '../screens/Profile';
+import Services from '../screens/services/Services';
+import Explore from '../screens/explore/Explore';
+import Notification from '../screens/notification/Notification';
+import Profile from '../screens/profile/Profile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import FnoIndex from './FnoIndex';
-import AllTrade from './AllTrade';
-import FnoEquity from './FnoEquity';
-import EquityCash from './EquityCash';
+import FnoIndex from './home/FnoIndex';
+import AllTrade from './home/AllTrade';
+import FnoEquity from './home/FnoEquity';
+import EquityCash from './home/EquityCash';
 
 export default function HomeScreen({navigation}) {
   const Tab = createMaterialTopTabNavigator();

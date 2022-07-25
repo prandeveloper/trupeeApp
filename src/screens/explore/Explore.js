@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import React, {useState} from 'react';
-import CustomHeader from '../components/CustomHeader';
+import CustomHeader from '../../components/CustomHeader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Explore = () => {
@@ -19,19 +19,19 @@ const Explore = () => {
       </View>
       <View>
         <ImageBackground
-          source={require('../Images/explore/colorbg.png')}
+          source={require('../../Images/explore/colorbg.png')}
           style={styles.colorImage}>
           <View style={styles.aaa}>
             <View style={styles.bbb}>
               <View style={styles.ccc}>
                 <Image
-                  source={require('../Images/explore/start-up-tab1.png')}
+                  source={require('../../Images/explore/start-up-tab1.png')}
                   style={styles.exploreImg}
                 />
               </View>
               <View style={styles.ddd}>
                 <Image
-                  source={require('../Images/explore/trupee-library-tab1.png')}
+                  source={require('../../Images/explore/trupee-library-tab1.png')}
                   style={styles.exploreImg}
                 />
               </View>
@@ -39,13 +39,13 @@ const Explore = () => {
             <View style={styles.bbb}>
               <View style={styles.ccc}>
                 <Image
-                  source={require('../Images/explore/performance-sheet-tab1.png')}
+                  source={require('../../Images/explore/performance-sheet-tab1.png')}
                   style={styles.exploreImg}
                 />
               </View>
               <View style={styles.ddd}>
                 <Image
-                  source={require('../Images/explore/refer-earn-tab1.png')}
+                  source={require('../../Images/explore/refer-earn-tab1.png')}
                   style={styles.exploreImg}
                 />
               </View>
@@ -53,13 +53,13 @@ const Explore = () => {
             <View style={styles.bbb}>
               <View style={styles.ccc}>
                 <Image
-                  source={require('../Images/explore/opportunity-tab1.png')}
+                  source={require('../../Images/explore/opportunity-tab1.png')}
                   style={styles.exploreImg}
                 />
               </View>
               <View style={styles.ddd}>
                 <Image
-                  source={require('../Images/explore/treading-viw-chart-tab1.png')}
+                  source={require('../../Images/explore/treading-viw-chart-tab1.png')}
                   style={styles.exploreImg}
                 />
               </View>

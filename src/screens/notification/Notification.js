@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {ListItem, Image} from 'react-native-elements';
 // import axios from 'axios';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomHeader from '../components/CustomHeader';
+import CustomHeader from '../../components/CustomHeader';
 
 export default function Notification({navigation}) {
   const [notify, setNotify] = useState([]);
