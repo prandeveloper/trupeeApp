@@ -18,6 +18,15 @@ import Services from '../screens/services/Services';
 import Explore from '../screens/explore/Explore';
 import Notification from '../screens/notification/Notification';
 import Profile from '../screens/profile/Profile';
+import FirstScreen from '../screens/firstScreen/FirstScreen';
+import MyAccount from '../screens/Drawer/MyAccount';
+import Trasaction from '../screens/Drawer/Trasaction';
+import Walkthrough from '../screens/Drawer/Walkthrough';
+import Faqs from '../screens/Drawer/Faqs';
+import Feedback from '../screens/Drawer/Feedback';
+import Appreciation from '../screens/Drawer/Appreciation';
+import RateUs from '../screens/Drawer/RateUs';
+import Share from '../screens/Drawer/Share';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -31,8 +40,71 @@ const HomeStack = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="FirstScreen"
+        component={FirstScreen}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
         name="GameDetails"
         component={GameDetailsScreen}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="My Account"
+        component={MyAccount}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Transaction History"
+        component={Trasaction}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="App Walkthrough"
+        component={Walkthrough}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="FAQs (Frequently Asked Questions)"
+        component={Faqs}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Feedback / Report Bugs"
+        component={Feedback}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Show Appreciation"
+        component={Appreciation}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Rate Us"
+        component={RateUs}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Share App"
+        component={Share}
         options={({route}) => ({
           title: route.params?.title,
         })}
@@ -93,7 +165,7 @@ const TabNavigator = () => {
       options={{headerShown: false}}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStack}
         options={{headerShown: false}}
       />
       <Tab.Screen

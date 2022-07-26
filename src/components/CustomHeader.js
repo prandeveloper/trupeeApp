@@ -15,7 +15,7 @@ function CustomHeader({title, navigation}) {
           flex: 1,
           justifyContent: 'center',
         }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity >
           <Image
             style={styles.logoImg}
             source={require('../Images/screenlogo/screenLogo.png')}
