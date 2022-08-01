@@ -27,6 +27,10 @@ import Feedback from '../screens/Drawer/Feedback';
 import Appreciation from '../screens/Drawer/Appreciation';
 import RateUs from '../screens/Drawer/RateUs';
 import Share from '../screens/Drawer/Share';
+import Startup from '../screens/explore/Startup';
+import University from '../screens/explore/University';
+import ReferEarn from '../screens/explore/ReferEarn';
+import Charts from '../screens/explore/charts/Charts';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -35,7 +39,7 @@ const HomeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="HomeScreen"
         component={HomeScreen}
         options={{headerShown: false}}
       />
@@ -49,6 +53,34 @@ const HomeStack = () => {
       <Stack.Screen
         name="GameDetails"
         component={GameDetailsScreen}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Startup"
+        component={Startup}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="University"
+        component={University}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="ReferEarn"
+        component={ReferEarn}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Charts"
+        component={Charts}
         options={({route}) => ({
           title: route.params?.title,
         })}
@@ -75,7 +107,7 @@ const HomeStack = () => {
         })}
       />
       <Stack.Screen
-        name="FAQs (Frequently Asked Questions)"
+        name="Frequently Asked Questions"
         component={Faqs}
         options={({route}) => ({
           title: route.params?.title,

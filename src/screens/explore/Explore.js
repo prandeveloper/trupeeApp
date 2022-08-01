@@ -6,12 +6,12 @@ import {
   View,
   FlatList,
   Image,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
 import CustomHeader from '../../components/CustomHeader';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-
-const Explore = () => {
+const Explore = ({navigation}) => {
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -21,55 +21,83 @@ const Explore = () => {
         <ImageBackground
           source={require('../../Images/explore/colorbg.png')}
           style={styles.colorImage}>
-          <View style={styles.aaa}>
-            <View style={styles.bbb}>
-              <View style={styles.ccc}>
-                <Image
-                  source={require('../../Images/explore/start-up-tab1.png')}
-                  style={styles.exploreImg}
-                />
+          <ScrollView>
+            <View style={styles.aaa}>
+              <View style={styles.bbb}>
+                <TouchableOpacity
+                  style={styles.ccc}
+                  onPress={() => navigation.navigate('Startup')}>
+                  <ImageBackground
+                    source={require('../../Images/explore/start-up-tab1.png')}
+                    style={styles.exploreImg}>
+                    <View style={styles.ccc1}>
+                      <Text style={styles.ccctext}>Start Up</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.ddd}
+                  onPress={() => navigation.navigate('University')}>
+                  <ImageBackground
+                    source={require('../../Images/explore/trupee-library-tab1.png')}
+                    style={styles.exploreImg}>
+                    <View style={styles.ccc1}>
+                      <Text style={styles.ccctext}>Trupee University</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
               </View>
-              <View style={styles.ddd}>
-                <Image
-                  source={require('../../Images/explore/trupee-library-tab1.png')}
-                  style={styles.exploreImg}
-                />
+              <View style={styles.bbb}>
+                <TouchableOpacity style={styles.ccc}>
+                  <ImageBackground
+                    source={require('../../Images/explore/performance-sheet-tab1.png')}
+                    style={styles.exploreImg}>
+                    <View style={styles.ccc1}>
+                      <Text style={styles.ccctext}>Performance Sheet</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.ddd}
+                  onPress={() => navigation.navigate('ReferEarn')}>
+                  <ImageBackground
+                    source={require('../../Images/explore/refer-earn-tab1.png')}
+                    style={styles.exploreImg}>
+                    <View style={styles.ccc1}>
+                      <Text style={styles.ccctext}>Reffer & Earn</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.bbb}>
+                <TouchableOpacity style={styles.ccc}>
+                  <ImageBackground
+                    source={require('../../Images/explore/opportunity-tab1.png')}
+                    style={styles.exploreImg}>
+                    <View style={styles.ccc1}>
+                      <Text style={styles.ccctext}>Opportunity</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.ddd}
+                  onPress={() => navigation.navigate('Charts')}>
+                  <ImageBackground
+                    source={require('../../Images/explore/treading-viw-chart-tab1.png')}
+                    style={styles.exploreImg}>
+                    <View style={styles.ccc1}>
+                      <Text style={styles.ccctext}>Trading View Charts</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.bbb}>
+                <Text style={styles.exploreText}>
+                  A reliable platform for small and short term investors
+                </Text>
               </View>
             </View>
-            <View style={styles.bbb}>
-              <View style={styles.ccc}>
-                <Image
-                  source={require('../../Images/explore/performance-sheet-tab1.png')}
-                  style={styles.exploreImg}
-                />
-              </View>
-              <View style={styles.ddd}>
-                <Image
-                  source={require('../../Images/explore/refer-earn-tab1.png')}
-                  style={styles.exploreImg}
-                />
-              </View>
-            </View>
-            <View style={styles.bbb}>
-              <View style={styles.ccc}>
-                <Image
-                  source={require('../../Images/explore/opportunity-tab1.png')}
-                  style={styles.exploreImg}
-                />
-              </View>
-              <View style={styles.ddd}>
-                <Image
-                  source={require('../../Images/explore/treading-viw-chart-tab1.png')}
-                  style={styles.exploreImg}
-                />
-              </View>
-            </View>
-            <View style={styles.bbb}>
-              <Text style={styles.exploreText}>
-                A reliable platform for small and short term investors
-              </Text>
-            </View>
-          </View>
+          </ScrollView>
         </ImageBackground>
       </View>
     </SafeAreaView>
@@ -96,9 +124,26 @@ const styles = StyleSheet.create({
   },
   bbb: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ccc: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ccc1: {
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 1,
+    marginBottom: 10,
+  },
+  ccctext: {
+    fontWeight: '700',
+    color: '#000',
   },
 
   exploreText: {
+    color: '#fff',
     fontSize: 12,
     marginTop: 15,
   },

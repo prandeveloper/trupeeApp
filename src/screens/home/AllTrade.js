@@ -68,7 +68,7 @@ const AllTrade = () => {
           {/* <================Circle Area=============> */}
 
           <View style={styles.bgarea2}>
-            <View style={styles.circle}>
+            <View style={styles.circle1}>
               <Text style={styles.notbuy}>SL{'\n'}10</Text>
             </View>
             <View style={styles.circle}>
@@ -233,14 +233,14 @@ const styles = StyleSheet.create({
   circle1: {
     margin: 2,
     borderWidth: 1,
-    borderColor: '#ff1010',
+    backgroundColor: '#FA8072',
     borderRadius: 50,
     padding: 14,
   },
   circle: {
     margin: 2,
-    borderWidth: 1,
-    borderColor: '#00b050',
+    borderWidth: 0,
+    backgroundColor: '#c0d4a3',
     borderRadius: 50,
     padding: 14,
   },
