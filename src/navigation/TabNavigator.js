@@ -31,16 +31,36 @@ import Startup from '../screens/explore/Startup';
 import University from '../screens/explore/University';
 import ReferEarn from '../screens/explore/ReferEarn';
 import Charts from '../screens/explore/charts/Charts';
+import PerformanceSheet from '../screens/explore/PerformanceSheet';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
+  const [showSplash, setShowSplash] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+  }, []);
   return (
     <Stack.Navigator>
+      {showSplash ? (
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingScreen}
+          options={{headerShown: false}}
+        />
+      ) : null}
       <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen
+        name="Home"
+        component={TabNavigator}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -67,6 +87,13 @@ const HomeStack = () => {
       <Stack.Screen
         name="University"
         component={University}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Performance Sheet"
+        component={PerformanceSheet}
         options={({route}) => ({
           title: route.params?.title,
         })}
@@ -197,7 +224,7 @@ const TabNavigator = () => {
       options={{headerShown: false}}>
       <Tab.Screen
         name="Home"
-        component={HomeStack}
+        component={HomeScreen}
         options={{headerShown: false}}
       />
       <Tab.Screen
@@ -241,4 +268,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TabNavigator;
+export default HomeStack;

@@ -14,16 +14,15 @@ import bgImg from '../Images/Background/bgImg.png';
 import LoginScreen from './LoginScreen';
 
 const OnboardingScreen = ({navigation}) => {
-  // setTimeout(async () => {
-  //   navigation.navigate('LoginScreen');
-  //   //  const value = await AsyncStorage.getItem('staff-token');
-  //   //  if (value !== null) {
-  //   //    navigation.replace('StackHome');
-  //   //  } else {
-  //   //    navigation.replace('Second');
-  //   //    //navigation.replace('Login', { name: 'Login' })
-  //   //  }
-  // }, 1000);
+  setTimeout(async () => {
+    const value = await AsyncStorage.getItem('token');
+    if (value !== null) {
+      navigation.replace('Home');
+    } else {
+      navigation.replace('Login');
+      //navigation.replace('Login', {name: 'Login'});
+    }
+  }, 1000);
   return (
     <View style={styles.container}>
       <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>

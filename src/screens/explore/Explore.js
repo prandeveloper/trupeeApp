@@ -48,7 +48,9 @@ const Explore = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.bbb}>
-                <TouchableOpacity style={styles.ccc}>
+                <TouchableOpacity
+                  style={styles.ccc}
+                  onPress={() => navigation.navigate('Performance Sheet')}>
                   <ImageBackground
                     source={require('../../Images/explore/performance-sheet-tab1.png')}
                     style={styles.exploreImg}>
@@ -64,7 +66,7 @@ const Explore = ({navigation}) => {
                     source={require('../../Images/explore/refer-earn-tab1.png')}
                     style={styles.exploreImg}>
                     <View style={styles.ccc1}>
-                      <Text style={styles.ccctext}>Reffer & Earn</Text>
+                      <Text style={styles.ccctext}>Refer & Earn</Text>
                     </View>
                   </ImageBackground>
                 </TouchableOpacity>

@@ -7,15 +7,16 @@ function CustomHeader({title, navigation}) {
     <View
       style={{
         flexDirection: 'row',
-        marginTop: 8,
+        marginTop: 0,
         height: 100,
+        backgroundColor: '#FFF',
       }}>
       <View
         style={{
           flex: 1,
           justifyContent: 'center',
         }}>
-        <TouchableOpacity >
+        <TouchableOpacity>
           <Image
             style={styles.logoImg}
             source={require('../Images/screenlogo/screenLogo.png')}

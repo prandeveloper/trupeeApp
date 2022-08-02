@@ -1,10 +1,17 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import CustomHeader from '../../components/CustomHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
 
 const Profile = ({navigation}) => {
+  // const signOut= () => {
+  //   useEffect(() => {
+  //     AsyncStorage.removeItem('token')
+  //   }, [input])
+  // }
   return (
     <View style={styles.container}>
       <View>
@@ -16,7 +23,16 @@ const Profile = ({navigation}) => {
             <Text style={styles.userName}>Hi, Vaishali Gawas</Text>
           </View>
           <View>
-            <TouchableOpacity style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row'}}
+              onPress={async () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Login'}],
+                });
+                console.log('Logout Successfull');
+                await AsyncStorage.removeItem('token');
+              }}>
               <Ionicons name="power" size={22} color={'green'} />
               <Text style={styles.btnLogout}>Logout</Text>
             </TouchableOpacity>
