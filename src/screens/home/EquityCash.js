@@ -5,21 +5,26 @@ import {
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import axiosConfig from '../../../axiosConfig';
 import {windowWidth} from '../../utils/Dimensions';
+import Moment from 'react-moment';
 
 const EquityCash = () => {
   const [allTrade, setAllTrade] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {
-    axios
-      .get(`http://65.0.183.149:8000/admin/equityCash_list`)
+    setRefreshing(true);
+    axiosConfig
+      .get(`/equityCash_list`)
       .then(response => {
         console.log(response.data.data);
         setAllTrade(response.data.data);
+        setRefreshing(false);
       })
       .catch(error => {
         console.log(error);
@@ -30,62 +35,136 @@ const EquityCash = () => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getTrade} />
+        }>
         {allTrade?.map(trade => (
           <View style={{borderBottomWidth: 1}} key={trade._id}>
             {/* <================TOP Area=============> */}
 
-            <TouchableOpacity style={styles.bgarea}>
-              <Text style={styles.bgText}>{trade.call_type}</Text>
-            </TouchableOpacity>
+            <View style={styles.bgarea2}>
+              <View style={styles.botomview3}>
+                <Text style={styles.bgText}>{trade?.call_type}</Text>
+              </View>
+              <View style={styles.botomview4}>
+                <Text style={styles.bottomText1}>
+                  <Moment element={Text} format="lll">
+                    {trade.createdAt}
+                  </Moment>
+                </Text>
+              </View>
+            </View>
 
             {/* <================BUY Area=============> */}
 
-            <View style={styles.bgarea2}>
-              <Text style={styles.buy}>BUY</Text>
-              <Text style={styles.notbuy}>MCDOWELL -N 830CE @ 19-20</Text>
+            <View style={styles.bgarea3}>
+              <Text style={styles.buy}>{trade?.equity_script}</Text>
+              {/* <Text style={styles.notbuy}>MCDOWELL -N 830CE @ 19-20</Text> */}
+              <Text style={styles.notbuy}>
+                {trade?.script_name?.script_name} {trade?.active_value} -{' '}
+                {trade?.active_value2}
+              </Text>
             </View>
 
             {/* <================Circle Area=============> */}
 
             <View style={styles.bgarea2}>
-              <View style={styles.circle1}>
-                <Text style={styles.notbuy1}>
-                  SL{'\n'}
-                  {trade?.SL}
-                </Text>
-              </View>
-              <View style={styles.circle}>
-                <Text style={styles.notbuy}>
-                  T₹ 1{'\n'}
-                  {trade?.T1}
-                </Text>
-              </View>
-              <View style={styles.circle}>
-                <Text style={styles.notbuy}>
-                  T₹ 2{'\n'}
-                  {trade?.T2}
-                </Text>
-              </View>
-              <View style={styles.circle}>
-                <Text style={styles.notbuy}>
-                  T₹ 3{'\n'}
-                  {trade?.T3}
-                </Text>
-              </View>
-              <View style={styles.circle}>
-                <Text style={styles.notbuy}>
-                  T₹ 4{'\n'}
-                  {trade?.T4}
-                </Text>
-              </View>
+              {/* <===========SL=============> */}
+
+              {trade?.sl_type === 'false' ? (
+                <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
+                  <Text style={styles.notbuy1}>
+                    SL{'\n'}
+                    {trade?.SL}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.circle1, {backgroundColor: '#FA8072'}]}>
+                  <Text style={styles.notbuy1}>
+                    SL{'\n'}
+                    {trade?.SL}
+                  </Text>
+                </View>
+              )}
+              {/* <===========T1 =============> */}
+
+              {trade?.t1_type === 'false' ? (
+                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 1{'\n'}
+                    {trade?.T1}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 1{'\n'}
+                    {trade?.T1}
+                  </Text>
+                </View>
+              )}
+
+              {/* <===========T2 =============> */}
+
+              {trade?.t2_type === 'false' ? (
+                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 2{'\n'}
+                    {trade?.T2}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 2{'\n'}
+                    {trade?.T2}
+                  </Text>
+                </View>
+              )}
+
+              {/* <===========T3 =============> */}
+
+              {trade?.t3_type === 'false' ? (
+                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 3{'\n'}
+                    {trade?.T3}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 3{'\n'}
+                    {trade?.T3}
+                  </Text>
+                </View>
+              )}
+
+              {/* <===========T4 =============> */}
+
+              {trade?.t4_type === 'false' ? (
+                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 4{'\n'}
+                    {trade?.T4}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 4{'\n'}
+                    {trade?.T4}
+                  </Text>
+                </View>
+              )}
             </View>
 
             {/* <================Botton Area=============> */}
             <View style={styles.bgarea2}>
               <View style={styles.botomview1}>
                 <Text style={styles.bottomText}>
-                  Quality & investment Amount
+                  Quantity & investment Amount
                 </Text>
                 <Text style={styles.bottomText1}>
                   {trade?.no_of_lots} Lots({trade?.qty} Qty) = ₹
@@ -124,15 +203,22 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'capitalize',
   },
+  bgarea3: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    marginVertical: 5,
+    marginHorizontal: 5,
+  },
   bgarea2: {
     flex: 1,
     flexDirection: 'row',
     marginVertical: 5,
     marginHorizontal: 5,
   },
+
   buy: {
     backgroundColor: '#00b050',
-    width: 40,
     color: '#000',
     padding: 3,
     fontWeight: '500',
@@ -157,21 +243,29 @@ const styles = StyleSheet.create({
   },
   circle1: {
     margin: 5,
-    backgroundColor: '#FA8072',
     width: 60,
     height: 60,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 10, height: 10},
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    elevation: 5,
   },
   circle: {
     margin: 5,
-    backgroundColor: '#c0d4a3',
     width: 60,
     height: 60,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 10, height: 10},
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    elevation: 5,
   },
   botomview1: {
     flex: 2,
@@ -184,6 +278,18 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
+  },
+  botomview3: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  botomview4: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   bottomText: {
     color: '#000',

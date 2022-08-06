@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Share} from 'react-native';
 import React, {useEffect} from 'react';
 import CustomHeader from '../../components/CustomHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,11 +7,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
 
 const Profile = ({navigation}) => {
-  // const signOut= () => {
-  //   useEffect(() => {
-  //     AsyncStorage.removeItem('token')
-  //   }, [input])
-  // }
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <View style={styles.container}>
       <View>
@@ -202,9 +216,7 @@ const Profile = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.row}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => navigation.navigate('Share App')}>
+          <TouchableOpacity style={styles.btn} onPress={onShare}>
             <View style={styles.eachSection}>
               <Ionicons
                 name="share-social"

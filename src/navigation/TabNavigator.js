@@ -2,12 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-
 import HomeScreen from '../screens/HomeScreen';
-import CartScreen from '../screens/CartScreen';
-import FavoriteScreen from '../screens/FavoriteScreen';
-import GameDetailsScreen from '../screens/GameDetailsScreen';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import OnboardingScreen from '../screens/OnboardingScreen';
@@ -26,7 +21,7 @@ import Faqs from '../screens/Drawer/Faqs';
 import Feedback from '../screens/Drawer/Feedback';
 import Appreciation from '../screens/Drawer/Appreciation';
 import RateUs from '../screens/Drawer/RateUs';
-import Share from '../screens/Drawer/Share';
+import ShareApp from '../screens/Drawer/ShareApp';
 import Startup from '../screens/explore/Startup';
 import University from '../screens/explore/University';
 import ReferEarn from '../screens/explore/ReferEarn';
@@ -70,13 +65,7 @@ const HomeStack = () => {
           title: route.params?.title,
         })}
       />
-      <Stack.Screen
-        name="GameDetails"
-        component={GameDetailsScreen}
-        options={({route}) => ({
-          title: route.params?.title,
-        })}
-      />
+
       <Stack.Screen
         name="Startup"
         component={Startup}
@@ -163,7 +152,7 @@ const HomeStack = () => {
       />
       <Stack.Screen
         name="Share App"
-        component={Share}
+        component={ShareApp}
         options={({route}) => ({
           title: route.params?.title,
         })}
@@ -175,12 +164,6 @@ const HomeStack = () => {
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: 'black',
-        labelStyle: {
-          fontSize: 11,
-        },
-      }}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;

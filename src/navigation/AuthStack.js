@@ -5,7 +5,6 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
-import GameDetailsScreen from '../screens/GameDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,13 +31,6 @@ const AuthStack = () => {
         name="Home"
         component={HomeScreen}
         options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="GameDetails"
-        component={GameDetailsScreen}
-        options={({route}) => ({
-          title: route.params?.title,
-        })}
       />
     </Stack.Navigator>
   );

@@ -1,8 +1,32 @@
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {Card, Paragraph, Title} from 'react-native-paper';
+import axiosConfig from '../../../axiosConfig';
 
 const MemberPlan = () => {
+  const [plan, setPlan] = useState([]);
+
+  useEffect(() => {
+    const getPlan = () => {
+      axiosConfig
+        .get(`/plan_list`)
+        .then(response => {
+          console.log(response.data.data);
+          setPlan(response.data.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+    getPlan();
+  }, []);
   return (
     <SafeAreaView>
       <View>
@@ -11,30 +35,24 @@ const MemberPlan = () => {
         </View>
         <View style={styles.textView}>
           <ScrollView horizontal={true}>
-            <View>
+            <TouchableOpacity>
               <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>
-                <Text style={styles.textcard}>1 Month</Text>
-                <Text style={styles.textcard}>₹ 1999</Text>
-                <Text style={styles.textcard}>₹ 1999</Text>
-                <Text style={styles.offText}>30% OFF</Text>
+                <Text style={styles.textcard}>Free Weekly</Text>
+                {/* <Text style={styles.textcard}>₹{item?.des_price}</Text>
+                <Text style={styles.textcard}>₹ {item?.mrp_price}</Text>
+                <Text style={styles.offText}>{item?.desc}</Text> */}
               </View>
-            </View>
-            <View>
-              <View style={[styles.card, {backgroundColor: '#ADD8E6'}]}>
-                <Text style={styles.textcard}>3 Month</Text>
-                <Text style={styles.textcard}>₹ 5999</Text>
-                <Text style={styles.textcard}>₹ 1999</Text>
-                <Text style={styles.offText}>60% OFF</Text>
-              </View>
-            </View>
-            <View>
-              <View style={[styles.card, {backgroundColor: '#00b0503'}]}>
-                <Text style={styles.textcard}>6 Month</Text>
-                <Text style={styles.textcard}>₹ 8999</Text>
-                <Text style={styles.textcard}>₹ 1999</Text>
-                <Text style={styles.offText}>90% OFF</Text>
-              </View>
-            </View>
+            </TouchableOpacity>
+            {plan?.map(item => (
+              <TouchableOpacity>
+                <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>
+                  <Text style={styles.textcard}>{item?.pack_name}</Text>
+                  <Text style={styles.textcard}>₹{item?.des_price}</Text>
+                  <Text style={styles.textcard1}>₹ {item?.mrp_price}</Text>
+                  <Text style={styles.offText}>{item?.desc}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </ScrollView>
         </View>
       </View>
@@ -56,7 +74,8 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5,
+    margin: 10,
+    height: 130,
 
     padding: 20,
     borderColor: 'black',
@@ -65,6 +84,14 @@ const styles = StyleSheet.create({
   textcard: {
     fontWeight: '600',
     color: 'black',
+    marginBottom: 5,
+  },
+  textcard1: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+    textDecorationLine: 'line-through',
+    textDecorationColor: '#000',
   },
   offText: {
     backgroundColor: '#a82682',

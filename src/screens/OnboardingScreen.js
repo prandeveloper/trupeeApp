@@ -8,10 +8,9 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Gaming from '../assets/images/misc/gaming.svg';
 import bgImg from '../Images/Background/bgImg.png';
 import LoginScreen from './LoginScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OnboardingScreen = ({navigation}) => {
   setTimeout(async () => {
