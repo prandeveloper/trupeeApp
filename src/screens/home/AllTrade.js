@@ -310,6 +310,6 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 12,
-    color: '',
+    color: '#000',
   },
 });

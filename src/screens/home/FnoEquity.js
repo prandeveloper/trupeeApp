@@ -45,13 +45,13 @@ const FnoEquity = () => {
               <View style={styles.botomview3}>
                 <Text style={styles.bgText}>{trade?.call_type}</Text>
               </View>
-              <View style={styles.botomview4}>
+              {/* <View style={styles.botomview4}>
                 <Text style={styles.bottomText1}>
                   <Moment element={Text} format="lll">
                     {trade.createdAt}
                   </Moment>
                 </Text>
-              </View>
+              </View> */}
             </View>
 
             {/* <================BUY Area=============> */}
@@ -174,6 +174,20 @@ const FnoEquity = () => {
                 <Text style={styles.bottomText1}>₹ -0000 - 00.00%</Text>
               </View>
             </View>
+
+            {/* <================ Date and Show more=============> */}
+            <View style={styles.bgarea2}>
+              <View style={styles.botomview3}>
+                <Text style={styles.dateText}>
+                  <Moment element={Text} format="lll">
+                    {trade.createdAt}
+                  </Moment>
+                </Text>
+              </View>
+              <View style={styles.botomview2}>
+                <Text style={styles.dateText}>P&L</Text>
+              </View>
+            </View>
           </View>
         ))}
       </ScrollView>
@@ -248,8 +262,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {width: 10, height: 10},
-    shadowOpacity: 0.9,
-    shadowRadius: 20,
+    shadowOpacity: 1,
+    shadowRadius: 50,
     elevation: 5,
   },
   circle: {
@@ -294,6 +308,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   bottomText1: {
+    color: '#000',
+  },
+  dateText: {
+    fontSize: 12,
     color: '#000',
   },
 });
