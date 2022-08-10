@@ -1,8 +1,13 @@
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import DatePicker from 'react-native-date-picker';
 
 function CustomHeader({title, navigation}) {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
+  console.log(date);
   return (
     <View
       style={{
@@ -29,7 +34,7 @@ function CustomHeader({title, navigation}) {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View style={styles.calender}>
+        <TouchableOpacity style={styles.calender} onPress={() => setOpen(true)}>
           <View>
             <TouchableOpacity>
               <View style={styles.calenderStyle}>
@@ -46,7 +51,21 @@ function CustomHeader({title, navigation}) {
               <Text style={styles.calenderText}>13th July</Text>
             </View>
           </View>
-        </View>
+          <DatePicker
+            textColor="green"
+            mode="date"
+            modal
+            open={open}
+            date={date}
+            onConfirm={date => {
+              setOpen(false);
+              setDate(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

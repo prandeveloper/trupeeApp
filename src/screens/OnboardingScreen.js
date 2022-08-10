@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OnboardingScreen = ({navigation}) => {
   setTimeout(async () => {
-    const value = await AsyncStorage.getItem('token');
+    const value = await AsyncStorage.getItem('auth-token');
     if (value !== null) {
       navigation.replace('Home');
     } else {

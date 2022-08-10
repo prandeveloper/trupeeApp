@@ -15,7 +15,6 @@ const Profile = ({navigation}) => {
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          // shared with activity type of result.activityType
         } else {
           // shared
         }
@@ -45,7 +44,7 @@ const Profile = ({navigation}) => {
                   routes: [{name: 'Login'}],
                 });
                 console.log('Logout Successfull');
-                await AsyncStorage.removeItem('token');
+                await AsyncStorage.removeItem('auth-token');
               }}>
               <Ionicons name="power" size={22} color={'green'} />
               <Text style={styles.btnLogout}>Logout</Text>

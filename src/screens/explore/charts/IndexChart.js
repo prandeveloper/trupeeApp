@@ -6,67 +6,44 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axiosConfig from '../../../../axiosConfig';
 
 const IndexChart = () => {
+  const [indexChart, setIndexChart] = useState([]);
+
+  useEffect(() => {
+    const getChart = () => {
+      axiosConfig
+        .get(`/trendingchartby_type/Index`)
+        .then(response => {
+          console.log(response.data.data);
+          setIndexChart(response.data.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+    getChart();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.mainView}>
-          <View style={styles.subView}>
-            <View style={styles.imageView}>
-              <Image
-                source={require('../../../Images/graph.jpeg')}
-                style={styles.imageGraph}
-              />
+          {indexChart?.map(chart => (
+            <View style={styles.subView} key={chart._id}>
+              <View style={styles.imageView}>
+                <Image
+                  source={{uri: `${chart.image}`}}
+                  style={styles.imageGraph}
+                />
+              </View>
+              <View style={styles.textView}>
+                <Text style={styles.headText}>{chart?.title}</Text>
+                <Text style={styles.SimpleText}>{chart?.desc}</Text>
+              </View>
             </View>
-            <View style={styles.textView}>
-              <Text style={styles.headText}>
-                #NIFTY Intraday Support Resistance Level
-              </Text>
-              <Text style={styles.SimpleText}>
-                Today will be slightly gap down opening in nifty. After Opening
-                if Nifty sustain above 16700 level than possible upside rally
-                100-200.
-              </Text>
-            </View>
-          </View>
-          <View style={styles.subView}>
-            <View style={styles.imageView}>
-              <Image
-                source={require('../../../Images/graph.jpeg')}
-                style={styles.imageGraph}
-              />
-            </View>
-            <View style={styles.textView}>
-              <Text style={styles.headText}>
-                #NIFTY Intraday Support Resistance Level
-              </Text>
-              <Text style={styles.SimpleText}>
-                Today will be slightly gap down opening in nifty. After Opening
-                if Nifty sustain above 16700 level than possible upside rally
-                100-200.
-              </Text>
-            </View>
-          </View>
-          <View style={styles.subView}>
-            <View style={styles.imageView}>
-              <Image
-                source={require('../../../Images/graph.jpeg')}
-                style={styles.imageGraph}
-              />
-            </View>
-            <View style={styles.textView}>
-              <Text style={styles.headText}>
-                #NIFTY Intraday Support Resistance Level
-              </Text>
-              <Text style={styles.SimpleText}>
-                Today will be slightly gap down opening in nifty. After Opening
-                if Nifty sustain above 16700 level than possible upside rally
-                100-200.
-              </Text>
-            </View>
-          </View>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

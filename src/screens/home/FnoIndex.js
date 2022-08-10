@@ -6,15 +6,20 @@ import {
   TouchableOpacity,
   View,
   RefreshControl,
+  Modal,
+  Pressable,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {windowWidth} from '../../utils/Dimensions';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
+import {styles} from './FnoIndexStyle';
 
 const FnoIndex = () => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {
     setRefreshing(true);
@@ -188,7 +193,65 @@ const FnoIndex = () => {
                 </Text>
               </View>
               <View style={styles.botomview2}>
-                <Text style={styles.dateText}>P&L</Text>
+                <View style={styles.centeredView}>
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      Alert.alert('Modal has been closed.');
+                      setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                      <View style={styles.modalView}>
+                        <View style={styles.modalMainText}>
+                          <View style={styles.modalMainHead}>
+                            <Text style={styles.modalText}>
+                              Hello World! Hello World!Hello World!
+                            </Text>
+                          </View>
+                          <View style={styles.modalMainDate}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                        </View>
+                        <View style={styles.modalMainText}>
+                          <View style={styles.modalMainHead}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                          <View style={styles.modalMainDate}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                        </View>
+                        <View style={styles.modalMainText}>
+                          <View style={styles.modalMainHead}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                          <View style={styles.modalMainDate}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                        </View>
+                        <View style={styles.modalMainText}>
+                          <View style={styles.modalMainHead}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                          <View style={styles.modalMainDate}>
+                            <Text style={styles.modalText}>Hello World!</Text>
+                          </View>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.buttonClose}
+                          onPress={() => setModalVisible(!modalVisible)}>
+                          <Text style={styles.textStyle}>OK</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Modal>
+                  <TouchableOpacity
+                    style={[styles.button]}
+                    onPress={() => setModalVisible(true)}>
+                    <Text style={styles.textStyle1}>Show Trade History</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
@@ -199,122 +262,3 @@ const FnoIndex = () => {
 };
 
 export default FnoIndex;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: windowWidth,
-    backgroundColor: '#fff',
-  },
-  bgarea: {
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  bgText: {
-    backgroundColor: '#a82682',
-    color: '#fff',
-    padding: 5,
-    fontWeight: '500',
-    textTransform: 'capitalize',
-  },
-  bgarea3: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    marginVertical: 5,
-    marginHorizontal: 5,
-  },
-  bgarea2: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 5,
-    marginHorizontal: 5,
-  },
-
-  buy: {
-    backgroundColor: '#00b050',
-    color: '#000',
-    padding: 3,
-    fontWeight: '500',
-  },
-  notbuy1: {
-    fontSize: 12,
-    color: '#000',
-    paddingHorizontal: 6,
-    fontWeight: '600',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  notbuy: {
-    fontSize: 12,
-    color: '#000',
-    padding: 3,
-    fontWeight: '600',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  circle1: {
-    margin: 5,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 10, height: 10},
-    shadowOpacity: 1,
-    shadowRadius: 50,
-    elevation: 5,
-  },
-  circle: {
-    margin: 5,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 10, height: 10},
-    shadowOpacity: 0.9,
-    shadowRadius: 20,
-    elevation: 5,
-  },
-  botomview1: {
-    flex: 2,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-  botomview2: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-start',
-  },
-  botomview3: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  botomview4: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  bottomText: {
-    color: '#000',
-    fontWeight: '500',
-  },
-  bottomText1: {
-    color: '#000',
-  },
-  dateText: {
-    fontSize: 12,
-    color: '#000',
-  },
-});

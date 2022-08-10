@@ -42,7 +42,7 @@ const LoginScreen = () => {
 
   const _storeData = async token => {
     try {
-      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('auth-token', token);
       console.log('Token Saved');
     } catch (error) {
       console.log('Some error in setting token');
@@ -50,7 +50,7 @@ const LoginScreen = () => {
   };
   const getData = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await AsyncStorage.getItem('auth-token');
       if (token !== null) {
         console.log('success');
         console.log(token);

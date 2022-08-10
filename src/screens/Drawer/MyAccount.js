@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,8 +11,8 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-datepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import CustomButton from '../../components/CustomButton';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyAccount = ({navigation}) => {
   const [date, setDate] = useState(new Date());
@@ -23,6 +23,26 @@ const MyAccount = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState();
+
+  const getUser = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+        headers: {
+          'auth-token': await AsyncStorage.getItem('auth-token'),
+        },
+      })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    if (AsyncStorage.getItem('auth-token')) {
+      getUser();
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,21 +73,29 @@ const MyAccount = ({navigation}) => {
           <View style={styles.mainView}>
             <Ionicons name="ios-people" color="green" size={25} />
             <Picker
-              style={[styles.tfield, {width: 200}]}
+              style={[styles.tfield, {width: 250}]}
               selectedValue={selectedLanguage}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedLanguage(itemValue)
               }>
-              <Picker.Item label="Male" value="male" />
-              <Picker.Item label="Female" value="female" />
-              <Picker.Item label="Other" value="other" />
+              <Picker.Item label="Male" value="male" style={{color: '#000'}} />
+              <Picker.Item
+                label="Female"
+                value="female"
+                style={{color: '#000'}}
+              />
+              <Picker.Item
+                label="Other"
+                value="other"
+                style={{color: '#000'}}
+              />
             </Picker>
           </View>
 
           <View style={styles.mainView}>
             <Ionicons name="md-calendar" color="green" size={25} />
             <DatePicker
-              style={[styles.tfield, {width: 200}]}
+              style={[styles.tfield, {width: 250}]}
               date={date}
               mode="date"
               placeholder="select date"
