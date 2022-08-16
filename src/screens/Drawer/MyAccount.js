@@ -23,8 +23,8 @@ const MyAccount = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const [mobile, setMobile] = useState();
+  const [gender, setGender] = useState();
   const [proImage, setProImage] = useState('');
 
   // <================Image Picker ============>
@@ -55,21 +55,68 @@ const MyAccount = ({navigation}) => {
       }
     });
   };
-  // const getUser = async () => {
-  //   axios
-  //     .get(`http://65.0.183.149:8000/user/viewoneuser`, {
-  //       headers: {'auth-token': await AsyncStorage.getItem('auth-token')},
-  //     })
-  //     .then(response => {
-  //       console.log(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
+  const getUser = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+        headers: {'auth-token': await AsyncStorage.getItem('auth-token')},
+      })
+      .then(response => {
+        console.log(response.data.data);
+        console.log(response.data.data.userimg);
+        setFirstName(response.data.data.firstname);
+        setLastName(response.data.data.lastname);
+        setGender(response.data.data.gender);
+        setEmail(response.data.data.email);
+        setDate(response.data.data.dob);
+        setMobile(JSON.stringify(response.data.data.mobile));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  function editProfile() {
+    editUser();
+  }
+  const editUser = async () => {
+    console.log(
+      proImage.assets[0].base64,
+      firstName,
+      lastName,
+      email,
+      mobile,
+      gender,
+      date,
+    );
+    const data = new FormData();
+    data.append('firstname', firstName);
+    data.append('lastname', lastName);
+    data.append('email', email);
+    data.append('mobile', mobile);
+    data.append('gender', gender);
+    data.append('dob', date);
+    data.append('userimg', proImage.assets[0].base64);
+
+    fetch(`http://65.0.183.149:8000/user/myprofile`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'auth-token': await AsyncStorage.getItem('auth-token'),
+      },
+      body: data,
+    })
+      .then(response => {
+        response.json().then(res => {
+          console.log(res);
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -109,10 +156,8 @@ const MyAccount = ({navigation}) => {
             <Ionicons name="ios-people" color="green" size={25} />
             <Picker
               style={[styles.tfield, {width: 250}]}
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }>
+              selectedValue={gender}
+              onValueChange={(itemValue, itemIndex) => setGender(itemValue)}>
               <Picker.Item label="Male" value="male" style={{color: '#000'}} />
               <Picker.Item
                 label="Female"
@@ -174,10 +219,11 @@ const MyAccount = ({navigation}) => {
               onChangeText={setMobile}
               value={mobile}
               keyboardType="default"
+              editable={false}
             />
           </View>
 
-          <TouchableOpacity style={styles.touch}>
+          <TouchableOpacity style={styles.touch} onPress={editProfile}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
         </View>
