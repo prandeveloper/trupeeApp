@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   View,
@@ -7,49 +8,83 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-datepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const MyAccount = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [dobLabel, setDobLabel] = useState('Date of Birth');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState();
+  const [proImage, setProImage] = useState('');
 
-  const getUser = async () => {
-    axios
-      .get(`http://65.0.183.149:8000/user/viewoneuser`, {
-        headers: {
-          'auth-token': await AsyncStorage.getItem('auth-token'),
-        },
-      })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  // <================Image Picker ============>
+  const chooseImg = type => {
+    let options = {
+      mediaType: 'photo',
+      maxWidth: 100,
+      maxHeight: 100,
+      selectionLimit: 1,
+      includeBase64: true,
+    };
+    launchImageLibrary(options, response => {
+      console.log('response : ' + JSON.stringify(response));
+      setProImage(response);
+      console.log(response.assets[0].base64);
+      if (response.didCancel) {
+        Alert.alert('User cancelled camera picker');
+        return;
+      } else if (response.errorCode == 'camera_unavailable') {
+        Alert.aalert('Camera not available on device');
+        return;
+      } else if (response.errorCode == 'permission') {
+        Alert.aalert('Permission not satisfied');
+        return;
+      } else if (response.errorCode == 'others') {
+        Alert.aalert(response.errorMessage);
+        return;
+      }
+    });
   };
-  useEffect(() => {
-    if (AsyncStorage.getItem('auth-token')) {
-      getUser();
-    }
-  }, []);
+  // const getUser = async () => {
+  //   axios
+  //     .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+  //       headers: {'auth-token': await AsyncStorage.getItem('auth-token')},
+  //     })
+  //     .then(response => {
+  //       console.log(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{paddingHorizontal: 20}}>
+        style={{paddingHorizontal: 0}}>
         <View style={styles.main}>
+          <View style={styles.mainView1}>
+            <TouchableOpacity onPress={chooseImg}>
+              <Image
+                source={require('../../Images/Icons/camera-icon.png')}
+                style={{height: 100, width: 100}}
+              />
+            </TouchableOpacity>
+          </View>
           <View style={styles.mainView}>
             <Ionicons name="md-person" color="green" size={25} />
             <TextInput
@@ -100,8 +135,7 @@ const MyAccount = ({navigation}) => {
               mode="date"
               placeholder="select date"
               format="YYYY-MM-DD"
-              minDate="2016-05-01"
-              maxDate="2016-06-01"
+              maxDate={date}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
@@ -115,9 +149,7 @@ const MyAccount = ({navigation}) => {
                   marginLeft: 36,
                 },
               }}
-              onDateChange={date => {
-                setDate({date: date});
-              }}
+              onDateChange={setDate}
             />
           </View>
 
@@ -165,6 +197,11 @@ const styles = StyleSheet.create({
   },
   main: {
     marginTop: 50,
+  },
+  mainView1: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   mainView: {
     flexDirection: 'row',

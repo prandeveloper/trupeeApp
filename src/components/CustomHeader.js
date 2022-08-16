@@ -1,8 +1,8 @@
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DatePicker from 'react-native-date-picker';
-
+// import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
 function CustomHeader({title, navigation}) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -35,6 +35,22 @@ function CustomHeader({title, navigation}) {
           justifyContent: 'center',
         }}>
         <TouchableOpacity style={styles.calender} onPress={() => setOpen(true)}>
+          <DatePicker
+            open={open}
+            date={date}
+            mode="date"
+            format="YYYY-MM-DD"
+            // minDate="2016-05-01"
+            // maxDate="2016-06-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            onDateChange={setDate}
+            showIcon={false}
+            hideText={true}
+            customStyles={{
+              dateTouchBody: {position: 'relative'},
+            }}
+          />
           <View>
             <TouchableOpacity>
               <View style={styles.calenderStyle}>
@@ -48,10 +64,10 @@ function CustomHeader({title, navigation}) {
           <View>
             <View style={styles.calenderStyle}>
               <Text style={styles.calenderText}>Trade History</Text>
-              <Text style={styles.calenderText}>13th July</Text>
+              <Text style={styles.calenderText}>10-02-2022</Text>
             </View>
           </View>
-          <DatePicker
+          {/* <DatePicker
             textColor="green"
             mode="date"
             modal
@@ -64,7 +80,7 @@ function CustomHeader({title, navigation}) {
             onCancel={() => {
               setOpen(false);
             }}
-          />
+          /> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -95,7 +111,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#00b050',
+    borderColor: '#fff',
     borderRadius: 5,
   },
 });
