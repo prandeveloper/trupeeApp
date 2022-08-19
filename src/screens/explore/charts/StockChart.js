@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   imageView: {},
   imageGraph: {
     width: '100%',
-    height: 250,
+    height: 230,
   },
   textView: {
     margin: 2,

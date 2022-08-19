@@ -72,7 +72,9 @@ const Explore = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.bbb}>
-                <TouchableOpacity style={styles.ccc}>
+                <TouchableOpacity
+                  style={styles.ccc}
+                  onPress={() => navigation.navigate('Opportunity')}>
                   <ImageBackground
                     source={require('../../Images/explore/opportunity-tab1.png')}
                     style={styles.exploreImg}>
@@ -132,7 +134,9 @@ const styles = StyleSheet.create({
   ccc: {
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 10,
   },
+  ddd: {justifyContent: 'center', alignItems: 'center', elevation: 10},
   ccc1: {
     alignItems: 'center',
     justifyContent: 'flex-end',

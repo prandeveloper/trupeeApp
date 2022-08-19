@@ -8,29 +8,28 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import CustomHeader from '../../components/CustomHeader';
 import {Button, Card, Paragraph, Title} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MemberPlan from './services/MemberPlan';
+import SimpleHeader from '../components/SimpleHeader';
 
 const AfterSignUp = ({navigation}) => {
   const [text, setText] = React.useState('');
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <CustomHeader />
+        <SimpleHeader />
       </View>
       <ScrollView>
         <View>
           <View style={styles.subView}>
-            <Card style={styles.mainCard}>
-              <Card.Content>
-                <Paragraph>Subscription Type:</Paragraph>
-                <Paragraph>Start Date:</Paragraph>
-                <Paragraph>Expiry Date</Paragraph>
-              </Card.Content>
-            </Card>
+            <View style={styles.topView}>
+              <Text style={styles.topText}>
+                Welcome to Trupee community. Over 10K+ subscriber are investing
+                through our platform.
+              </Text>
+            </View>
           </View>
           <View style={styles.subView}>
             <MemberPlan />
@@ -136,6 +135,7 @@ export default AfterSignUp;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF',
   },
   mainCard: {
     backgroundColor: '#c0d4a3',
@@ -146,7 +146,20 @@ const styles = StyleSheet.create({
   subView: {
     width: '100%',
     borderBottomColor: '#000',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
+  },
+  topView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 40,
+    marginVertical: 15,
+  },
+  topText: {
+    textAlign: 'center',
+    color: '#a82682',
+    fontSize: 16,
+    fontWeight: '700',
   },
   viewOne: {
     marginHorizontal: 5,
@@ -178,6 +191,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#a82682',
     paddingHorizontal: 20,
     paddingVertical: 10,
+    borderRadius: 10,
+    elevation: 5,
   },
   buttonText: {
     color: '#fff',
@@ -193,5 +208,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 10,
     marginBottom: 30,
+    borderRadius: 10,
+    elevation: 5,
   },
 });

@@ -7,15 +7,8 @@ function CustomHeader({title, navigation}) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  console.log(date);
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        marginTop: 0,
-        height: 100,
-        backgroundColor: '#FFF',
-      }}>
+    <View style={styles.mainView}>
       <View
         style={{
           flex: 1,
@@ -24,7 +17,7 @@ function CustomHeader({title, navigation}) {
         <TouchableOpacity>
           <Image
             style={styles.logoImg}
-            source={require('../Images/screenlogo/screenLogo.png')}
+            source={require('../Images/top-left-logo/top-left-logo1.png')}
           />
         </TouchableOpacity>
       </View>
@@ -87,9 +80,16 @@ function CustomHeader({title, navigation}) {
   );
 }
 const styles = StyleSheet.create({
+  mainView: {
+    flexDirection: 'row',
+    marginTop: 0,
+    height: 100,
+    backgroundColor: '#FFF',
+    elevation: 10,
+  },
   logoImg: {
-    width: 130,
-    height: 50,
+    width: 120,
+    height: 45,
     marginLeft: 10,
   },
   calenderStyle: {

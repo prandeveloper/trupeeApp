@@ -5,7 +5,6 @@ import {
   ScrollView,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
@@ -16,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {TextInput} from 'react-native-paper';
 
 const MyAccount = ({navigation}) => {
   const [date, setDate] = useState(new Date());
@@ -124,27 +124,29 @@ const MyAccount = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         style={{paddingHorizontal: 0}}>
         <View style={styles.main}>
-          <View style={styles.mainView1}>
+          {/* <View style={styles.mainView1}>
             <TouchableOpacity onPress={chooseImg}>
               <Image
                 source={require('../../Images/Icons/camera-icon.png')}
                 style={{height: 100, width: 100}}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={styles.mainView}>
             <Ionicons name="md-person" color="green" size={25} />
             <TextInput
-              placeholder="FirstName"
-              placeholderTextColor="#000"
+              label="FirstName"
+              outlineColor="green"
+              mode="outlined"
               onChangeText={setFirstName}
               value={firstName}
               keyboardType="default"
               style={[styles.tfield, {width: 120}]}
             />
             <TextInput
-              placeholder="LastName"
-              placeholderTextColor="#000"
+              label="LastName"
+              outlineColor="green"
+              mode="outlined"
               onChangeText={setLastName}
               value={lastName}
               keyboardType="default"
@@ -176,6 +178,7 @@ const MyAccount = ({navigation}) => {
             <Ionicons name="md-calendar" color="green" size={25} />
             <DatePicker
               style={[styles.tfield, {width: 250}]}
+              showIcon={false}
               date={date}
               mode="date"
               placeholder="select date"
@@ -184,14 +187,8 @@ const MyAccount = ({navigation}) => {
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0,
-                },
                 dateInput: {
-                  marginLeft: 36,
+                  marginLeft: 10,
                 },
               }}
               onDateChange={setDate}
@@ -202,11 +199,12 @@ const MyAccount = ({navigation}) => {
             <Ionicons name="md-mail" color="green" size={25} />
             <TextInput
               style={[styles.tfield, {width: 250}]}
-              placeholder="Email"
-              placeholderTextColor="#000"
+              label="Email"
+              outlineColor="green"
+              mode="outlined"
               onChangeText={setEmail}
               value={email}
-              keyboardType="default"
+              keyboardType="email-address"
             />
           </View>
 
@@ -214,8 +212,9 @@ const MyAccount = ({navigation}) => {
             <Ionicons name="md-call" color="green" size={25} />
             <TextInput
               style={[styles.tfield, {width: 250}]}
-              placeholder="Mobile"
-              placeholderTextColor="#000"
+              label="Mobile"
+              outlineColor="green"
+              mode="outlined"
               onChangeText={setMobile}
               value={mobile}
               keyboardType="default"
@@ -255,7 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   tfield: {
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#000',
     borderRadius: 10,
     margin: 5,

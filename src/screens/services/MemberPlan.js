@@ -35,14 +35,6 @@ const MemberPlan = () => {
         </View>
         <View style={styles.textView}>
           <ScrollView horizontal={true}>
-            <TouchableOpacity>
-              <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>
-                <Text style={styles.textcard}>Free Weekly</Text>
-                {/* <Text style={styles.textcard}>₹{item?.des_price}</Text>
-                <Text style={styles.textcard}>₹ {item?.mrp_price}</Text>
-                <Text style={styles.offText}>{item?.desc}</Text> */}
-              </View>
-            </TouchableOpacity>
             {plan?.map(item => (
               <TouchableOpacity>
                 <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>

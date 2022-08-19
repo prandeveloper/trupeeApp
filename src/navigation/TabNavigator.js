@@ -27,6 +27,8 @@ import University from '../screens/explore/University';
 import ReferEarn from '../screens/explore/ReferEarn';
 import Charts from '../screens/explore/charts/Charts';
 import PerformanceSheet from '../screens/explore/PerformanceSheet';
+import AfterSignUp from '../screens/AfterSignUp';
+import Opportunity from '../screens/explore/Opportunity';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,6 +52,11 @@ const HomeStack = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AfterSignUp"
+        component={AfterSignUp}
         options={{headerShown: false}}
       />
       <Stack.Screen name="Register" component={RegisterScreen} />
@@ -90,6 +97,13 @@ const HomeStack = () => {
       <Stack.Screen
         name="ReferEarn"
         component={ReferEarn}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Opportunity"
+        component={Opportunity}
         options={({route}) => ({
           title: route.params?.title,
         })}

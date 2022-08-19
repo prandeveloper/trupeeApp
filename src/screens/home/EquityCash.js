@@ -13,7 +13,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
-import {styles} from './EquityCashStyle';
+import {styles} from './TradeStyle';
 
 const EquityCash = () => {
   const [allTrade, setAllTrade] = useState([]);
@@ -63,10 +63,9 @@ const EquityCash = () => {
             {/* <================BUY Area=============> */}
 
             <View style={styles.bgarea3}>
-              <Text style={styles.buy}>{trade?.equity_script}</Text>
-              {/* <Text style={styles.notbuy}>MCDOWELL -N 830CE @ 19-20</Text> */}
+              <Text style={styles.buy}>{trade?.script_type}</Text>
               <Text style={styles.notbuy}>
-                {trade?.script_name?.script_name} {trade?.active_value} -{' '}
+                {trade?.cash_scrpt_name?.scriptName} {trade?.active_value} -{' '}
                 {trade?.active_value2}
               </Text>
             </View>
@@ -177,7 +176,15 @@ const EquityCash = () => {
               </View>
               <View style={styles.botomview2}>
                 <Text style={styles.bottomText}>P&L</Text>
-                <Text style={styles.bottomText1}>₹ -0000 - 00.00%</Text>
+                {trade?.pl_type === 'Loss' ? (
+                  <Text style={[styles.bottomText1, , {color: 'red'}]}>
+                    ₹ {trade?.profit_loss_amt} {'\n'}| 00.00%
+                  </Text>
+                ) : (
+                  <Text style={[styles.bottomText1, , {color: 'green'}]}>
+                    ₹ {trade?.profit_loss_amt} {'\n'}| 00.00%
+                  </Text>
+                )}
               </View>
             </View>
 

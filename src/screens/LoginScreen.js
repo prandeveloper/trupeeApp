@@ -73,9 +73,14 @@ const LoginScreen = () => {
       })
       .then(response => {
         console.log(response.data);
+        console.log(response.data.msg);
         if (response.data.token != null) {
           _storeData(response.data.token);
-          navigation.replace('Home');
+          if (response.data.msg === 'Welcome Back') {
+            navigation.replace('Home');
+          } else {
+            navigation.replace('AfterSignUp');
+          }
         } else {
           console.log('no token!');
         }

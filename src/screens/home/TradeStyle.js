@@ -109,14 +109,17 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     color: '#000',
-    fontWeight: '500',
+    fontWeight: '400',
+    fontSize: 13,
   },
   bottomText1: {
     color: '#000',
+    fontWeight: '400',
+    fontSize: 13,
   },
   dateText: {
-    fontSize: 12,
-    color: '#000',
+    fontSize: 10,
+    color: 'gray',
   },
   centeredView: {
     flex: 1,
