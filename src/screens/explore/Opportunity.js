@@ -25,7 +25,7 @@ const Opportunity = () => {
   useEffect(() => {
     const getData = () => {
       axiosConfig
-        .get(`/get_startup`)
+        .get(`/getOportunity`)
         .then(response => {
           console.log(response.data.data);
           setVideoData(response.data.data);

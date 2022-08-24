@@ -23,7 +23,17 @@ export default function HomeScreen({navigation}) {
       <View>
         <CustomHeader />
       </View>
-      <Tab.Navigator>
+
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: {fontSize: 10, color: '#000', fontWeight: '600'},
+          tabBarItemStyle: {width: 100},
+          tabBarScrollEnabled: true,
+          tabBarIndicatorStyle: {
+            backgroundColor: '#a82682',
+          },
+          tabBarStyle: {backgroundColor: 'white', paddingHorizontal: 0},
+        }}>
         <Tab.Screen name="ALL TRADE" component={AllTrade} />
         <Tab.Screen name="FNO INDEX" component={FnoIndex} />
         <Tab.Screen name="FNO EQUITY" component={FnoEquity} />

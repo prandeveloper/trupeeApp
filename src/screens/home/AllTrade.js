@@ -63,7 +63,7 @@ const AllTrade = () => {
               trade?.fnoequty_scrpt_name?.scriptName != null ? (
                 <View>
                   <Text style={styles.notbuy}>
-                    {trade?.fnoequty_scrpt_name?.scriptName}{' '}
+                    {trade?.fnoequty_scrpt_name?.scriptName} @{' '}
                     {trade?.active_value} - {trade?.active_value2}
                   </Text>
                 </View>
@@ -72,8 +72,8 @@ const AllTrade = () => {
                 trade?.cash_scrpt_name?.scriptName != null ? (
                 <View>
                   <Text style={styles.notbuy}>
-                    {trade?.cash_scrpt_name?.scriptName} {trade?.active_value} -{' '}
-                    {trade?.active_value2}
+                    {trade?.cash_scrpt_name?.scriptName} @ {trade?.active_value}{' '}
+                    - {trade?.active_value2}
                   </Text>
                 </View>
               ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
@@ -81,7 +81,7 @@ const AllTrade = () => {
                 trade?.fnoindex_scrpt_name?.scriptName != null ? (
                 <View>
                   <Text style={styles.notbuy}>
-                    {trade?.fnoindex_scrpt_name?.scriptName}{' '}
+                    {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
                     {trade?.active_value} - {trade?.active_value2}
                   </Text>
                 </View>
@@ -98,7 +98,7 @@ const AllTrade = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle1, {backgroundColor: '#FA8072'}]}>
+                <View style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
                   <Text style={styles.notbuy1}>
                     SL{'\n'}
                     {trade?.SL}
@@ -118,7 +118,7 @@ const AllTrade = () => {
                       </Text>
                     </View>
                   ) : (
-                    <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                       <Text style={styles.notbuy}>
                         TRL{'\n'}
                         {trade?.trl}
@@ -136,7 +136,7 @@ const AllTrade = () => {
                       </Text>
                     </View>
                   ) : (
-                    <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                       <Text style={styles.notbuy}>
                         T₹ 1{'\n'}
                         {trade?.T1}
@@ -148,9 +148,27 @@ const AllTrade = () => {
 
               {/* <===========T2 =============> */}
 
-              {trade?.T2 != '' &&
-              trade?.T2 != null &&
-              trade?.T2 != undefined ? (
+              {trade?.FT1 != '' &&
+              trade?.FT1 != null &&
+              trade?.FT1 != undefined ? (
+                <View>
+                  {trade?.FT1_type === 'false' ? (
+                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 1{'\n'}
+                        {trade?.FT1}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 1{'\n'}
+                        {trade?.FT1}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              ) : (
                 <View>
                   {trade?.t2_type === 'false' ? (
                     <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -160,7 +178,7 @@ const AllTrade = () => {
                       </Text>
                     </View>
                   ) : (
-                    <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                       <Text style={styles.notbuy}>
                         T₹ 2{'\n'}
                         {trade?.T2}
@@ -168,75 +186,89 @@ const AllTrade = () => {
                     </View>
                   )}
                 </View>
-              ) : (
+              )}
+
+              {/* <===========T3 =============> */}
+
+              {trade?.FT2 != '' &&
+              trade?.FT2 != null &&
+              trade?.FT2 != undefined ? (
                 <View>
-                  {trade?.tl_type === 'false' ? (
+                  {trade?.FT2_type === 'false' ? (
                     <View style={[styles.circle, {backgroundColor: '#fff'}]}>
                       <Text style={styles.notbuy}>
-                        T₹ 1{'\n'}
-                        {trade?.T1}
+                        T₹ 2{'\n'}
+                        {trade?.FT2}
                       </Text>
                     </View>
                   ) : (
-                    <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                       <Text style={styles.notbuy}>
-                        T₹ 1{'\n'}
-                        {trade?.T1}
+                        T₹ 2{'\n'}
+                        {trade?.FT2}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              ) : (
+                <View>
+                  {trade?.t3_type === 'false' ? (
+                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 3{'\n'}
+                        {trade?.T3}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 3{'\n'}
+                        {trade?.T3}
                       </Text>
                     </View>
                   )}
                 </View>
               )}
 
-              {/* {trade?.t2_type === 'false' ? (
-                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 2{'\n'}
-                    {trade?.T2}
-                  </Text>
-                </View>
-              ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 2{'\n'}
-                    {trade?.T2}
-                  </Text>
-                </View>
-              )} */}
-
-              {/* <===========T3 =============> */}
-
-              {trade?.t3_type === 'false' ? (
-                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 3{'\n'}
-                    {trade?.T3}
-                  </Text>
-                </View>
-              ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 3{'\n'}
-                    {trade?.T3}
-                  </Text>
-                </View>
-              )}
-
               {/* <===========T4 =============> */}
 
-              {trade?.t4_type === 'false' ? (
-                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 4{'\n'}
-                    {trade?.T4}
-                  </Text>
+              {trade?.FT3 != '' &&
+              trade?.FT3 != null &&
+              trade?.FT3 != undefined ? (
+                <View>
+                  {trade?.FT3_type === 'false' ? (
+                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 3{'\n'}
+                        {trade?.FT3}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 3{'\n'}
+                        {trade?.FT3}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 4{'\n'}
-                    {trade?.T4}
-                  </Text>
+                <View>
+                  {trade?.t4_type === 'false' ? (
+                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 4{'\n'}
+                        {trade?.T4}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
+                      <Text style={styles.notbuy}>
+                        T₹ 4{'\n'}
+                        {trade?.T4}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
@@ -256,11 +288,11 @@ const AllTrade = () => {
                 <Text style={styles.bottomText}>P&L</Text>
                 {trade?.pl_type === 'Loss' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.profit_loss_amt} | 00.00%
+                    ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
-                    ₹ {trade?.profit_loss_amt} | 00.00%
+                    ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>
                 )}
               </View>

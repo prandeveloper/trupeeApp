@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
   bgText: {
     backgroundColor: '#a82682',
     color: '#fff',
-    padding: 5,
+    paddingHorizontal: 3,
+    paddingVertical: 2,
     fontWeight: '500',
     textTransform: 'capitalize',
   },
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   buy: {
     backgroundColor: '#00b050',
     color: '#000',
-    padding: 3,
+    paddingHorizontal: 3,
     fontWeight: '500',
   },
   notbuy1: {
@@ -49,10 +50,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   notbuy: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#000',
     padding: 3,
-    fontWeight: '600',
+    fontWeight: '700',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',

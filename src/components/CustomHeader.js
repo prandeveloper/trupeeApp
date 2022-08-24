@@ -24,27 +24,46 @@ function CustomHeader({title, navigation}) {
 
       <View
         style={{
+          flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <TouchableOpacity style={styles.calender} onPress={() => setOpen(true)}>
-          <DatePicker
-            open={open}
-            date={date}
-            mode="date"
-            format="YYYY-MM-DD"
-            // minDate="2016-05-01"
-            // maxDate="2016-06-01"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            onDateChange={setDate}
-            showIcon={false}
-            hideText={true}
-            customStyles={{
-              dateTouchBody: {position: 'relative'},
-            }}
-          />
-          <View>
+        <View style={{borderWidth: 2, borderColor: 'green', borderRadius: 5}}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: 'green'}}>Trade History</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.calender}
+            onPress={() => setOpen(true)}>
+            <DatePicker
+              open={open}
+              date={date}
+              mode="date"
+              format="DD-MM-YYYY"
+              // minDate="2016-05-01"
+              // maxDate="2016-06-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={setDate}
+              showIcon={true}
+              hideText={false}
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  marginRight: 10,
+
+                  height: 20,
+                  marginBottom: 0,
+                },
+                dateInput: {
+                  marginLeft: 5,
+                  borderWidth: 0,
+                  marginBottom: 5,
+                },
+              }}
+            />
+            {/* <View>
             <TouchableOpacity>
               <View style={styles.calenderStyle}>
                 <Image
@@ -59,22 +78,9 @@ function CustomHeader({title, navigation}) {
               <Text style={styles.calenderText}>Trade History</Text>
               <Text style={styles.calenderText}>10-02-2022</Text>
             </View>
-          </View>
-          {/* <DatePicker
-            textColor="green"
-            mode="date"
-            modal
-            open={open}
-            date={date}
-            onConfirm={date => {
-              setOpen(false);
-              setDate(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          /> */}
-        </TouchableOpacity>
+          </View> */}
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -106,13 +112,11 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   calender: {
-    borderWidth: 1,
+    borderWidth: 0,
     marginRight: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#fff',
-    borderRadius: 5,
   },
 });
 

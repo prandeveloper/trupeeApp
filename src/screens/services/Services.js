@@ -35,8 +35,9 @@ const Services = ({navigation}) => {
             <MemberPlan />
           </View>
           <View style={styles.subView}>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}
+              onPress={() => navigation.navigate('Premium Service')}>
               <View style={styles.viewOne}>
                 <Text style={{fontWeight: '700', color: 'black'}}>
                   Premium / Paid Services Included:
@@ -50,7 +51,7 @@ const Services = ({navigation}) => {
                   style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}
                 />
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.subView}>
             <TouchableOpacity
@@ -79,10 +80,12 @@ const Services = ({navigation}) => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
-                <Text style={{fontWeight: '700', color: 'black'}}>₹ 0</Text>
+                <Text style={{fontWeight: '700', color: 'black', fontSize: 16}}>
+                  ₹ 0
+                </Text>
               </View>
               <View style={styles.viewThree}>
-                <Text>Use My Wallet Balance</Text>
+                <Text style={{color: '#000'}}>Use My Wallet Balance</Text>
                 {/* <Text>Use My Wallet Balance</Text> */}
               </View>
             </View>
@@ -114,9 +117,12 @@ const Services = ({navigation}) => {
               <Text style={[styles.viewThree, {color: '#000'}]}>
                 I understand & agree to all of Trupee’s
               </Text>
-              <Text style={[styles.viewThree, {color: '#000'}]}>
-                TERMS & CONDITIONS
-              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Terms & Conditions')}>
+                <Text style={[styles.viewThree, {color: '#000'}]}>
+                  TERMS & CONDITIONS
+                </Text>
+              </TouchableOpacity>
               <View>
                 <TouchableOpacity style={styles.bottomBtn}>
                   <Text style={styles.buttonText}>Subscribe</Text>

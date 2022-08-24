@@ -29,6 +29,8 @@ import Charts from '../screens/explore/charts/Charts';
 import PerformanceSheet from '../screens/explore/PerformanceSheet';
 import AfterSignUp from '../screens/AfterSignUp';
 import Opportunity from '../screens/explore/Opportunity';
+import PremiumPaid from '../screens/services/PremiumPaid';
+import Terms from '../screens/services/Terms';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -137,8 +139,22 @@ const HomeStack = () => {
         })}
       />
       <Stack.Screen
+        name="Premium Service"
+        component={PremiumPaid}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
         name="Frequently Asked Questions"
         component={Faqs}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Terms & Conditions"
+        component={Terms}
         options={({route}) => ({
           title: route.params?.title,
         })}

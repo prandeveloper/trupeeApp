@@ -258,6 +258,7 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF',
   },
   eachSection: {
     flexDirection: 'row',
@@ -269,6 +270,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: '#727271',
+    marginTop: 20,
   },
   userName: {
     fontSize: 17,
@@ -293,12 +295,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     justifyContent: 'center',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomColor: '#727271',
   },
   btntxt: {
-    fontSize: 16,
-    fontFamily: 'Roboto-Medium',
+    fontSize: 15,
     color: 'black',
     marginLeft: 15,
   },

@@ -65,8 +65,8 @@ const FnoIndex = () => {
             <View style={styles.bgarea3}>
               <Text style={styles.buy}>{trade?.script_type}</Text>
               <Text style={styles.notbuy}>
-                {trade?.fnoindex_scrpt_name?.scriptName} {trade?.active_value} -{' '}
-                {trade?.active_value2}
+                {trade?.fnoindex_scrpt_name?.scriptName} @ {trade?.active_value}{' '}
+                - {trade?.active_value2}
               </Text>
             </View>
 
@@ -83,7 +83,7 @@ const FnoIndex = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle1, {backgroundColor: '#FA8072'}]}>
+                <View style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
                   <Text style={styles.notbuy1}>
                     SL{'\n'}
                     {trade?.SL}
@@ -100,7 +100,7 @@ const FnoIndex = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     TRL{'\n'}
                     {trade?.trl}
@@ -108,56 +108,56 @@ const FnoIndex = () => {
                 </View>
               )}
 
-              {/* <===========T2 =============> */}
+              {/* <===========T1 =============> */}
 
-              {trade?.t1_type === 'false' ? (
+              {trade?.FT1_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 1{'\n'}
-                    {trade?.T1}
+                    {trade?.FT1}
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 1{'\n'}
-                    {trade?.T1}
+                    {trade?.FT1}
+                  </Text>
+                </View>
+              )}
+
+              {/* <===========T2 =============> */}
+
+              {trade?.FT2_type === 'false' ? (
+                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 2{'\n'}
+                    {trade?.FT2}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
+                  <Text style={styles.notbuy}>
+                    T₹ 2{'\n'}
+                    {trade?.FT2}
                   </Text>
                 </View>
               )}
 
               {/* <===========T3 =============> */}
 
-              {trade?.t2_type === 'false' ? (
-                <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 2{'\n'}
-                    {trade?.T2}
-                  </Text>
-                </View>
-              ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
-                  <Text style={styles.notbuy}>
-                    T₹ 2{'\n'}
-                    {trade?.T2}
-                  </Text>
-                </View>
-              )}
-
-              {/* <===========T4 =============> */}
-
-              {trade?.t3_type === 'false' ? (
+              {trade?.FT3_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 3{'\n'}
-                    {trade?.T3}
+                    {trade?.FT3}
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 3{'\n'}
-                    {trade?.T3}
+                    {trade?.FT3}
                   </Text>
                 </View>
               )}
@@ -176,13 +176,13 @@ const FnoIndex = () => {
               </View>
               <View style={styles.botomview2}>
                 <Text style={styles.bottomText}>P&L</Text>
-                {trade?.pl_type === 'Loss' ? (
+                {trade?.pl_type === 'loss' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.profit_loss_amt} {'\n'}| 00.00%
+                    ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
-                    ₹ {trade?.profit_loss_amt} {'\n'}| 00.00%
+                    ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>
                 )}
               </View>

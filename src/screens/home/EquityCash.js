@@ -65,7 +65,7 @@ const EquityCash = () => {
             <View style={styles.bgarea3}>
               <Text style={styles.buy}>{trade?.script_type}</Text>
               <Text style={styles.notbuy}>
-                {trade?.cash_scrpt_name?.scriptName} {trade?.active_value} -{' '}
+                {trade?.cash_scrpt_name?.scriptName} @ {trade?.active_value} -{' '}
                 {trade?.active_value2}
               </Text>
             </View>
@@ -83,7 +83,7 @@ const EquityCash = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle1, {backgroundColor: '#FA8072'}]}>
+                <View style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
                   <Text style={styles.notbuy1}>
                     SL{'\n'}
                     {trade?.SL}
@@ -100,7 +100,7 @@ const EquityCash = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 1{'\n'}
                     {trade?.T1}
@@ -118,7 +118,7 @@ const EquityCash = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 2{'\n'}
                     {trade?.T2}
@@ -136,7 +136,7 @@ const EquityCash = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 3{'\n'}
                     {trade?.T3}
@@ -154,7 +154,7 @@ const EquityCash = () => {
                   </Text>
                 </View>
               ) : (
-                <View style={[styles.circle, {backgroundColor: '#c0d4a3'}]}>
+                <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
                   <Text style={styles.notbuy}>
                     T₹ 4{'\n'}
                     {trade?.T4}
@@ -178,11 +178,11 @@ const EquityCash = () => {
                 <Text style={styles.bottomText}>P&L</Text>
                 {trade?.pl_type === 'Loss' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.profit_loss_amt} {'\n'}| 00.00%
+                    ₹ {trade?.pl} | {trade?.pl_per}
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
-                    ₹ {trade?.profit_loss_amt} {'\n'}| 00.00%
+                    ₹ {trade?.pl} | {trade?.pl_per}
                   </Text>
                 )}
               </View>
