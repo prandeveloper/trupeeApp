@@ -20,6 +20,7 @@ const AllTrade = () => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [pickup_r, setPickup_r] = useState(false);
 
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {
@@ -309,72 +310,22 @@ const AllTrade = () => {
               </View>
 
               <View style={styles.botomview2}>
-                <View style={styles.centeredView} key={trade?._id}>
-                  <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                      Alert.alert('Modal has been closed.');
-                      setModalVisible(!modalVisible);
-                    }}
-                    key={trade._id}>
-                    <View style={styles.centeredView}>
-                      <View style={styles.modalView}>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>
-                              BANKNIFTY 3500 P2
-                            </Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>08/08/2022</Text>
-                          </View>
-                        </View>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>
-                              BANKNIFTY 3500 P2
-                            </Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>08/08/2022</Text>
-                          </View>
-                        </View>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>
-                              BANKNIFTY 3500 P2
-                            </Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>08/08/2022</Text>
-                          </View>
-                        </View>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>
-                              BANKNIFTY 3500 P2
-                            </Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>08/08/2022</Text>
-                          </View>
-                        </View>
-                        <TouchableOpacity
-                          style={styles.buttonClose}
-                          onPress={() => setModalVisible(!modalVisible)}>
-                          <Text style={styles.textStyle}>OK</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-
+                <View style={styles.centeredView}>
                   <TouchableOpacity
                     style={[styles.button]}
-                    onPress={() => setModalVisible(true)}>
+                    onPress={() => setPickup_r(!pickup_r)}
+                    >
                     <Text style={styles.textStyle1}>Show Trade History</Text>
                   </TouchableOpacity>
+                  {pickup_r ?
+                  <View>
+                    <Text>Amit</Text>
+                  </View>
+                  :
+                  <View>
+
+                  </View>
+                  }
                 </View>
               </View>
             </View>

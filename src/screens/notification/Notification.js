@@ -52,13 +52,15 @@ export default function Notification({navigation}) {
           </View>
           <View>
             <ListItem bottomDivider>
-              {/* <Icon name="bell" color="black" size={25} /> */}
               <ListItem.Content>
                 <ListItem.Title style={styles.listTitle}>
                   Upload your P&L Screenshot
                 </ListItem.Title>
                 <ListItem.Subtitle>5-0712022 03:30:02 PM </ListItem.Subtitle>
               </ListItem.Content>
+              <TouchableOpacity>
+              <Icon name="upload" color="green" size={25} />
+              </TouchableOpacity>
             </ListItem>
           </View>
           <View>
