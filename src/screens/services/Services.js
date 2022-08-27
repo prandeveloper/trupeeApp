@@ -7,13 +7,30 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, Card, Paragraph, Title} from 'react-native-paper';
 import MemberPlan from './MemberPlan';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleHeader from '../../components/SimpleHeader';
+import axiosConfig from '../../../axiosConfig';
 
 const Services = ({navigation}) => {
+  const [plan, setPlan] = useState([]);
+
+  useEffect(() => {
+    const getPlan = () => {
+      axiosConfig
+        .get(`/plan_list`)
+        .then(response => {
+          console.log(response.data.data);
+          setPlan(response.data.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+    getPlan();
+  }, []);
   const [text, setText] = React.useState('');
   return (
     <SafeAreaView style={styles.container}>
@@ -32,7 +49,30 @@ const Services = ({navigation}) => {
             </Card>
           </View>
           <View style={styles.subView}>
-            <MemberPlan />
+            {/* <MemberPlan /> */}
+            <View>
+              <View style={styles.textView}>
+                <Text style={styles.oneText}>
+                  Select Package to Activate Service
+                </Text>
+              </View>
+              <View style={styles.textView}>
+                <ScrollView horizontal={true}>
+                  {plan?.map(item => (
+                    <TouchableOpacity>
+                      <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>
+                        <Text style={styles.textcard}>{item?.pack_name}</Text>
+                        <Text style={styles.textcard}>₹{item?.des_price}</Text>
+                        <Text style={styles.textcard1}>
+                          ₹ {item?.mrp_price}
+                        </Text>
+                        <Text style={styles.offText}>{item?.desc}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
           </View>
           <View style={styles.subView}>
             <TouchableOpacity
@@ -202,5 +242,43 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     borderRadius: 10,
     elevation: 5,
+  },
+  //membership
+
+  textView: {
+    margin: 5,
+  },
+  oneText: {
+    color: '#000',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  card: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    height: 130,
+
+    padding: 20,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  textcard: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+  },
+  textcard1: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+    textDecorationLine: 'line-through',
+    textDecorationColor: '#000',
+  },
+  offText: {
+    backgroundColor: '#a82682',
+    color: '#fff',
+    paddingHorizontal: 15,
+    borderRadius: 20,
   },
 });

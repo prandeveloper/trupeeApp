@@ -14,17 +14,18 @@ import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
 import {styles} from './TradeStyle';
+//import SeeMore from 'react-native-see-more-inline';
+import ShowMore from 'react-native-show-more-button';
 
 const FnoIndex = () => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {
     setRefreshing(true);
     axiosConfig
-      .get(`/fnoIndexlist`)
+      .get(`/AppindexList`)
       .then(response => {
         console.log(response.data.data);
         setAllTrade(response.data.data);
@@ -197,69 +198,48 @@ const FnoIndex = () => {
                   </Moment>
                 </Text>
               </View>
-              <View style={styles.botomview2}>
-                <View style={styles.centeredView}>
-                  <Modal
-                    key={trade._id}
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                      Alert.alert('Modal has been closed.');
-                      setModalVisible(!modalVisible);
-                    }}>
-                    <View style={styles.centeredView}>
-                      <View style={styles.modalView}>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>
-                              {trade?.fnoindex_scrpt_name?.scriptName}{' '}
-                              {trade?.t5}
-                            </Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                        </View>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                        </View>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                        </View>
-                        <View style={styles.modalMainText}>
-                          <View style={styles.modalMainHead}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                          <View style={styles.modalMainDate}>
-                            <Text style={styles.modalText}>Hello World!</Text>
-                          </View>
-                        </View>
-                        <TouchableOpacity
-                          style={styles.buttonClose}
-                          onPress={() => setModalVisible(!modalVisible)}>
-                          <Text style={styles.textStyle}>OK</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal>
-                  <TouchableOpacity
-                    style={[styles.button]}
-                    onPress={() => setModalVisible(true)}>
-                    <Text style={styles.textStyle1}>Show Trade History</Text>
-                  </TouchableOpacity>
+            </View>
+            {/* <============Seemore=========> */}
+            <View>
+              <ShowMore
+                height={0}
+                buttonColor={'blue'}
+                showMoreText="View Trade History"
+                showLessText="Hide Trade History">
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                      {trade?.active_value} - {trade?.active_value2}
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
                 </View>
-              </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                      {trade?.active_value} - {trade?.active_value2}
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                      {trade?.active_value} - {trade?.active_value2}
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+              </ShowMore>
             </View>
           </View>
         ))}

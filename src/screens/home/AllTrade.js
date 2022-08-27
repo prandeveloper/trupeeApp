@@ -15,12 +15,11 @@ import {windowWidth} from '../../utils/Dimensions';
 import Moment from 'react-moment';
 import axiosConfig from '../../../axiosConfig';
 import {styles} from './TradeStyle';
+import ShowMore from 'react-native-show-more-button';
 
 const AllTrade = () => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [pickup_r, setPickup_r] = useState(false);
 
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {
@@ -308,26 +307,48 @@ const AllTrade = () => {
                   </Moment>
                 </Text>
               </View>
-
-              <View style={styles.botomview2}>
-                <View style={styles.centeredView}>
-                  <TouchableOpacity
-                    style={[styles.button]}
-                    onPress={() => setPickup_r(!pickup_r)}
-                    >
-                    <Text style={styles.textStyle1}>Show Trade History</Text>
-                  </TouchableOpacity>
-                  {pickup_r ?
-                  <View>
-                    <Text>Amit</Text>
+            </View>
+            {/* <============Seemore=========> */}
+            <View>
+              <ShowMore
+                height={0}
+                buttonColor={'blue'}
+                showMoreText="View Trade History"
+                showLessText="Hide Trade History">
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                      {trade?.active_value} - {trade?.active_value2}
+                    </Text>
                   </View>
-                  :
-                  <View>
-
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
                   </View>
-                  }
                 </View>
-              </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                      {trade?.active_value} - {trade?.active_value2}
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                      {trade?.active_value} - {trade?.active_value2}
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+              </ShowMore>
             </View>
           </View>
         ))}

@@ -178,5 +178,14 @@ const styles = StyleSheet.create({
     margin: 5,
     color: '#000',
   },
+  showView: {flexDirection: 'row', marginVertical: 10},
+  insideViewOne: {flex: 2, marginLeft: 5},
+  dropTextOne: {color: '#000', fontSize: 12},
+  insideViewTwo: {
+    flex: 1,
+    marginRight: 5,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
 });
 export {styles};
