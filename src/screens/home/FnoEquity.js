@@ -175,11 +175,11 @@ const FnoEquity = () => {
                 <Text style={styles.bottomText}>P&L</Text>
                 {trade?.pl_type === 'Loss' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.pl} | {trade?.pl_per}
+                    ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
-                    ₹ {trade?.pl} | {trade?.pl_per}
+                    ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>
                 )}
               </View>

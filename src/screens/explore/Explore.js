@@ -10,12 +10,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import CustomHeader from '../../components/CustomHeader';
+import SimpleHeader from '../../components/SimpleHeader';
 const Explore = ({navigation}) => {
   return (
     <SafeAreaView style={{}}>
       <View>
-        <CustomHeader />
+        <SimpleHeader />
       </View>
       <View>
         <ImageBackground

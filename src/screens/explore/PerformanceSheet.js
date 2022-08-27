@@ -5,27 +5,56 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatGrid} from 'react-native-super-grid';
 import {Text, TextInput} from 'react-native-paper';
+import axiosConfig from '../../../axiosConfig';
 
 const PerformanceSheet = () => {
   const [email, setEmail] = React.useState('');
   const [items, setItems] = React.useState([
-    {name: 'April, 2021', onprice: 'FREE'},
-    {name: 'May, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'June, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'July, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'August, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'September, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'October, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'November, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'December, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'January, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'February, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'March, 2021', onprice: '₹99', offprice: '₹249'},
-    {name: 'All Performance Sheet', onprice: '₹99', offprice: '₹249'},
+    // {name: 'April, 2021', onprice: 'FREE'},
+    // {name: 'May, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'June, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'July, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'August, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'September, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'October, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'November, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'December, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'January, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'February, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'March, 2021', onprice: '₹99', offprice: '₹249'},
+    // {name: 'All Performance Sheet', onprice: '₹99', offprice: '₹249'},
   ]);
+
+  // <=============Performance get Api ============>
+  useEffect(() => {
+    getDate();
+  }, []);
+  const getDate = () => {
+    axiosConfig(`/getPerSheet`)
+      .then(response => {
+        const items = response.data.data;
+        setItems(items);
+        console.log(items);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  //  const handleOnpress = item => {
+  //    const newItem = sports.map(val => {
+  //      if (val.id === item.id) {
+  //        return {...val, selected: !val.selected};
+  //      } else {
+  //        return val;
+  //      }
+  //    });
+
+  //    setSports(newItem);
+  //    console.log(newItem);
+  //  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -77,9 +106,11 @@ const PerformanceSheet = () => {
                 spacing={8}
                 renderItem={({item}) => (
                   <TouchableOpacity style={styles.itemContainer}>
-                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemName}>
+                      {item?.month}, {item?.year}
+                    </Text>
                     <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.itemPrice}>{item.onprice}</Text>
+                      <Text style={styles.itemPrice}>{item.plan_price}</Text>
                       <Text style={styles.itemPriceOff}>{item.offprice}</Text>
                     </View>
                   </TouchableOpacity>

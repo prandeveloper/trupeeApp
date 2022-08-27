@@ -1,10 +1,10 @@
 import {StyleSheet, Text, View, TouchableOpacity, Share} from 'react-native';
 import React, {useEffect} from 'react';
-import CustomHeader from '../../components/CustomHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
+import SimpleHeader from '../../components/SimpleHeader';
 
 const Profile = ({navigation}) => {
   const onShare = async () => {
@@ -28,7 +28,7 @@ const Profile = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View>
-        <CustomHeader />
+        <SimpleHeader />
       </View>
       <ScrollView>
         <View style={styles.textHeding}>
