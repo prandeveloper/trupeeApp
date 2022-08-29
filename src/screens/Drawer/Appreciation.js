@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import React, {useState} from 'react';
 import {TextInput} from 'react-native-paper';
@@ -20,7 +21,7 @@ const Appreciation = () => {
           <View style={styles.subView}>
             <View style={styles.imageView}>
               <Image
-                source={require('../../Images/wallet.jpg')}
+                source={require('../../Images/WhatsApp.jpeg')}
                 style={styles.imageGraph}
               />
             </View>
@@ -32,16 +33,26 @@ const Appreciation = () => {
               </View>
               <View style={styles.spaceView}>
                 <Text style={styles.SimpleText}>
-                  Trupee has a mission to give wings to every trader, investor
-                  and make sure to the best of our ability to help traders to
-                  increase success rate and form financial independence.
+                  Trupee has a commitment to help needy-poor-orphan people by
+                  your donation, a token of appreciation or Corporate Social
+                  Responsibility towards our society.
                 </Text>
               </View>
               <View style={styles.spaceView}>
                 <Text style={styles.SimpleText}>
-                  Trupee has a mission to give wings to every trader, investor
-                  and make sure we analysis to the best of our ability to help
-                  traders to increase success rate and form financial
+                  All the contribution shared by you are forwarded to NGO to
+                  help needy people. We have associated with SWRNA RAJHANS
+                  STUDENTS WELFARE SOCIETY. Visit:
+                  <TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL(
+                        'https://swrnarajhanscharitabletrust.org/',
+                      );
+                    }}>
+                    <Text style={{color: 'blue'}}>
+                      https://swrnarajhanscharitabletrust.org/
+                    </Text>
+                  </TouchableOpacity>
                   independence.
                 </Text>
               </View>
@@ -99,9 +110,9 @@ const styles = StyleSheet.create({
     margin: 18,
     backgroundColor: '#fff',
   },
-  imageView: {},
+  imageView: {alignItems: 'center'},
   imageGraph: {
-    width: '100%',
+    width: '80%',
     height: 250,
   },
   textView: {

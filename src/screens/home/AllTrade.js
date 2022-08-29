@@ -17,7 +17,7 @@ import axiosConfig from '../../../axiosConfig';
 import {styles} from './TradeStyle';
 import ShowMore from 'react-native-show-more-button';
 
-const AllTrade = () => {
+const AllTrade = date => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
