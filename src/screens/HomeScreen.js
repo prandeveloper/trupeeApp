@@ -19,8 +19,6 @@ export default function HomeScreen({navigation, props}) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  console.log(date);
-
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View>

@@ -554,7 +554,7 @@ export default function Notification({navigation}) {
                       SL has been Hit your trade is out
                     </Text>
                   </View>
-                  <View></View>
+                  <View>
                     <Text style={{color: '#000', marginVertical: 5}}>
                       Target is Achived now you can take out your trade
                     </Text>

@@ -6,9 +6,33 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const ReferEarn = () => {
+  const [user, setUser] = useState('');
+
+  //get User Api for name
+  const getUser = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+        headers: {
+          'auth-token': await AsyncStorage.getItem('auth-token'),
+        },
+      })
+      .then(response => {
+        console.log('name', response.data.data);
+        const user = response.data.data;
+        setUser(user);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
@@ -35,7 +59,7 @@ const ReferEarn = () => {
             Your Friend can get 10% instant discount by using your refferal-ID
             for their 1st premium plan. T&C Applied
           </Text>
-          <Text style={styles.referText}>PL07AS</Text>
+          <Text style={styles.referText}>{user?.refral_Code}</Text>
         </View>
         <View style={styles.subView}>
           <TouchableOpacity style={styles.btnDesign}>

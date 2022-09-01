@@ -24,37 +24,9 @@ const MyAccount = ({navigation}) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState();
-  const [gender, setGender] = useState();
-  const [proImage, setProImage] = useState('');
+  const [gender, setGender] = useState('male');
+  const [userId, setUserId] = useState('');
 
-  // <================Image Picker ============>
-  const chooseImg = type => {
-    let options = {
-      mediaType: 'photo',
-      maxWidth: 100,
-      maxHeight: 100,
-      selectionLimit: 1,
-      includeBase64: true,
-    };
-    launchImageLibrary(options, response => {
-      console.log('response : ' + JSON.stringify(response));
-      setProImage(response);
-      console.log(response.assets[0].base64);
-      if (response.didCancel) {
-        Alert.alert('User cancelled camera picker');
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        Alert.aalert('Camera not available on device');
-        return;
-      } else if (response.errorCode == 'permission') {
-        Alert.aalert('Permission not satisfied');
-        return;
-      } else if (response.errorCode == 'others') {
-        Alert.aalert(response.errorMessage);
-        return;
-      }
-    });
-  };
   const getUser = async () => {
     axios
       .get(`http://65.0.183.149:8000/user/viewoneuser`, {
@@ -62,13 +34,13 @@ const MyAccount = ({navigation}) => {
       })
       .then(response => {
         console.log(response.data.data);
-        console.log(response.data.data.userimg);
         setFirstName(response.data.data.firstname);
         setLastName(response.data.data.lastname);
         setGender(response.data.data.gender);
         setEmail(response.data.data.email);
         setDate(response.data.data.dob);
         setMobile(JSON.stringify(response.data.data.mobile));
+        setUserId(response.data.data._id);
       })
       .catch(error => {
         console.log(error);
@@ -78,40 +50,24 @@ const MyAccount = ({navigation}) => {
     getUser();
   }, []);
 
-  function editProfile() {
-    editUser();
-  }
-  const editUser = async () => {
-    console.log(
-      proImage.assets[0].base64,
-      firstName,
-      lastName,
-      email,
-      mobile,
-      gender,
-      date,
-    );
-    const data = new FormData();
-    data.append('firstname', firstName);
-    data.append('lastname', lastName);
-    data.append('email', email);
-    data.append('mobile', mobile);
-    data.append('gender', gender);
-    data.append('dob', date);
-    data.append('userimg', proImage.assets[0].base64);
-
-    fetch(`http://65.0.183.149:8000/user/myprofile`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'auth-token': await AsyncStorage.getItem('auth-token'),
-      },
-      body: data,
-    })
+  const editProfile = async () => {
+    console.log(firstName, lastName, email, mobile, gender, date);
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/myprofile`,
+        {
+          firstname: firstName,
+          lastname: lastName,
+          gender: gender,
+          dob: date,
+          email: email,
+          mobile: mobile,
+        },
+        {headers: {'auth-token': await AsyncStorage.getItem('auth-token')}},
+      )
       .then(response => {
-        response.json().then(res => {
-          console.log(res);
-        });
+        console.log(response.data);
+        navigation.replace('My Account');
       })
       .catch(error => {
         console.log(error);
@@ -124,14 +80,6 @@ const MyAccount = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         style={{paddingHorizontal: 0}}>
         <View style={styles.main}>
-          {/* <View style={styles.mainView1}>
-            <TouchableOpacity onPress={chooseImg}>
-              <Image
-                source={require('../../Images/Icons/camera-icon.png')}
-                style={{height: 100, width: 100}}
-              />
-            </TouchableOpacity>
-          </View> */}
           <View style={styles.mainView}>
             <Ionicons name="md-person" color="green" size={25} />
             <TextInput

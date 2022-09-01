@@ -122,62 +122,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'gray',
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  modalView: {
-    margin: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalMainText: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  modalMainHead: {
-    flex: 2,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  modalMainDate: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  buttonClose: {
-    backgroundColor: 'green',
-    marginTop: 10,
-    borderRadius: 10,
-  },
-  textStyle1: {
-    color: 'blue',
-    fontSize: 12,
-  },
-  textStyle: {
-    color: 'white',
-    textAlign: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    fontSize: 15,
-    elevation: 5,
-  },
-  modalText: {
-    margin: 5,
-    color: '#000',
-  },
+
   showView: {flexDirection: 'row', marginVertical: 10},
   insideViewOne: {flex: 2, marginLeft: 5},
   dropTextOne: {color: '#000', fontSize: 12},

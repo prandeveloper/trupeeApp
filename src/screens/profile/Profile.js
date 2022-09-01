@@ -1,12 +1,48 @@
 import {StyleSheet, Text, View, TouchableOpacity, Share} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Alert} from 'react-native';
 import SimpleHeader from '../../components/SimpleHeader';
+import axiosConfig from '../../../axiosConfig';
+import axios from 'axios';
 
 const Profile = ({navigation}) => {
+  const [user, setUser] = useState('');
+
+  //get User Api for name
+  const getUser = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+        headers: {'auth-token': await AsyncStorage.getItem('auth-token')},
+      })
+      .then(response => {
+        console.log('name', response.data.data);
+        const user = response.data.data;
+        setUser(user);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  //Delete User permanently api
+  const deleteData = () => {
+    axiosConfig
+      .get(`/dltMyaccount/${user._id}`)
+      .then(response => {
+        console.log(response.data);
+        AsyncStorage.removeItem('auth-token');
+        navigation.replace('Login');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -33,7 +69,13 @@ const Profile = ({navigation}) => {
       <ScrollView>
         <View style={styles.textHeding}>
           <View>
-            <Text style={styles.userName}>Hi, Vaishali Gawas</Text>
+            {user.firstname != '' &&
+            user.firstname != null &&
+            user.firstname != undefined ? (
+              <Text style={styles.userName}>Hi, {user?.firstname}</Text>
+            ) : (
+              <Text style={styles.userName}>Hi, User</Text>
+            )}
           </View>
           <View>
             <TouchableOpacity
@@ -236,7 +278,7 @@ const Profile = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={deleteData}>
             <View style={styles.eachSection}>
               <Ionicons
                 name="trash-bin"
