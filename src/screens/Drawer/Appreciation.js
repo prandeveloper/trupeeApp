@@ -49,11 +49,10 @@ const Appreciation = () => {
                         'https://swrnarajhanscharitabletrust.org/',
                       );
                     }}>
-                    <Text style={{color: 'blue'}}>
+                    <Text style={{color: 'blue', fontSize: 13}}>
                       https://swrnarajhanscharitabletrust.org/
                     </Text>
                   </TouchableOpacity>
-                  independence.
                 </Text>
               </View>
               <View style={styles.spaceView}>
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
   spaceView: {marginVertical: 3},
   SimpleText: {
     color: '#000',
-    fontSize: 15,
+    fontSize: 12,
     lineHeight: 20,
   },
   bottomButton: {

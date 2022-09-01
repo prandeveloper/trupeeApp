@@ -11,17 +11,17 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ListItem, Image} from 'react-native-elements';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-// import axios from 'axios';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-import {windowWidth} from '../../utils/Dimensions';
+import axiosConfig from '../../../axiosConfig';
 import DatePicker from 'react-native-datepicker';
+import Moment from 'react-moment';
+import ShowMore from 'react-native-show-more-button';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Notification({navigation}) {
   const [notify, setNotify] = useState([]);
-  const [proImage, setProImage] = useState([]);
+  const [plImage, setPlImage] = useState([]);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  console.log(date);
 
   const chooseImg = type => {
     let options = {
@@ -29,11 +29,12 @@ export default function Notification({navigation}) {
       maxWidth: 100,
       maxHeight: 100,
       selectionLimit: 1,
-      //includeBase64: true,
+      includeBase64: true,
     };
     launchImageLibrary(options, response => {
       console.log('response : ' + JSON.stringify(response));
-      setProImage(response);
+      setPlImage(response.assets[0].base64);
+      upload();
       //console.log(response.assets[0].base64);
       if (response.didCancel) {
         Alert.alert('User cancelled camera picker');
@@ -50,28 +51,55 @@ export default function Notification({navigation}) {
       }
     });
   };
+  //<============Upload Image ==============>
+  function upload() {
+    handleSubmit();
+  }
+  const handleSubmit = async () => {
+    console.log('demo', plImage);
+    const data = new FormData();
+    data.append('pnlimg', plImage);
 
-  // const getNotify = async () => {
-  //   axios
-  //     .get('http://65.0.80.5:5000/api/user/allUserNotification', {
-  //       headers: {
-  //         'user-token': await AsyncStorage.getItem('user-token'),
-  //       },
-  //     })
-  //     .then(response => {
-  //       const notify = response.data.data;
-  //       setNotify(notify);
-  //       console.log(notify);
-  //     })
-  //     .catch(error => {
-  //       console.log(error.response);
-  //     });
-  // };
-  // useEffect(() => {
-  //   if (AsyncStorage.getItem('user-token')) {
-  //     getNotify();
-  //   }
-  // }, []);
+    fetch(`http://65.0.183.149:8000/admin/addPnlsheet`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'auth-token': await AsyncStorage.getItem('auth-token'),
+      },
+      body: data,
+    })
+      .then(response => {
+        response.json().then(res => {
+          console.log(res.data);
+          if (res.message === 'success') {
+            Alert.alert('Image Uploaded Successfully👍');
+          } else {
+            Alert.alert('Something went wrong');
+          }
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  // <================ Get Notifivation API ==========>
+
+  const getNotify = async () => {
+    axiosConfig
+      .get(`/notificationList`)
+      .then(response => {
+        const notify = response.data.data;
+        setNotify(notify);
+        console.log(notify);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+  useEffect(() => {
+    getNotify();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -97,8 +125,6 @@ export default function Notification({navigation}) {
                 <DatePicker
                   open={open}
                   date={date}
-                  mode="date"
-                  format="DD-MM-YYYY"
                   // minDate="2016-05-01"
                   // maxDate="2016-06-01"
                   confirmBtnText="Confirm"
@@ -127,7 +153,7 @@ export default function Notification({navigation}) {
           </View>
         </View>
       </View>
-      {/* <=================Component Start ============> */}
+      {/* <================= Upload Component Start ============> */}
       <View>
         <View>
           <ListItem bottomDivider>
@@ -147,107 +173,13 @@ export default function Notification({navigation}) {
             </View>
           </ListItem>
         </View>
+
+        {/* <================= Main Component Start ============> */}
+
         <ScrollView>
           <View style={{marginBottom: 200}}>
-            <View style={styles.listMainView}>
-              <ListItem bottomDivider>
-                <View>
-                  {/* <================TOP Area=============> */}
+            {/* <================= Image Component Start ============> */}
 
-                  <View style={styles.bgarea2}>
-                    <View style={styles.botomview3}>
-                      <Text style={styles.bgText}>Intraday</Text>
-                    </View>
-                  </View>
-
-                  {/* <================BUY Area=============> */}
-
-                  <View style={styles.bgarea3}>
-                    <Text style={styles.buy}>BUY</Text>
-                    <Text style={styles.notbuy}>
-                      BANKNIFTY 3000 @ 100 - 200
-                    </Text>
-                  </View>
-
-                  {/* <================Circle Area=============> */}
-                  {/* <===========SL=============> */}
-
-                  <View style={styles.bgarea2}>
-                    <View
-                      style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
-                      <Text style={styles.notbuy1}>
-                        SL{'\n'}
-                        50
-                      </Text>
-                    </View>
-
-                    {/* <===========T1 =============> */}
-
-                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 1{'\n'}
-                        100
-                      </Text>
-                    </View>
-
-                    {/* <===========T2 =============> */}
-
-                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 2{'\n'}
-                        200
-                      </Text>
-                    </View>
-
-                    {/* <===========T3 =============> */}
-
-                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 3{'\n'}
-                        300
-                      </Text>
-                    </View>
-
-                    {/* <===========T4 =============> */}
-
-                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 4{'\n'}
-                        400
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* <================Botton Area=============> */}
-                  <View style={styles.bgarea2}>
-                    <View style={styles.botomview1}>
-                      <Text style={styles.bottomText}>
-                        Quantity & investment Amount
-                      </Text>
-                      <Text style={styles.bottomText1}>
-                        50 Lots(100 Qty) = ₹ 5000
-                      </Text>
-                    </View>
-                    <View style={styles.botomview2}>
-                      <Text style={styles.bottomText}>P&L</Text>
-                      <Text style={[styles.bottomText1, {color: 'red'}]}>
-                        ₹ 200 | 20%
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* <================ Date and Show more=============> */}
-                  <View style={styles.bgarea2}>
-                    <View style={styles.botomview3}>
-                      <Text style={styles.dateText}>12-08-2022 12:00PM</Text>
-                    </View>
-                    <View style={styles.botomview2}>
-                      <Text>hsdhhd</Text>
-                    </View>
-                  </View>
-                </View>
-              </ListItem>
-            </View>
             <View style={styles.listMainView}>
               <ListItem bottomDivider>
                 <View style={styles.subView}>
@@ -273,98 +205,276 @@ export default function Notification({navigation}) {
                 </View>
               </ListItem>
             </View>
-            <View style={styles.listMainView}>
-              <ListItem bottomDivider>
-                <View style={styles.subView}>
-                  <View style={styles.imageView}>
-                    <Image
-                      source={{
-                        uri: 'https://reactnative.dev/img/tiny_logo.png',
-                      }}
-                      style={styles.imageGraph}
-                    />
-                  </View>
-                  <View style={styles.textView}>
-                    <Text style={styles.headText}>Title</Text>
-                    <Text style={styles.SimpleText}>
-                      Officia adipisicing non mollit consequat magna aute enim
-                      labore veniam pariatur. Pariatur consequat quis consequat
-                      nisi officia deserunt ullamco eiusmod fugiat. Id sunt
-                      laborum occaecat elit occaecat sit aliqua laboris
-                      incididunt laborum irure sint. Officia minim dolore non
-                      nisi aute consequat cupidatat ad ea.
-                    </Text>
-                  </View>
-                </View>
-              </ListItem>
-            </View>
-            <View style={styles.listMainView}>
-              <ListItem bottomDivider>
-                <View>
-                  {/* <================TOP Area=============> */}
 
+            {/* <================= Trade Component Start ============> */}
+
+            <View style={styles.listMainView}>
+              {notify?.map(trade => (
+                <View style={{borderBottomWidth: 1}}>
                   <View style={styles.bgarea2}>
                     <View style={styles.botomview3}>
-                      <Text style={styles.bgText}>Intraday</Text>
+                      <Text style={styles.bgText}>{trade?.call_type}</Text>
                     </View>
                   </View>
-
-                  {/* <================BUY Area=============> */}
 
                   <View style={styles.bgarea3}>
-                    <Text style={styles.buy}>BUY</Text>
-                    <Text style={styles.notbuy}>
-                      BANKNIFTY 3000 @ 100 - 200
-                    </Text>
+                    <View>
+                      <Text style={styles.buy}>{trade?.script_type}</Text>
+                    </View>
+                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
+                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
+                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
+                      <View>
+                        <Text style={styles.notbuy}>
+                          {trade?.fnoequty_scrpt_name?.scriptName} @{' '}
+                          {trade?.active_value} - {trade?.active_value2}
+                        </Text>
+                      </View>
+                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
+                      trade?.cash_scrpt_name?.scriptName != undefined &&
+                      trade?.cash_scrpt_name?.scriptName != null ? (
+                      <View>
+                        <Text style={styles.notbuy}>
+                          {trade?.cash_scrpt_name?.scriptName} @{' '}
+                          {trade?.active_value} - {trade?.active_value2}
+                        </Text>
+                      </View>
+                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
+                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
+                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
+                      <View>
+                        <Text style={styles.notbuy}>
+                          {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                          {trade?.active_value} - {trade?.active_value2}
+                        </Text>
+                      </View>
+                    ) : null}
                   </View>
 
-                  {/* <================Circle Area=============> */}
                   {/* <===========SL=============> */}
-
                   <View style={styles.bgarea2}>
-                    <View
-                      style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
-                      <Text style={styles.notbuy1}>
-                        SL{'\n'}
-                        50
-                      </Text>
-                    </View>
-
+                    {trade?.sl_type === 'false' ? (
+                      <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
+                        <Text style={styles.notbuy1}>
+                          SL{'\n'}
+                          {trade?.SL}
+                        </Text>
+                      </View>
+                    ) : (
+                      <View
+                        style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
+                        <Text style={styles.notbuy1}>
+                          SL{'\n'}
+                          {trade?.SL}
+                        </Text>
+                      </View>
+                    )}
                     {/* <===========T1 =============> */}
-
-                    <View style={[styles.circle, {backgroundColor: '#66bb6a'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 1{'\n'}
-                        100
-                      </Text>
-                    </View>
+                    {trade?.trl != '' &&
+                    trade?.trl != null &&
+                    trade?.trl != undefined ? (
+                      <View>
+                        {trade?.trl_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              TRL{'\n'}
+                              {trade?.trl}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              TRL{'\n'}
+                              {trade?.trl}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    ) : (
+                      <View>
+                        {trade?.t1_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 1{'\n'}
+                              {trade?.T1}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 1{'\n'}
+                              {trade?.T1}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
 
                     {/* <===========T2 =============> */}
 
-                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 2{'\n'}
-                        200
-                      </Text>
-                    </View>
+                    {trade?.FT1 != '' &&
+                    trade?.FT1 != null &&
+                    trade?.FT1 != undefined ? (
+                      <View>
+                        {trade?.FT1_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 1{'\n'}
+                              {trade?.FT1}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 1{'\n'}
+                              {trade?.FT1}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    ) : (
+                      <View>
+                        {trade?.t2_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 2{'\n'}
+                              {trade?.T2}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 2{'\n'}
+                              {trade?.T2}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
 
                     {/* <===========T3 =============> */}
 
-                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 3{'\n'}
-                        300
-                      </Text>
-                    </View>
+                    {trade?.FT2 != '' &&
+                    trade?.FT2 != null &&
+                    trade?.FT2 != undefined ? (
+                      <View>
+                        {trade?.FT2_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 2{'\n'}
+                              {trade?.FT2}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 2{'\n'}
+                              {trade?.FT2}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    ) : (
+                      <View>
+                        {trade?.t3_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 3{'\n'}
+                              {trade?.T3}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 3{'\n'}
+                              {trade?.T3}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
 
                     {/* <===========T4 =============> */}
 
-                    <View style={[styles.circle, {backgroundColor: '#fff'}]}>
-                      <Text style={styles.notbuy}>
-                        T₹ 4{'\n'}
-                        400
-                      </Text>
-                    </View>
+                    {trade?.FT3 != '' &&
+                    trade?.FT3 != null &&
+                    trade?.FT3 != undefined ? (
+                      <View>
+                        {trade?.FT3_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 3{'\n'}
+                              {trade?.FT3}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 3{'\n'}
+                              {trade?.FT3}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    ) : (
+                      <View>
+                        {trade?.t4_type === 'false' ? (
+                          <View
+                            style={[styles.circle, {backgroundColor: '#fff'}]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 4{'\n'}
+                              {trade?.T4}
+                            </Text>
+                          </View>
+                        ) : (
+                          <View
+                            style={[
+                              styles.circle,
+                              {backgroundColor: '#66bb6a'},
+                            ]}>
+                            <Text style={styles.notbuy}>
+                              T₹ 4{'\n'}
+                              {trade?.T4}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
                   </View>
 
                   {/* <================Botton Area=============> */}
@@ -374,13 +484,14 @@ export default function Notification({navigation}) {
                         Quantity & investment Amount
                       </Text>
                       <Text style={styles.bottomText1}>
-                        50 Lots(100 Qty) = ₹ 5000
+                        {trade?.no_of_lots} Lots({trade?.qty} Qty) = ₹
+                        {trade?.investment_amt}
                       </Text>
                     </View>
                     <View style={styles.botomview2}>
                       <Text style={styles.bottomText}>P&L</Text>
-                      <Text style={[styles.bottomText1, {color: 'red'}]}>
-                        ₹ 200 | 20%
+                      <Text style={[styles.bottomText1, , {color: 'red'}]}>
+                        ₹ {trade?.pl} | {trade?.pl_per}%
                       </Text>
                     </View>
                   </View>
@@ -388,22 +499,68 @@ export default function Notification({navigation}) {
                   {/* <================ Date and Show more=============> */}
                   <View style={styles.bgarea2}>
                     <View style={styles.botomview3}>
-                      <Text style={styles.dateText}>12-08-2022 12:00PM</Text>
-                    </View>
-                    <View style={styles.botomview2}>
-                      <Text>hsdhhd</Text>
-                    </View>
-                  </View>
-                  {/* <================ Message =============> */}
-                  <View style={styles.bgarea2}>
-                    <View style={styles.botomview3}>
-                      <Text style={styles.messageText}>
-                        Now you can remove the trade the SL has been hit
+                      <Text style={styles.dateText}>
+                        <Moment element={Text} format="lll">
+                          {trade.createdAt}
+                        </Moment>
                       </Text>
                     </View>
                   </View>
+                  {/* <============Seemore=========> */}
+                  <View>
+                    <ShowMore
+                      height={0}
+                      buttonColor={'blue'}
+                      showMoreText="View Trade History"
+                      showLessText="Hide Trade History">
+                      <View style={styles.showView}>
+                        <View style={styles.insideViewOne}>
+                          <Text style={styles.dropTextOne}>
+                            {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                            {trade?.active_value} - {trade?.active_value2}
+                          </Text>
+                        </View>
+                        <View style={styles.insideViewTwo}>
+                          <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        </View>
+                      </View>
+                      <View style={styles.showView}>
+                        <View style={styles.insideViewOne}>
+                          <Text style={styles.dropTextOne}>
+                            {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                            {trade?.active_value} - {trade?.active_value2}
+                          </Text>
+                        </View>
+                        <View style={styles.insideViewTwo}>
+                          <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        </View>
+                      </View>
+                      <View style={styles.showView}>
+                        <View style={styles.insideViewOne}>
+                          <Text style={styles.dropTextOne}>
+                            {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
+                            {trade?.active_value} - {trade?.active_value2}
+                          </Text>
+                        </View>
+                        <View style={styles.insideViewTwo}>
+                          <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        </View>
+                      </View>
+                    </ShowMore>
+                  </View>
+
+                  <View>
+                    <Text style={{color: '#000', marginVertical: 5}}>
+                      SL has been Hit your trade is out
+                    </Text>
+                  </View>
+                  <View></View>
+                    <Text style={{color: '#000', marginVertical: 5}}>
+                      Target is Achived now you can take out your trade
+                    </Text>
+                  </View>
                 </View>
-              </ListItem>
+              ))}
             </View>
           </View>
         </ScrollView>
@@ -429,8 +586,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dateTextView: {borderWidth: 2, borderColor: 'green', borderRadius: 5},
-  tradeTextView: {justifyContent: 'center', alignItems: 'center'},
+  dateTextView: {
+    borderWidth: 2,
+    borderColor: 'green',
+    borderRadius: 5,
+  },
+  tradeTextView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   logoImg: {
     width: 120,
     height: 45,
@@ -478,7 +642,9 @@ const styles = StyleSheet.create({
   uploadImage: {color: '#000'},
   //Scroll Start
   listMainView: {
-    marginVertical: 2,
+    marginVertical: 5,
+    marginHorizontal: 2,
+    borderBottomColor: '#000',
   },
 
   //trade component
@@ -598,65 +764,15 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'gray',
   },
-  messageText: {
-    fontSize: 14,
-    color: '#000',
-  },
-  centeredView: {
+
+  showView: {flexDirection: 'row', marginVertical: 10},
+  insideViewOne: {flex: 2, marginLeft: 5},
+  dropTextOne: {color: '#000', fontSize: 12},
+  insideViewTwo: {
     flex: 1,
+    marginRight: 5,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  modalView: {
-    margin: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalMainText: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  modalMainHead: {
-    flex: 2,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  modalMainDate: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  buttonClose: {
-    backgroundColor: 'green',
-    marginTop: 10,
-    borderRadius: 10,
-  },
-  textStyle1: {
-    color: 'blue',
-    fontSize: 12,
-  },
-  textStyle: {
-    color: 'white',
-    textAlign: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    fontSize: 15,
-    elevation: 5,
-  },
-  modalText: {
-    margin: 5,
-    color: '#000',
+    alignItems: 'flex-end',
   },
   //image component
   subView: {
