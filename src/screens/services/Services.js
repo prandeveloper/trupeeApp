@@ -16,6 +16,9 @@ import axiosConfig from '../../../axiosConfig';
 
 const Services = ({navigation}) => {
   const [plan, setPlan] = useState([]);
+  const [text, setText] = React.useState('');
+  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedId, setSelectedId] = useState([]);
 
   useEffect(() => {
     const getPlan = () => {
@@ -31,7 +34,14 @@ const Services = ({navigation}) => {
     };
     getPlan();
   }, []);
-  const [text, setText] = React.useState('');
+
+  const handleSelection = _id => {
+    var selectedId = selectedId;
+
+    if (selectedId === _id) setSelectedItem(null);
+    else setSelectedItem(_id);
+    console.log(_id);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -59,7 +69,12 @@ const Services = ({navigation}) => {
               <View style={styles.textView}>
                 <ScrollView horizontal={true}>
                   {plan?.map(item => (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      key={item._id}
+                      onPress={() => handleSelection(item._id)}
+                      style={
+                        item._id === selectedItem ? styles.memberTouch : null
+                      }>
                       <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>
                         <Text style={styles.textcard}>{item?.pack_name}</Text>
                         <Text style={styles.textcard}>₹{item?.des_price}</Text>
@@ -253,12 +268,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
   },
+  memberTouch: {
+    borderWidth: 2,
+    marginHorizontal: 4,
+    marginVertical: 4,
+  },
   card: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 10,
+    margin: 0,
     height: 130,
-
     padding: 20,
     borderColor: 'black',
     borderWidth: 1,

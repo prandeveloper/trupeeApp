@@ -5,28 +5,17 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatGrid} from 'react-native-super-grid';
 import {Text, TextInput} from 'react-native-paper';
 import axiosConfig from '../../../axiosConfig';
+import axios from 'axios';
 
 const PerformanceSheet = () => {
   const [email, setEmail] = React.useState('');
-  const [items, setItems] = React.useState([
-    // {name: 'April, 2021', onprice: 'FREE'},
-    // {name: 'May, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'June, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'July, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'August, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'September, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'October, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'November, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'December, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'January, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'February, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'March, 2021', onprice: '₹99', offprice: '₹249'},
-    // {name: 'All Performance Sheet', onprice: '₹99', offprice: '₹249'},
-  ]);
+  const [items, setItems] = React.useState([]);
+  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedId, setSelectedId] = useState([]);
 
   // <=============Performance get Api ============>
   useEffect(() => {
@@ -43,18 +32,27 @@ const PerformanceSheet = () => {
         console.log(error);
       });
   };
-  //  const handleOnpress = item => {
-  //    const newItem = sports.map(val => {
-  //      if (val.id === item.id) {
-  //        return {...val, selected: !val.selected};
-  //      } else {
-  //        return val;
-  //      }
-  //    });
 
-  //    setSports(newItem);
-  //    console.log(newItem);
-  //  };
+  //Post api
+  const postData = () => {
+    axios
+      .post(`http://65.0.183.149:8000/user/ad_user_persheet`)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const handleSelection = _id => {
+    var selectedId = selectedId;
+
+    if (selectedId === _id) setSelectedItem(null);
+    else setSelectedItem(_id);
+    console.log(_id);
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -101,17 +99,24 @@ const PerformanceSheet = () => {
               <FlatGrid
                 itemDimension={110}
                 data={items}
+                extraData={selectedId}
                 style={styles.gridView}
                 staticDimension={450}
                 spacing={8}
                 renderItem={({item}) => (
-                  <TouchableOpacity style={styles.itemContainer}>
+                  <TouchableOpacity
+                    onPress={() => handleSelection(item._id)}
+                    style={
+                      item._id === selectedItem
+                        ? styles.itemContainer
+                        : styles.itemContainer2
+                    }>
                     <Text style={styles.itemName}>
                       {item?.month}, {item?.year}
                     </Text>
                     <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.itemPrice}>{item.plan_price}</Text>
-                      <Text style={styles.itemPriceOff}>{item.offprice}</Text>
+                      <Text style={styles.itemPrice}>₹{item.dst_price}</Text>
+                      <Text style={styles.itemPriceOff}>₹{item.mrp}</Text>
                     </View>
                   </TouchableOpacity>
                 )}
@@ -176,6 +181,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     height: 60,
+    borderWidth: 3,
+    borderColor: '#000',
+  },
+  itemContainer2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 5,
+    height: 60,
     borderWidth: 2,
     borderColor: '#bdc3c7',
   },
@@ -185,7 +199,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   itemPrice: {
-    fontWeight: '600',
+    fontWeight: 'bold',
     fontSize: 12,
     color: '#000',
     margin: 2,

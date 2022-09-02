@@ -9,13 +9,38 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {Button, Card, Paragraph, Title} from 'react-native-paper';
-
+import axiosConfig from '../../axiosConfig';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MemberPlan from './services/MemberPlan';
 import SimpleHeader from '../components/SimpleHeader';
 
 const AfterSignUp = ({navigation}) => {
+  const [plan, setPlan] = useState([]);
+  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedId, setSelectedId] = useState([]);
   const [text, setText] = React.useState('');
+
+  useEffect(() => {
+    const getPlan = () => {
+      axiosConfig
+        .get(`/plan_list`)
+        .then(response => {
+          console.log(response.data.data);
+          setPlan(response.data.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+    getPlan();
+  }, []);
+
+  const handleSelection = _id => {
+    var selectedId = selectedId;
+    if (selectedId === _id) setSelectedItem(null);
+    else setSelectedItem(_id);
+    console.log(_id);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -32,7 +57,35 @@ const AfterSignUp = ({navigation}) => {
             </View>
           </View>
           <View style={styles.subView}>
-            <MemberPlan />
+            {/* <MemberPlan /> */}
+            <View>
+              <View style={styles.textView}>
+                <Text style={styles.oneText}>
+                  Select Package to Activate Service
+                </Text>
+              </View>
+              <View style={styles.textView}>
+                <ScrollView horizontal={true}>
+                  {plan?.map(item => (
+                    <TouchableOpacity
+                      key={item._id}
+                      onPress={() => handleSelection(item._id)}
+                      style={
+                        item._id === selectedItem ? styles.memberTouch : null
+                      }>
+                      <View style={[styles.card, {backgroundColor: '#c0d4a3'}]}>
+                        <Text style={styles.textcard}>{item?.pack_name}</Text>
+                        <Text style={styles.textcard}>₹{item?.des_price}</Text>
+                        <Text style={styles.textcard1}>
+                          ₹ {item?.mrp_price}
+                        </Text>
+                        <Text style={styles.offText}>{item?.desc}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
           </View>
           <View style={styles.subView}>
             <View
