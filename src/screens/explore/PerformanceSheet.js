@@ -10,12 +10,13 @@ import {FlatGrid} from 'react-native-super-grid';
 import {Text, TextInput} from 'react-native-paper';
 import axiosConfig from '../../../axiosConfig';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PerformanceSheet = () => {
   const [email, setEmail] = React.useState('');
   const [items, setItems] = React.useState([]);
   const [selectedItem, setSelectedItem] = useState('');
-  const [selectedId, setSelectedId] = useState([]);
+  const [selectedId, setSelectedId] = useState('');
 
   // <=============Performance get Api ============>
   useEffect(() => {
@@ -34,11 +35,21 @@ const PerformanceSheet = () => {
   };
 
   //Post api
-  const postData = () => {
+  const postData = async () => {
+    console.log(email, selectedItem);
     axios
-      .post(`http://65.0.183.149:8000/user/ad_user_persheet`)
+      .post(
+        `http://65.0.183.149:8000/user/ad_user_persheet`,
+        {
+          email: email,
+          plan: selectedItem,
+        },
+        {headers: {'auth-token': await AsyncStorage.getItem('auth-token')}},
+      )
       .then(response => {
         console.log(response.data);
+        setEmail();
+        setSelectedItem();
       })
       .catch(error => {
         console.log(error);
@@ -46,11 +57,10 @@ const PerformanceSheet = () => {
   };
 
   const handleSelection = _id => {
-    var selectedId = selectedId;
-
-    if (selectedId === _id) setSelectedItem(null);
-    else setSelectedItem(_id);
-    console.log(_id);
+    const selectedId = _id;
+    if (selectedId === _id) setSelectedItem(_id);
+    else setSelectedItem(null);
+    console.log('@@@', selectedId);
   };
 
   return (
@@ -140,7 +150,7 @@ const PerformanceSheet = () => {
             </View>
           </View>
           <View style={styles.section1}>
-            <TouchableOpacity style={styles.touchButton}>
+            <TouchableOpacity style={styles.touchButton} onPress={postData}>
               <Text style={styles.buttonText}>SUBMIT</Text>
             </TouchableOpacity>
           </View>

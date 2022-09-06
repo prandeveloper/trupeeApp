@@ -7,18 +7,19 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, Card, Paragraph, Title} from 'react-native-paper';
 import axiosConfig from '../../axiosConfig';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MemberPlan from './services/MemberPlan';
 import SimpleHeader from '../components/SimpleHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AfterSignUp = ({navigation}) => {
   const [plan, setPlan] = useState([]);
   const [selectedItem, setSelectedItem] = useState('');
   const [selectedId, setSelectedId] = useState([]);
-  const [text, setText] = React.useState('');
+  const [code, setCode] = React.useState('');
 
   useEffect(() => {
     const getPlan = () => {
@@ -34,6 +35,22 @@ const AfterSignUp = ({navigation}) => {
     };
     getPlan();
   }, []);
+
+  const sendCode = async () => {
+    console.log(code);
+    axiosConfig
+      .post(
+        `/applyCode`,
+        {code: code},
+        {headers: {'auth-token': await AsyncStorage.getItem('auth-token')}},
+      )
+      .them(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const handleSelection = _id => {
     var selectedId = selectedId;
@@ -150,13 +167,15 @@ const AfterSignUp = ({navigation}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
                 <TextInput
+                  placeholder="Enter Promo Code"
                   style={styles.input}
-                  onChangeText={setText}
-                  value={text}
+                  onChangeText={setCode}
+                  value={code}
+                  color="#000"
                 />
               </View>
               <View style={styles.viewFour}>
-                <TouchableOpacity style={styles.buttonStyle}>
+                <TouchableOpacity style={styles.buttonStyle} onPress={sendCode}>
                   <Text style={styles.buttonText}>Apply</Text>
                 </TouchableOpacity>
               </View>
@@ -217,6 +236,50 @@ const styles = StyleSheet.create({
   viewOne: {
     marginHorizontal: 5,
     marginVertical: 20,
+  },
+
+  //MemberShip
+
+  textView: {
+    margin: 5,
+  },
+  oneText: {
+    color: '#000',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  memberTouch: {
+    borderWidth: 2,
+    marginHorizontal: 4,
+    marginVertical: 4,
+  },
+  card: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 0,
+    height: 130,
+
+    padding: 20,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  textcard: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+  },
+  textcard1: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+    textDecorationLine: 'line-through',
+    textDecorationColor: '#000',
+  },
+  offText: {
+    backgroundColor: '#a82682',
+    color: '#fff',
+    paddingHorizontal: 15,
+    borderRadius: 20,
   },
 
   viewTwo: {

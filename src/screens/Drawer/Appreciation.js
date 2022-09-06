@@ -10,10 +10,38 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {TextInput} from 'react-native-paper';
+import RazorpayCheckout from 'react-native-razorpay';
 
 const Appreciation = () => {
   const [amount, setAmount] = useState('');
   const [desc, setDesc] = useState('');
+
+  const trupee = () => {
+    var options = {
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'rzp_test_rUafkCJLwIeF1t',
+      amount: amount * 100,
+      name: 'Pranay',
+      prefill: {
+        email: 'void@razorpay.com',
+        contact: '9191919191',
+        name: 'Razorpay Software',
+      },
+      theme: {color: '#F37254'},
+    };
+    RazorpayCheckout.open(options)
+      .then(data => {
+        // handle success
+        alert(`Success: ${data.razorpay_payment_id}`);
+      })
+      .catch(error => {
+        // handle failure
+        alert(`Error: ${error.code} | ${error.description}`);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -89,8 +117,8 @@ const Appreciation = () => {
         </View>
       </ScrollView>
       <View>
-        <TouchableOpacity style={styles.bottomButton}>
-          <Text style={styles.buttonText}>Send</Text>
+        <TouchableOpacity style={styles.bottomButton} onPress={trupee}>
+          <Text style={styles.buttonText}>SEND</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

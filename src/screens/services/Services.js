@@ -21,7 +21,7 @@ const Services = ({navigation}) => {
   const [selectedId, setSelectedId] = useState([]);
 
   useEffect(() => {
-    const getPlan = () => {
+    const getPlan = async () => {
       axiosConfig
         .get(`/plan_list`)
         .then(response => {
