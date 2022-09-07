@@ -12,8 +12,6 @@ import {
 import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CustomButton from '../components/CustomButton';
-import InputField from '../components/InputField';
 import {useNavigation} from '@react-navigation/native';
 import HomeScreen from './HomeScreen';
 import OTPInputView from '@twotalltotems/react-native-otp-input';

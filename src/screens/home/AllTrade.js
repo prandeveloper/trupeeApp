@@ -16,10 +16,12 @@ import Moment from 'react-moment';
 import axiosConfig from '../../../axiosConfig';
 import {styles} from './TradeStyle';
 import ShowMore from 'react-native-show-more-button';
+// import RNPreventScreenshot from 'react-native-screenshot-prevent';
 
 const AllTrade = date => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  //RNPreventScreenshot.enabled(true);
 
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {

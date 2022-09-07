@@ -20,7 +20,7 @@ const CustomDrawer = props => {
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={{backgroundColor: '#8200d6'}}>
-        <ImageBackground
+        {/* <ImageBackground
           source={require('../assets/images/menu-bg.jpeg')}
           style={{padding: 20}}>
           <Image
@@ -47,7 +47,7 @@ const CustomDrawer = props => {
             </Text>
             <FontAwesome5 name="coins" size={14} color="#fff" />
           </View>
-        </ImageBackground>
+        </ImageBackground> */}
         <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
           <DrawerItemList {...props} />
         </View>
