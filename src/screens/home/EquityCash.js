@@ -19,7 +19,6 @@ import ShowMore from 'react-native-show-more-button';
 const EquityCash = () => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
   //  <============ All Teafe Get Api ===========>
   const getTrade = () => {

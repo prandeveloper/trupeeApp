@@ -134,9 +134,7 @@ const HomeStack = () => {
       <Stack.Screen
         name="App Walkthrough"
         component={Walkthrough}
-        options={({route}) => ({
-          title: route.params?.title,
-        })}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Premium Service"
@@ -191,7 +189,7 @@ const HomeStack = () => {
   );
 };
 
-const TabNavigator = () => {
+export const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
