@@ -121,7 +121,8 @@ const Services = ({navigation}) => {
           alert(`Error: ${error.code} | ${error.description}`);
         });
     } else {
-      freePlan();
+      //freePlan();
+      navigation.replace('Home');
     }
   };
 
