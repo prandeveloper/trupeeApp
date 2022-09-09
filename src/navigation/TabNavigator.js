@@ -61,6 +61,11 @@ const HomeStack = () => {
         component={AfterSignUp}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Services"
+        component={Services}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen
         name="Home"

@@ -1,12 +1,33 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Share, View, Button} from 'react-native';
 
 const ShareApp = () => {
+  const [refId, setRefId] = useState('');
+  useEffect(() => {
+    const getUser = async () => {
+      axios
+        .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        })
+        .then(response => {
+          console.log('name', response.data.data.refral_Code);
+          const user = response.data.data.refral_Code;
+          setRefId(user);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+
+    getUser();
+  }, []);
   const onShare = async () => {
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+          'React Native dsdsdsdsdsdsdsdsd| A framework for building native apps using React',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

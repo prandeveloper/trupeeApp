@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Button, Card, Paragraph, Title} from 'react-native-paper';
@@ -13,13 +14,21 @@ import MemberPlan from './MemberPlan';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleHeader from '../../components/SimpleHeader';
 import axiosConfig from '../../../axiosConfig';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import RazorpayCheckout from 'react-native-razorpay';
 
 const Services = ({navigation}) => {
   const [plan, setPlan] = useState([]);
-  const [text, setText] = React.useState('');
+  const [code, setCode] = React.useState('');
   const [selectedItem, setSelectedItem] = useState('');
-  const [selectedId, setSelectedId] = useState([]);
+  const [packnames, setPacknames] = useState('');
+  const [discPrice, setDiscPrice] = useState('');
+  const [wallet, setWallet] = useState({});
+  const [paymentId, setPaymentId] = useState('');
+  const [storePayId, setStorePayId] = useState('');
 
+  // Get API =====================>
   useEffect(() => {
     const getPlan = async () => {
       axiosConfig
@@ -32,16 +41,138 @@ const Services = ({navigation}) => {
           console.log(error);
         });
     };
+    //Wallet Api
+    const getWallet = async () => {
+      axios
+        .get(`http://65.0.183.149:8000/user/myWallet`, {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        })
+        .then(response => {
+          console.log('wallet', response.data.data);
+          const data = response.data.data;
+          setWallet(data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
     getPlan();
+    getWallet();
   }, []);
 
-  const handleSelection = _id => {
-    var selectedId = selectedId;
-
-    if (selectedId === _id) setSelectedItem(null);
-    else setSelectedItem(_id);
-    console.log(_id);
+  //<============Add free plan api===========>
+  const freePlan = async () => {
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/freeMembership`,
+        {
+          planId: selectedItem,
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
+
+  //=======Apply Code Post Api ==========>
+  const subscribe = async () => {
+    if (discPrice !== 0) {
+      var options = {
+        description: 'Credits towards consultation',
+        image: 'https://i.imgur.com/3g7nmJC.png',
+        currency: 'INR',
+        key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
+        amount: discPrice * 100,
+        name: wallet?.firstname,
+        prefill: {
+          email: wallet?.email,
+          contact: wallet.mobile,
+          name: wallet?.firstname,
+        },
+        theme: {color: '#F37254'},
+      };
+      RazorpayCheckout.open(options)
+        .then(data => {
+          const payId = data.razorpay_payment_id;
+          setPaymentId(payId);
+          console.log(payId);
+          takePlan();
+          alert(`Success: ${data.razorpay_payment_id}`);
+          if (
+            data.razorpay_payment_id != '' &&
+            data.razorpay_payment_id != null &&
+            data.razorpay_payment_id != undefined
+          ) {
+            takePlan();
+          }
+        })
+        .catch(error => {
+          // handle failure
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
+    } else {
+      freePlan();
+    }
+  };
+
+  //Add Plans
+
+  const takePlan = async () => {
+    console.log(selectedItem, code, paymentId);
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/addMemeberShip`,
+        {
+          planId: selectedItem,
+          refral_Code: code,
+          razorpay_payment_id: paymentId,
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+        console.log(response.data.data.planId);
+        setStorePayId();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  //Selected ID AMOUNT NAME================>
+
+  const handleSelection = (_id, pack_name, des_price) => {
+    var selectedId = _id;
+    var packName = pack_name;
+    var discAmount = des_price;
+
+    if (selectedId === _id) setSelectedItem(_id);
+    else setSelectedItem(null);
+    console.log(_id);
+    if (packName != '' || packName != null) {
+      setPacknames(pack_name);
+    } else null;
+    console.log(pack_name);
+    if (discAmount != '' || discAmount != null) {
+      setDiscPrice(des_price);
+    } else null;
+    console.log(des_price);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -71,7 +202,13 @@ const Services = ({navigation}) => {
                   {plan?.map(item => (
                     <TouchableOpacity
                       key={item._id}
-                      onPress={() => handleSelection(item._id)}
+                      onPress={() =>
+                        handleSelection(
+                          item._id,
+                          item.pack_name,
+                          item.des_price,
+                        )
+                      }
                       style={
                         item._id === selectedItem ? styles.memberTouch : null
                       }>
@@ -136,7 +273,7 @@ const Services = ({navigation}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
                 <Text style={{fontWeight: '700', color: 'black', fontSize: 16}}>
-                  ₹ 0
+                  ₹ {wallet?.amount}
                 </Text>
               </View>
               <View style={styles.viewThree}>
@@ -155,16 +292,21 @@ const Services = ({navigation}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
                 <TextInput
+                  placeholderTextColor={'gray'}
+                  placeholder="Enter Code Here"
                   style={styles.input}
-                  onChangeText={setText}
-                  value={text}
+                  onChangeText={setCode}
+                  value={code}
+                  color="#000"
                 />
               </View>
-              <View style={styles.viewFour}>
-                <TouchableOpacity style={styles.buttonStyle}>
+              {/* <View style={styles.viewFour}>
+                <TouchableOpacity
+                  style={styles.buttonStyle}
+                  onPress={applyCode}>
                   <Text style={styles.buttonText}>Apply</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           </View>
           <View style={styles.subView}>
@@ -179,7 +321,7 @@ const Services = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
               <View>
-                <TouchableOpacity style={styles.bottomBtn}>
+                <TouchableOpacity style={styles.bottomBtn} onPress={subscribe}>
                   <Text style={styles.buttonText}>Subscribe</Text>
                 </TouchableOpacity>
               </View>
@@ -228,11 +370,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    height: 40,
+    height: 50,
     margin: 5,
     borderWidth: 1,
     padding: 10,
-    width: 200,
+    width: 320,
   },
   buttonStyle: {
     backgroundColor: '#a82682',
@@ -276,8 +418,9 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 0,
-    height: 130,
+    margin: 3,
+    height: 140,
+    width: 140,
     padding: 20,
     borderColor: 'black',
     borderWidth: 1,
@@ -299,5 +442,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     paddingHorizontal: 15,
     borderRadius: 20,
+    textAlign: 'center',
   },
 });

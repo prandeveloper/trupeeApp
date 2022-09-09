@@ -53,7 +53,7 @@ const LoginScreen = () => {
         console.log('success');
         console.log(token);
         setStoreddata(token);
-        navigation.replace('Home');
+        navigation.replace('Services');
       }
     } catch (e) {
       console.log('no Value in login');
@@ -75,7 +75,7 @@ const LoginScreen = () => {
         if (response.data.token != null) {
           _storeData(response.data.token);
           if (response.data.msg === 'Welcome Back') {
-            navigation.replace('Home');
+            navigation.replace('Services');
           } else {
             navigation.replace('AfterSignUp');
           }

@@ -14,12 +14,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MemberPlan from './services/MemberPlan';
 import SimpleHeader from '../components/SimpleHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const AfterSignUp = ({navigation}) => {
   const [plan, setPlan] = useState([]);
   const [selectedItem, setSelectedItem] = useState('');
   const [selectedId, setSelectedId] = useState([]);
   const [code, setCode] = React.useState('');
+  const [wallet, setWallet] = useState({});
 
   useEffect(() => {
     const getPlan = () => {
@@ -33,7 +35,25 @@ const AfterSignUp = ({navigation}) => {
           console.log(error);
         });
     };
+    //Wallet Api
+    const getWallet = async () => {
+      axios
+        .get(`http://65.0.183.149:8000/user/myWallet`, {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        })
+        .then(response => {
+          console.log('wallet', response.data.data);
+          const data = response.data.data;
+          setWallet(data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
     getPlan();
+    getWallet();
   }, []);
 
   const sendCode = async () => {
@@ -149,7 +169,9 @@ const AfterSignUp = ({navigation}) => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
-                <Text style={{fontWeight: '700', color: 'black'}}>₹ 0</Text>
+                <Text style={{fontWeight: '700', color: 'black'}}>
+                  ₹ {wallet?.amount}
+                </Text>
               </View>
               <View style={styles.viewThree}>
                 <Text>Use My Wallet Balance</Text>
