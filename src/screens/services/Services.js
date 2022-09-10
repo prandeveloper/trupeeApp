@@ -26,15 +26,46 @@ const Services = ({navigation}) => {
   const [discPrice, setDiscPrice] = useState('');
   const [wallet, setWallet] = useState({});
   const [paymentId, setPaymentId] = useState('');
-  const [storePayId, setStorePayId] = useState('');
+  const [storeddata, setStoreddata] = useState('');
+
+  //<===================== StorePlan id in Localstorage========>
+
+  const _storeData = async planId => {
+    try {
+      await AsyncStorage.setItem('plan', planId);
+      console.log('plan Saved');
+    } catch (error) {
+      console.log('Some error in setting Plan');
+    }
+  };
+  const getData = async () => {
+    try {
+      const plan = await AsyncStorage.getItem('plan');
+      if (plan !== null) {
+        console.log('success');
+        console.log(plan);
+        setStoreddata(plan);
+        navigation.replace('Home');
+      }
+    } catch (e) {
+      console.log('no Value in login');
+    }
+  };
+  useEffect(() => {
+    getData();
+    getPlan();
+    getWallet();
+  }, [storeddata]);
+  
+
 
   // Get API =====================>
-  useEffect(() => {
+  
     const getPlan = async () => {
       axiosConfig
         .get(`/plan_list`)
         .then(response => {
-          console.log(response.data.data);
+          //console.log(response.data.data);
           setPlan(response.data.data);
         })
         .catch(error => {
@@ -50,7 +81,7 @@ const Services = ({navigation}) => {
           },
         })
         .then(response => {
-          console.log('wallet', response.data.data);
+          //console.log('wallet', response.data.data);
           const data = response.data.data;
           setWallet(data);
         })
@@ -58,68 +89,104 @@ const Services = ({navigation}) => {
           console.log(error);
         });
     };
-    getPlan();
-    getWallet();
-  }, []);
+    
+  
+
+
 
   //<============Add free plan api===========>
   const freePlan = async () => {
+    console.log(selectedItem);
     axios
       .post(
         `http://65.0.183.149:8000/user/freeMembership`,
         {
           planId: selectedItem,
-        },
-        {
-          headers: {
-            'auth-token': await AsyncStorage.getItem('auth-token'),
-          },
-        },
-      )
+          type:'Free'
+        },{
+          headers:{
+            'auth-token': await AsyncStorage.getItem('auth-token')
+          }
+        })
       .then(response => {
-        console.log(response.data);
+        console.log(response.data.data.planId);
+        if (response.data.data.planId != null) {
+          _storeData(response.data.data.planId);
+        }
+        if(response.data.message === 'success'){
+          Alert.alert('Free MemberShip Successful')
+          navigation.replace('Home')
+        }
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.response.data.message);
+        if(error.response.data.message === 'already exists'){
+          Alert.alert('Plan Already Exist')
+        }
       });
   };
 
   //=======Apply Code Post Api ==========>
   const subscribe = async () => {
     if (discPrice !== 0) {
-      var options = {
-        description: 'Credits towards consultation',
-        image: 'https://i.imgur.com/3g7nmJC.png',
-        currency: 'INR',
-        key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
-        amount: discPrice * 100,
-        name: wallet?.firstname,
-        prefill: {
-          email: wallet?.email,
-          contact: wallet.mobile,
-          name: wallet?.firstname,
-        },
-        theme: {color: '#F37254'},
+      const takePlan = async () => {
+        console.log(selectedItem, code, paymentId);
+        axios
+          .post(
+            `http://65.0.183.149:8000/user/addMemeberShip`,
+            {
+              planId: selectedItem,
+              refral_Code: code,
+              
+            },
+            {
+              headers: {
+                'auth-token': await AsyncStorage.getItem('auth-token'),
+              },
+            },
+          )
+          .then(response => {
+            console.log(response.data);
+            console.log(response.data.data.planId);
+            
+          })
+          .catch(error => {
+            console.log(error);
+          });
       };
-      RazorpayCheckout.open(options)
-        .then(data => {
-          const payId = data.razorpay_payment_id;
-          setPaymentId(payId);
-          console.log(payId);
-          takePlan();
-          alert(`Success: ${data.razorpay_payment_id}`);
-          if (
-            data.razorpay_payment_id != '' &&
-            data.razorpay_payment_id != null &&
-            data.razorpay_payment_id != undefined
-          ) {
-            takePlan();
-          }
-        })
-        .catch(error => {
-          // handle failure
-          alert(`Error: ${error.code} | ${error.description}`);
-        });
+      // var options = {
+      //   description: 'Credits towards consultation',
+      //   image: 'https://i.imgur.com/3g7nmJC.png',
+      //   currency: 'INR',
+      //   key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
+      //   amount: discPrice * 100,
+      //   name: wallet?.firstname,
+      //   prefill: {
+      //     email: wallet?.email,
+      //     contact: wallet.mobile,
+      //     name: wallet?.firstname,
+      //   },
+      //   theme: {color: '#F37254'},
+      // };
+      // RazorpayCheckout.open(options)
+      //   .then(data => {
+      //     const payId = data.razorpay_payment_id;
+      //     setPaymentId(payId);
+      //     console.log(payId);
+      //     takePlan();
+      //     alert(`Success: ${data.razorpay_payment_id}`);
+      //     if (
+      //       data.razorpay_payment_id != '' &&
+      //       data.razorpay_payment_id != null &&
+      //       data.razorpay_payment_id != undefined
+      //     ) {
+      //       takePlan();
+      //     }
+      //   })
+      //   .catch(error => {
+      //     // handle failure
+      //     alert(`Error: ${error.code} | ${error.description}`);
+      //   });
     } else {
       //freePlan();
       navigation.replace('Home');
@@ -128,31 +195,7 @@ const Services = ({navigation}) => {
 
   //Add Plans
 
-  const takePlan = async () => {
-    console.log(selectedItem, code, paymentId);
-    axios
-      .post(
-        `http://65.0.183.149:8000/user/addMemeberShip`,
-        {
-          planId: selectedItem,
-          refral_Code: code,
-          razorpay_payment_id: paymentId,
-        },
-        {
-          headers: {
-            'auth-token': await AsyncStorage.getItem('auth-token'),
-          },
-        },
-      )
-      .then(response => {
-        console.log(response.data);
-        console.log(response.data.data.planId);
-        setStorePayId();
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  
 
   //Selected ID AMOUNT NAME================>
 

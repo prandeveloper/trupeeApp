@@ -29,7 +29,7 @@ const AllTrade = date => {
     axiosConfig
       .get(`/tradelist`)
       .then(response => {
-        console.log(response.data.data);
+        //console.log(response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })

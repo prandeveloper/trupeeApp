@@ -47,7 +47,7 @@ const Profile = ({navigation}) => {
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+        'My Referral Code',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -86,7 +86,7 @@ const Profile = ({navigation}) => {
                   routes: [{name: 'Login'}],
                 });
                 console.log('Logout Successfull');
-                await AsyncStorage.removeItem('auth-token');
+                await AsyncStorage.multiRemove(['auth-token','plan'])
               }}>
               <Ionicons name="power" size={22} color={'green'} />
               <Text style={styles.btnLogout}>Logout</Text>

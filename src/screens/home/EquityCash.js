@@ -26,8 +26,8 @@ const EquityCash = () => {
     axiosConfig
       .get(`/AppCashList`)
       .then(response => {
-        console.log(response.data.data);
-        +setAllTrade(response.data.data);
+        //console.log(response.data.data);
+        setAllTrade(response.data.data);
         setRefreshing(false);
       })
       .catch(error => {
