@@ -17,6 +17,7 @@ import axiosConfig from '../../../axiosConfig';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RazorpayCheckout from 'react-native-razorpay';
+import { clockRunning } from 'react-native-reanimated';
 
 const Services = ({navigation}) => {
   const [plan, setPlan] = useState([]);
@@ -38,21 +39,21 @@ const Services = ({navigation}) => {
       console.log('Some error in setting Plan');
     }
   };
-  const getData = async () => {
-    try {
-      const plan = await AsyncStorage.getItem('plan');
-      if (plan !== null) {
-        console.log('success');
-        console.log(plan);
-        setStoreddata(plan);
-        navigation.replace('Home');
-      }
-    } catch (e) {
-      console.log('no Value in login');
-    }
-  };
+  // const getData = async () => {
+  //   try {
+  //     const plan = await AsyncStorage.getItem('plan');
+  //     if (plan !== null) {
+  //       console.log('success');
+  //       console.log(plan);
+  //       setStoreddata(plan);
+  //       navigation.replace('Home');
+  //     }
+  //   } catch (e) {
+  //     console.log('no Value in login');
+  //   }
+  // };
   useEffect(() => {
-    getData();
+    //getData();
     getPlan();
     getWallet();
   }, [storeddata]);
@@ -131,7 +132,7 @@ const Services = ({navigation}) => {
         `http://65.0.183.149:8000/user/addMemeberShip`,
         {
           planId: selectedItem,
-          refral_Code: code,
+          razorpay_payment_id:paymentId,
         },
         {
           headers: {
@@ -141,8 +142,15 @@ const Services = ({navigation}) => {
       )
       .then(response => {
         console.log(response.data);
-        setCode('');
+        if(response.data.message === 'success'){
+          Alert.alert('Membership Activated')
+        }
         console.log(response.data.data.planId);
+        if (response.data.data.planId != null) {
+          _storeData(response.data.data.planId);
+          navigation.replace('Home');
+
+        }
       })
       .catch(error => {
         console.log(error);
@@ -152,43 +160,43 @@ const Services = ({navigation}) => {
   //=======Apply Code Post Api ==========>
   const subscribe = async () => {
     if (discPrice !== 0) {
-      paidPlan();
-      // var options = {
-      //   description: 'Credits towards consultation',
-      //   image: 'https://i.imgur.com/3g7nmJC.png',
-      //   currency: 'INR',
-      //   key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
-      //   amount: discPrice * 100,
-      //   name: wallet?.firstname,
-      //   prefill: {
-      //     email: wallet?.email,
-      //     contact: wallet.mobile,
-      //     name: wallet?.firstname,
-      //   },
-      //   theme: {color: '#F37254'},
-      // };
-      // RazorpayCheckout.open(options)
-      //   .then(data => {
-      //     const payId = data.razorpay_payment_id;
-      //     setPaymentId(payId);
-      //     console.log(payId);
-      //     takePlan();
-      //     alert(`Success: ${data.razorpay_payment_id}`);
-      //     if (
-      //       data.razorpay_payment_id != '' &&
-      //       data.razorpay_payment_id != null &&
-      //       data.razorpay_payment_id != undefined
-      //     ) {
-      //       takePlan();
-      //     }
-      //   })
-      //   .catch(error => {
-      //     // handle failure
-      //     alert(`Error: ${error.code} | ${error.description}`);
-      //   });
+      var options = {
+        description: 'Credits towards consultation',
+        image: 'https://i.imgur.com/3g7nmJC.png',
+        currency: 'INR',
+        key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
+        amount: (discPrice - wallet.amount) * 100,
+        name: wallet?.firstname,
+        prefill: {
+          email: wallet?.email,
+          contact: wallet?.mobile,
+          name: wallet?.firstname,
+        },
+        theme: {color: '#F37254'},
+      };
+      RazorpayCheckout.open(options)
+        .then(data => {
+          const paymentId = data.razorpay_payment_id;
+          setPaymentId(paymentId);
+          console.log('PPP',paymentId);
+          if (
+            data.razorpay_payment_id != '' &&
+            data.razorpay_payment_id != null &&
+            data.razorpay_payment_id != undefined
+          ) {
+            paidPlan();
+          }
+          else{
+            Alert.alert('Payment Failed')
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
     } else {
-      //freePlan();
-      navigation.replace('Home');
+      freePlan();
+      //navigation.replace('Home');
     }
   };
 
@@ -323,7 +331,7 @@ const Services = ({navigation}) => {
               </View>
             </View>
           </View>
-          <View style={styles.subView}>
+          {/* <View style={styles.subView}>
             <View style={styles.viewThree}>
               <Text style={{fontWeight: '700', color: 'black'}}>
                 Have a Promo Code?
@@ -341,15 +349,15 @@ const Services = ({navigation}) => {
                   color="#000"
                 />
               </View>
-              {/* <View style={styles.viewFour}>
+               <View style={styles.viewFour}>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={applyCode}>
                   <Text style={styles.buttonText}>Apply</Text>
                 </TouchableOpacity>
-              </View> */}
+              </View> 
             </View>
-          </View>
+          </View> */}
           <View style={styles.subView}>
             <View style={styles.bottomStyle}>
               <Text style={[styles.viewThree, {color: '#000'}]}>

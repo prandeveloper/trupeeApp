@@ -31,6 +31,7 @@ import AfterSignUp from '../screens/AfterSignUp';
 import Opportunity from '../screens/explore/Opportunity';
 import PremiumPaid from '../screens/services/PremiumPaid';
 import Terms from '../screens/services/Terms';
+import MemberPlan from '../screens/services/MemberPlan';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -62,8 +63,8 @@ const HomeStack = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Services"
-        component={Services}
+        name="MemberPlan"
+        component={MemberPlan}
         options={{headerShown: false}}
       />
       <Stack.Screen name="Register" component={RegisterScreen} />

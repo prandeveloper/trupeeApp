@@ -6,78 +6,223 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Button, Card, Paragraph, Title} from 'react-native-paper';
-import axiosConfig from '../../axiosConfig';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MemberPlan from './services/MemberPlan';
 import SimpleHeader from '../components/SimpleHeader';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosConfig from '../../axiosConfig';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import RazorpayCheckout from 'react-native-razorpay';
 
 const AfterSignUp = ({navigation}) => {
   const [plan, setPlan] = useState([]);
-  const [selectedItem, setSelectedItem] = useState('');
-  const [selectedId, setSelectedId] = useState([]);
   const [code, setCode] = React.useState('');
+  const [selectedItem, setSelectedItem] = useState('');
+  const [packnames, setPacknames] = useState('');
+  const [discPrice, setDiscPrice] = useState('');
   const [wallet, setWallet] = useState({});
+  const [paymentId, setPaymentId] = useState('');
+  const [storeddata, setStoreddata] = useState('');
 
+  //<===================== StorePlan id in Localstorage========>
+
+  const _storeData = async planId => {
+    try {
+      await AsyncStorage.setItem('plan', planId);
+      console.log('plan Saved');
+    } catch (error) {
+      console.log('Some error in setting Plan');
+    }
+  };
+  const getData = async () => {
+      const plan = await AsyncStorage.getItem('plan');
+      if (plan !== null) {
+        console.log('success');
+        console.log(plan);
+        Alert.alert("Welcome to Trupee")
+        setStoreddata(plan);
+        navigation.replace('Home');
+      }else{
+        navigation.navigate('AfterSignUp')
+        //Alert.alert('Something Went Wrong')
+      }
+     
+  };
   useEffect(() => {
-    const getPlan = () => {
-      axiosConfig
-        .get(`/plan_list`)
-        .then(response => {
-          console.log(response.data.data);
-          setPlan(response.data.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-    //Wallet Api
-    const getWallet = async () => {
-      axios
-        .get(`http://65.0.183.149:8000/user/myWallet`, {
-          headers: {
-            'auth-token': await AsyncStorage.getItem('auth-token'),
-          },
-        })
-        .then(response => {
-          console.log('wallet', response.data.data);
-          const data = response.data.data;
-          setWallet(data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
+    getData();
     getPlan();
     getWallet();
-  }, []);
+  }, [storeddata]);
 
-  const sendCode = async () => {
-    console.log(code);
+  // Get API =====================>
+
+  const getPlan = async () => {
     axiosConfig
-      .post(
-        `/applyCode`,
-        {code: code},
-        {headers: {'auth-token': await AsyncStorage.getItem('auth-token')}},
-      )
-      .them(response => {
-        console.log(response.data);
+      .get(`/plan_list`)
+      .then(response => {
+        //console.log(response.data.data);
+        setPlan(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  //Wallet Api
+  const getWallet = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/myWallet`, {
+        headers: {
+          'auth-token': await AsyncStorage.getItem('auth-token'),
+        },
+      })
+      .then(response => {
+        //console.log('wallet', response.data.data);
+        const data = response.data.data;
+        setWallet(data);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  const handleSelection = _id => {
-    var selectedId = selectedId;
-    if (selectedId === _id) setSelectedItem(null);
-    else setSelectedItem(_id);
-    console.log(_id);
+  //<============Add free plan api===========>
+  const freePlan = async () => {
+    console.log(selectedItem);
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/freeMembership`,
+        {
+          planId: selectedItem,
+          type: 'Free',
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
+      .then(response => {
+        console.log(response.data.data.planId);
+        if (response.data.data.planId != null) {
+          _storeData(response.data.data.planId);
+        }
+        if (response.data.message === 'success') {
+          Alert.alert('Free MemberShip Successful');
+          navigation.replace('Home');
+        }
+      })
+      .catch(error => {
+        console.log(error.response.data.message);
+        if (error.response.data.message === 'already exists') {
+          Alert.alert('Plan Already Exist');
+        }
+      });
   };
+
+  //<============Add Paid plan api===========>
+
+  const paidPlan = async () => {
+    console.log(selectedItem, code, paymentId);
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/addMemeberShip`,
+        {
+          planId: selectedItem,
+          razorpay_payment_id:paymentId,
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+        if(response.data.message === 'success'){
+          Alert.alert('Membership Activated')
+        }
+        console.log(response.data.data.razorpay_payment_id);
+        if (response.data.data.razorpay_payment_id != "") {
+          _storeData(response.data.data.planId);
+          navigation.replace('Home');
+}else{
+  navigation.navigate('AfterSignUp')
+  Alert.alert('Something Went Wrong')
+}
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  //=======Apply Code Post Api ==========>
+  const subscribe = async () => {
+    if (discPrice !== 0) {
+      var options = {
+        description: 'Credits towards consultation',
+        image: 'https://i.imgur.com/3g7nmJC.png',
+        currency: 'INR',
+        key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
+        amount: discPrice * 100,
+        name: wallet?.firstname,
+        prefill: {
+          email: wallet?.email,
+          contact: wallet?.mobile,
+          name: wallet?.firstname,
+        },
+        theme: {color: '#F37254'},
+      };
+      RazorpayCheckout.open(options)
+        .then(data => {
+          const paymentId = data.razorpay_payment_id;
+          setPaymentId(paymentId);
+          console.log('PPP',paymentId);
+          if (
+            data.razorpay_payment_id != '' &&
+            data.razorpay_payment_id != null &&
+            data.razorpay_payment_id != undefined
+          ) {
+            paidPlan();
+          }
+          else{
+            Alert.alert('Payment Failed')
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
+    } else {
+      freePlan();
+      //navigation.replace('Home');
+    }
+  };
+
+  //Add Plans
+
+  //Selected ID AMOUNT NAME================>
+
+  const handleSelection = (_id, pack_name, des_price) => {
+    var selectedId = _id;
+    var packName = pack_name;
+    var discAmount = des_price;
+
+    if (selectedId === _id) setSelectedItem(_id);
+    else setSelectedItem(null);
+    console.log(_id);
+    if (packName != '' || packName != null) {
+      setPacknames(pack_name);
+    } else null;
+    console.log(pack_name);
+    if (discAmount != '' || discAmount != null) {
+      setDiscPrice(des_price);
+    } else null;
+    console.log(des_price);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -85,7 +230,7 @@ const AfterSignUp = ({navigation}) => {
       </View>
       <ScrollView>
         <View>
-          <View style={styles.subView}>
+        <View style={styles.subView}>
             <View style={styles.topView}>
               <Text style={styles.topText}>
                 Welcome to Trupee community. Over 10K+ subscriber are investing
@@ -106,7 +251,13 @@ const AfterSignUp = ({navigation}) => {
                   {plan?.map(item => (
                     <TouchableOpacity
                       key={item._id}
-                      onPress={() => handleSelection(item._id)}
+                      onPress={() =>
+                        handleSelection(
+                          item._id,
+                          item.pack_name,
+                          item.des_price,
+                        )
+                      }
                       style={
                         item._id === selectedItem ? styles.memberTouch : null
                       }>
@@ -125,8 +276,9 @@ const AfterSignUp = ({navigation}) => {
             </View>
           </View>
           <View style={styles.subView}>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}
+              onPress={() => navigation.navigate('Premium Service')}>
               <View style={styles.viewOne}>
                 <Text style={{fontWeight: '700', color: 'black'}}>
                   Premium / Paid Services Included:
@@ -140,7 +292,7 @@ const AfterSignUp = ({navigation}) => {
                   style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}
                 />
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.subView}>
             <TouchableOpacity
@@ -169,17 +321,17 @@ const AfterSignUp = ({navigation}) => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
-                <Text style={{fontWeight: '700', color: 'black'}}>
+                <Text style={{fontWeight: '700', color: 'black', fontSize: 16}}>
                   ₹ {wallet?.amount}
                 </Text>
               </View>
               <View style={styles.viewThree}>
-                <Text>Use My Wallet Balance</Text>
+                <Text style={{color: '#000'}}>Use My Wallet Balance</Text>
                 {/* <Text>Use My Wallet Balance</Text> */}
               </View>
             </View>
           </View>
-          <View style={styles.subView}>
+          {/* <View style={styles.subView}>
             <View style={styles.viewThree}>
               <Text style={{fontWeight: '700', color: 'black'}}>
                 Have a Promo Code?
@@ -189,30 +341,36 @@ const AfterSignUp = ({navigation}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={styles.viewThree}>
                 <TextInput
-                  placeholder="Enter Promo Code"
+                  placeholderTextColor={'gray'}
+                  placeholder="Enter Code Here"
                   style={styles.input}
                   onChangeText={setCode}
                   value={code}
                   color="#000"
                 />
               </View>
-              <View style={styles.viewFour}>
-                <TouchableOpacity style={styles.buttonStyle} onPress={sendCode}>
+               <View style={styles.viewFour}>
+                <TouchableOpacity
+                  style={styles.buttonStyle}
+                  onPress={applyCode}>
                   <Text style={styles.buttonText}>Apply</Text>
                 </TouchableOpacity>
-              </View>
+              </View> 
             </View>
-          </View>
+          </View> */}
           <View style={styles.subView}>
             <View style={styles.bottomStyle}>
               <Text style={[styles.viewThree, {color: '#000'}]}>
                 I understand & agree to all of Trupee’s
               </Text>
-              <Text style={[styles.viewThree, {color: '#000'}]}>
-                TERMS & CONDITIONS
-              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Terms & Conditions')}>
+                <Text style={[styles.viewThree, {color: '#000'}]}>
+                  TERMS & CONDITIONS
+                </Text>
+              </TouchableOpacity>
               <View>
-                <TouchableOpacity style={styles.bottomBtn}>
+                <TouchableOpacity style={styles.bottomBtn} onPress={subscribe}>
                   <Text style={styles.buttonText}>Subscribe</Text>
                 </TouchableOpacity>
               </View>
@@ -229,7 +387,6 @@ export default AfterSignUp;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
   },
   mainCard: {
     backgroundColor: '#c0d4a3',
@@ -243,65 +400,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 40,
-    marginVertical: 15,
-  },
-  topText: {
-    textAlign: 'center',
-    color: '#a82682',
-    fontSize: 16,
-    fontWeight: '700',
-  },
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginHorizontal: 40,
+  marginVertical: 15,
+},
+topText: {
+  textAlign: 'center',
+  color: '#a82682',
+  fontSize: 16,
+  fontWeight: '700',
+},
   viewOne: {
     marginHorizontal: 5,
     marginVertical: 20,
-  },
-
-  //MemberShip
-
-  textView: {
-    margin: 5,
-  },
-  oneText: {
-    color: '#000',
-    fontWeight: '700',
-    fontSize: 15,
-  },
-  memberTouch: {
-    borderWidth: 2,
-    marginHorizontal: 4,
-    marginVertical: 4,
-  },
-  card: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 0,
-    height: 130,
-
-    padding: 20,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-  textcard: {
-    fontWeight: '600',
-    color: 'black',
-    marginBottom: 5,
-  },
-  textcard1: {
-    fontWeight: '600',
-    color: 'black',
-    marginBottom: 5,
-    textDecorationLine: 'line-through',
-    textDecorationColor: '#000',
-  },
-  offText: {
-    backgroundColor: '#a82682',
-    color: '#fff',
-    paddingHorizontal: 15,
-    borderRadius: 20,
   },
 
   viewTwo: {
@@ -319,11 +432,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    height: 40,
+    height: 50,
     margin: 5,
     borderWidth: 1,
     padding: 10,
-    width: 200,
+    width: 320,
   },
   buttonStyle: {
     backgroundColor: '#a82682',
@@ -349,4 +462,49 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 5,
   },
+  //membership
+
+  textView: {
+    margin: 5,
+  },
+  oneText: {
+    color: '#000',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  memberTouch: {
+    borderWidth: 2,
+    marginHorizontal: 4,
+    marginVertical: 4,
+  },
+  card: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 3,
+    height: 140,
+    width: 140,
+    padding: 20,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  textcard: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+  },
+  textcard1: {
+    fontWeight: '600',
+    color: 'black',
+    marginBottom: 5,
+    textDecorationLine: 'line-through',
+    textDecorationColor: '#000',
+  },
+  offText: {
+    backgroundColor: '#a82682',
+    color: '#fff',
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    textAlign: 'center',
+  },
 });
+
