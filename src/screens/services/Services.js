@@ -56,43 +56,37 @@ const Services = ({navigation}) => {
     getPlan();
     getWallet();
   }, [storeddata]);
-  
-
 
   // Get API =====================>
-  
-    const getPlan = async () => {
-      axiosConfig
-        .get(`/plan_list`)
-        .then(response => {
-          //console.log(response.data.data);
-          setPlan(response.data.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-    //Wallet Api
-    const getWallet = async () => {
-      axios
-        .get(`http://65.0.183.149:8000/user/myWallet`, {
-          headers: {
-            'auth-token': await AsyncStorage.getItem('auth-token'),
-          },
-        })
-        .then(response => {
-          //console.log('wallet', response.data.data);
-          const data = response.data.data;
-          setWallet(data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-    
-  
 
-
+  const getPlan = async () => {
+    axiosConfig
+      .get(`/plan_list`)
+      .then(response => {
+        //console.log(response.data.data);
+        setPlan(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  //Wallet Api
+  const getWallet = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/myWallet`, {
+        headers: {
+          'auth-token': await AsyncStorage.getItem('auth-token'),
+        },
+      })
+      .then(response => {
+        //console.log('wallet', response.data.data);
+        const data = response.data.data;
+        setWallet(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   //<============Add free plan api===========>
   const freePlan = async () => {
@@ -102,58 +96,63 @@ const Services = ({navigation}) => {
         `http://65.0.183.149:8000/user/freeMembership`,
         {
           planId: selectedItem,
-          type:'Free'
-        },{
-          headers:{
-            'auth-token': await AsyncStorage.getItem('auth-token')
-          }
-        })
+          type: 'Free',
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
       .then(response => {
         console.log(response.data.data.planId);
         if (response.data.data.planId != null) {
           _storeData(response.data.data.planId);
         }
-        if(response.data.message === 'success'){
-          Alert.alert('Free MemberShip Successful')
-          navigation.replace('Home')
+        if (response.data.message === 'success') {
+          Alert.alert('Free MemberShip Successful');
+          navigation.replace('Home');
         }
       })
       .catch(error => {
         console.log(error.response.data.message);
-        if(error.response.data.message === 'already exists'){
-          Alert.alert('Plan Already Exist')
+        if (error.response.data.message === 'already exists') {
+          Alert.alert('Plan Already Exist');
         }
+      });
+  };
+
+  //<============Add Paid plan api===========>
+
+  const paidPlan = async () => {
+    console.log(selectedItem, code, paymentId);
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/addMemeberShip`,
+        {
+          planId: selectedItem,
+          refral_Code: code,
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+        setCode('');
+        console.log(response.data.data.planId);
+      })
+      .catch(error => {
+        console.log(error);
       });
   };
 
   //=======Apply Code Post Api ==========>
   const subscribe = async () => {
     if (discPrice !== 0) {
-      const takePlan = async () => {
-        console.log(selectedItem, code, paymentId);
-        axios
-          .post(
-            `http://65.0.183.149:8000/user/addMemeberShip`,
-            {
-              planId: selectedItem,
-              refral_Code: code,
-              
-            },
-            {
-              headers: {
-                'auth-token': await AsyncStorage.getItem('auth-token'),
-              },
-            },
-          )
-          .then(response => {
-            console.log(response.data);
-            console.log(response.data.data.planId);
-            
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      };
+      paidPlan();
       // var options = {
       //   description: 'Credits towards consultation',
       //   image: 'https://i.imgur.com/3g7nmJC.png',
@@ -194,8 +193,6 @@ const Services = ({navigation}) => {
   };
 
   //Add Plans
-
-  
 
   //Selected ID AMOUNT NAME================>
 
