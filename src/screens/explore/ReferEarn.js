@@ -1,17 +1,54 @@
 import {
+  
   Image,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Clipboard,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Share from 'react-native-share';
+
 
 const ReferEarn = () => {
   const [user, setUser] = useState('');
+  const [copiedText, setCopiedText] = useState('');
+
+  const copyToClipboard = () => {
+    Clipboard.setString( user.refral_Code);
+    showToast()
+  };
+
+  const fetchCopiedText = async () => {
+    const text = await Clipboard.getString();
+    setCopiedText(text);
+    
+  };
+
+  const showToast = () => {
+    ToastAndroid.show("Text Copied", ToastAndroid.LONG);
+  };
+
+  const shareOptions = {
+    title: 'Share via',
+    message: 'New Trading Tip App for you with Best Features I Am Sharing my Refferal Code',
+    
+    
+  };
+  const onShare = async() =>{
+    Share.open(shareOptions)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    err && console.log(err);
+  });
+  }
 
   //get User Api for name
   const getUser = async () => {
@@ -62,7 +99,12 @@ const ReferEarn = () => {
           <Text style={styles.referText}>{user?.refral_Code}</Text>
         </View>
         <View style={styles.subView}>
-          <TouchableOpacity style={styles.btnDesign}>
+          <TouchableOpacity style={styles.btnDesign} onPress={copyToClipboard}>
+            <Text style={styles.touchText}>COPY</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.subView}>
+          <TouchableOpacity style={styles.btnDesign} onPress={onShare}>
             <Text style={styles.touchText}>SHARE</Text>
           </TouchableOpacity>
         </View>

@@ -32,6 +32,7 @@ import Opportunity from '../screens/explore/Opportunity';
 import PremiumPaid from '../screens/services/PremiumPaid';
 import Terms from '../screens/services/Terms';
 import MemberPlan from '../screens/services/MemberPlan';
+import EnterRefer from '../screens/Drawer/EnterRefer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -173,6 +174,13 @@ const HomeStack = () => {
       <Stack.Screen
         name="Show Appreciation"
         component={Appreciation}
+        options={({route}) => ({
+          title: route.params?.title,
+        })}
+      />
+      <Stack.Screen
+        name="Enter Refer"
+        component={EnterRefer}
         options={({route}) => ({
           title: route.params?.title,
         })}

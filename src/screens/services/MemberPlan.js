@@ -19,7 +19,7 @@ import RazorpayCheckout from 'react-native-razorpay';
 
 const MemberPlan = ({navigation}) => {
   const [plan, setPlan] = useState([]);
-  const [code, setCode] = React.useState('');
+  // const [code, setCode] = React.useState('');
   const [selectedItem, setSelectedItem] = useState('');
   const [packnames, setPacknames] = useState('');
   const [discPrice, setDiscPrice] = useState('');
@@ -227,6 +227,7 @@ const MemberPlan = ({navigation}) => {
       <View>
         <SimpleHeader />
       </View>
+      
       <ScrollView>
         <View>
         

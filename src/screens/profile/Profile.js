@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity, Share} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SimpleHeader from '../../components/SimpleHeader';
 import axiosConfig from '../../../axiosConfig';
 import axios from 'axios';
+import Share from 'react-native-share';
 
 const Profile = ({navigation}) => {
   const [user, setUser] = useState('');
@@ -43,24 +44,41 @@ const Profile = ({navigation}) => {
       });
   };
 
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message:
-        'My Referral Code',
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      alert(error.message);
-    }
+  // const onShare = async () => {
+  //   try {
+  //     const result = await Share.share({
+  //       message:
+  //       'My Referral Code',
+  //     });
+  //     if (result.action === Share.sharedAction) {
+  //       if (result.activityType) {
+  //       } else {
+  //         // shared
+  //       }
+  //     } else if (result.action === Share.dismissedAction) {
+  //       // dismissed
+  //     }
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
+
+  const shareOptions = {
+    title: 'Share via',
+    message: 'New Trading Tip App for you with Best Features',
+    url: 'https://play.google.com/store/apps/details?id=com.tradzoo.app',
+    
   };
+
+  const onShare = async() =>{
+    Share.open(shareOptions)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    err && console.log(err);
+  });
+  }
   return (
     <View style={styles.container}>
       <View>
@@ -222,6 +240,29 @@ const Profile = ({navigation}) => {
                 style={{marginLeft: 10}}
               />
               <Text style={styles.btntxt}>Show Appreciation</Text>
+            </View>
+            <View>
+              <Ionicons
+                name="chevron-forward-outline"
+                size={22}
+                color={'green'}
+                style={{marginRight: 20}}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate('Enter Refer')}>
+            <View style={styles.eachSection}>
+              <Ionicons
+                name="cash"
+                size={25}
+                color={'#404040'}
+                style={{marginLeft: 10}}
+              />
+              <Text style={styles.btntxt}>Enter Referral Code</Text>
             </View>
             <View>
               <Ionicons
