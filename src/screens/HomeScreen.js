@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,21 +6,29 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Modal,
+  Alert,
 } from 'react-native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FnoIndex from './home/FnoIndex';
 import AllTrade from './home/AllTrade';
 import FnoEquity from './home/FnoEquity';
 import EquityCash from './home/EquityCash';
 import DatePicker from 'react-native-datepicker';
 
-export default function HomeScreen({navigation, props}) {
+export default function HomeScreen({ navigation, props }) {
   const Tab = createMaterialTopTabNavigator();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+
+
+  const tDate = new Date().toDateString()
+  console.log('today', tDate);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View>
         <View style={styles.mainView}>
           <View style={styles.firstView}>
@@ -33,11 +41,30 @@ export default function HomeScreen({navigation, props}) {
           </View>
 
           <View style={styles.secondView}>
-            <View style={styles.dateTextView}>
+            <TouchableOpacity style={styles.dateTextView} onPress={() => setModalVisible(true)}>
               <View style={styles.tradeTextView}>
-                <Text style={{color: 'green'}}>Trade History</Text>
+                <Text style={{ color: 'green' }}>Trade History</Text>
               </View>
-              <TouchableOpacity
+              <View style={styles.tradeTextView}>
+                <Text style={{ color: 'green' }}>Trade History</Text>
+              </View>
+              <View style={styles.tradeTextView}>
+                <Text style={{ color: 'green', fontSize: 15, fontWeight: '500' }}>{tDate}</Text>
+              </View>
+              <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Hello World!</Text>
+                    <TouchableOpacity
                 style={styles.calender}
                 onPress={() => setOpen(true)}>
                 <DatePicker
@@ -69,20 +96,31 @@ export default function HomeScreen({navigation, props}) {
                   }}
                 />
               </TouchableOpacity>
-            </View>
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Hide Modal</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+              </View>
+              
+            </TouchableOpacity>
           </View>
         </View>
       </View>
 
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: {fontSize: 12, color: '#000', fontWeight: '600'},
-          tabBarItemStyle: {width: 130},
+          tabBarLabelStyle: { fontSize: 12, color: '#000', fontWeight: '600' },
+          tabBarItemStyle: { width: 130 },
           tabBarScrollEnabled: true,
           tabBarIndicatorStyle: {
             backgroundColor: '#a82682',
           },
-          tabBarStyle: {backgroundColor: 'white', paddingHorizontal: 0},
+          tabBarStyle: { backgroundColor: 'white', paddingHorizontal: 0 },
         }}>
         <Tab.Screen name="ALL TRADE" component={AllTrade} date={props?.date} />
         <Tab.Screen name="FNO INDEX" component={FnoIndex} />
@@ -109,8 +147,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dateTextView: {borderWidth: 2, borderColor: 'green', borderRadius: 5},
-  tradeTextView: {justifyContent: 'center', alignItems: 'center'},
+  dateTextView: {
+    borderWidth: 2,
+    borderColor: 'green',
+    borderRadius: 5,
+    padding: 5
+  },
+  tradeTextView: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   logoImg: {
     width: 120,
     height: 45,
@@ -136,4 +182,45 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
 });
