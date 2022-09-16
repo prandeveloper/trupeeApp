@@ -9,9 +9,11 @@ import {
   Modal,
   Pressable,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Moment from 'react-moment';
 import {styles} from './TradeStyle';
 import ShowMore from 'react-native-show-more-button';
@@ -72,8 +74,7 @@ const EquityCash = () => {
 
             {/* <================Circle Area=============> */}
 
-            <View style={styles.bgarea2}>
-              {/* <===========SL=============> */}
+            {/* <View style={styles.bgarea2}>
 
               {trade?.sl_type === 'false' ? (
                 <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
@@ -90,7 +91,6 @@ const EquityCash = () => {
                   </Text>
                 </View>
               )}
-              {/* <===========T1 =============> */}
 
               {trade?.t1_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -108,7 +108,6 @@ const EquityCash = () => {
                 </View>
               )}
 
-              {/* <===========T2 =============> */}
 
               {trade?.t2_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -126,7 +125,6 @@ const EquityCash = () => {
                 </View>
               )}
 
-              {/* <===========T3 =============> */}
 
               {trade?.t3_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -144,7 +142,7 @@ const EquityCash = () => {
                 </View>
               )}
 
-              {/* <===========T4 =============> */}
+              
 
               {trade?.t4_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -161,8 +159,30 @@ const EquityCash = () => {
                   </Text>
                 </View>
               )}
+            </View> */}
+            <View style={styles.bgarea2}>
+              <View
+                style={{
+                  backgroundColor: '#000',
+                  paddingVertical: 5,
+                  paddingHorizontal: 32,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                }}>
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={25}
+                  color={'#fff'}
+                  style={{marginVertical: 5}}
+                />
+                <Text
+                  style={{color: '#fff', textAlign: 'center', fontSize: 14}}>
+                  This Trade will be visible after 30 minutes. Upgrade to our
+                  premium service to view this instantly.
+                </Text>
+              </View>
             </View>
-
             {/* <================Botton Area=============> */}
             <View style={styles.bgarea2}>
               <View style={styles.botomview1}>
@@ -208,8 +228,7 @@ const EquityCash = () => {
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                      {trade?.active_value} - {trade?.active_value2}
+                      {trade?.cash_scrpt_name?.scriptName} @ 1st Target
                     </Text>
                   </View>
                   <View style={styles.insideViewTwo}>
@@ -219,8 +238,7 @@ const EquityCash = () => {
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                      {trade?.active_value} - {trade?.active_value2}
+                      {trade?.cash_scrpt_name?.scriptName} @ 2nd Target
                     </Text>
                   </View>
                   <View style={styles.insideViewTwo}>
@@ -230,8 +248,47 @@ const EquityCash = () => {
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                      {trade?.active_value} - {trade?.active_value2}
+                      {trade?.cash_scrpt_name?.scriptName} @ 3rd Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.cash_scrpt_name?.scriptName} @ 4th Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.cash_scrpt_name?.scriptName} @ 5th Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.cash_scrpt_name?.scriptName} @ 6th Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.cash_scrpt_name?.scriptName} @ 7th Target
                     </Text>
                   </View>
                   <View style={styles.insideViewTwo}>

@@ -206,8 +206,7 @@ const FnoEquity = () => {
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                      {trade?.active_value} - {trade?.active_value2}
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
                     </Text>
                   </View>
                   <View style={styles.insideViewTwo}>
@@ -217,8 +216,7 @@ const FnoEquity = () => {
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                      {trade?.active_value} - {trade?.active_value2}
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 2nd Target
                     </Text>
                   </View>
                   <View style={styles.insideViewTwo}>
@@ -228,8 +226,47 @@ const FnoEquity = () => {
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                      {trade?.active_value} - {trade?.active_value2}
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 3rd Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 4th Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 5th Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 6th Target
+                    </Text>
+                  </View>
+                  <View style={styles.insideViewTwo}>
+                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  </View>
+                </View>
+                <View style={styles.showView}>
+                  <View style={styles.insideViewOne}>
+                    <Text style={styles.dropTextOne}>
+                      {trade?.fnoequty_scrpt_name?.scriptName} @ 7th Target
                     </Text>
                   </View>
                   <View style={styles.insideViewTwo}>
