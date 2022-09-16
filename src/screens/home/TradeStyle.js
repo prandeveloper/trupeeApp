@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginVertical: 5,
-    marginHorizontal: 5,
+    marginHorizontal: 4,
+    justifyContent: 'center',
   },
 
   buy: {

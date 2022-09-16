@@ -10,6 +10,7 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
@@ -74,7 +75,29 @@ const FnoIndex = () => {
             {/* <================Circle Area=============> */}
 
             <View style={styles.bgarea2}>
-              {/* <===========SL=============> */}
+              <View
+                style={{
+                  backgroundColor: '#000',
+                  paddingVertical: 5,
+                  paddingHorizontal: 32,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                }}>
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={25}
+                  color={'#fff'}
+                  style={{marginVertical: 5}}
+                />
+                <Text
+                  style={{color: '#fff', textAlign: 'center', fontSize: 14}}>
+                  This Trade will be visible after 30 minutes. Upgrade to our
+                  premium service to view this instantly.
+                </Text>
+              </View>
+            </View>
+            {/*<View style={styles.bgarea2}>
 
               {trade?.sl_type === 'false' ? (
                 <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
@@ -91,7 +114,6 @@ const FnoIndex = () => {
                   </Text>
                 </View>
               )}
-              {/* <===========T1 =============> */}
 
               {trade?.trl_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -109,7 +131,6 @@ const FnoIndex = () => {
                 </View>
               )}
 
-              {/* <===========T1 =============> */}
 
               {trade?.FT1_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -127,7 +148,6 @@ const FnoIndex = () => {
                 </View>
               )}
 
-              {/* <===========T2 =============> */}
 
               {trade?.FT2_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -145,7 +165,6 @@ const FnoIndex = () => {
                 </View>
               )}
 
-              {/* <===========T3 =============> */}
 
               {trade?.FT3_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -162,7 +181,7 @@ const FnoIndex = () => {
                   </Text>
                 </View>
               )}
-            </View>
+            </View> */}
 
             {/* <================Botton Area=============> */}
             <View style={styles.bgarea2}>

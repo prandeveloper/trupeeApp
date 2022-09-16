@@ -203,46 +203,58 @@ const FnoEquity = () => {
                 buttonColor={'blue'}
                 showMoreText="View Trade History"
                 showLessText="Hide Trade History">
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                    </Text>
+                {trade?.t1_type === 'true' ? (
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target{' '}
+                        {trade?.T1}
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
                   </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                ) : null}
+                {trade?.t2_type === 'true' ? (
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoequty_scrpt_name?.scriptName} @ 2nd Target{' '}
+                        {trade?.T2}
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 2nd Target
-                    </Text>
+                ) : null}
+                {trade?.t3_type === 'true' ? (
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoequty_scrpt_name?.scriptName} @ 3rd Target{' '}
+                        {trade?.T3}
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
                   </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
+                ) : null}
+                {trade?.t4_type === 'true' ? (
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoequty_scrpt_name?.scriptName} @ 4th Target{' '}
+                        {trade?.T4}
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 3rd Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 4th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
+                ) : null}
                 <View style={styles.showView}>
                   <View style={styles.insideViewOne}>
                     <Text style={styles.dropTextOne}>
