@@ -74,7 +74,7 @@ const FnoIndex = () => {
 
             {/* <================Circle Area=============> */}
 
-            <View style={styles.bgarea2}>
+            {/* <View style={styles.bgarea2}>
               <View
                 style={{
                   backgroundColor: '#000',
@@ -96,9 +96,8 @@ const FnoIndex = () => {
                   premium service to view this instantly.
                 </Text>
               </View>
-            </View>
-            {/*<View style={styles.bgarea2}>
-
+            </View> */}
+            <View style={styles.bgarea2}>
               {trade?.sl_type === 'false' ? (
                 <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
                   <Text style={styles.notbuy1}>
@@ -131,7 +130,6 @@ const FnoIndex = () => {
                 </View>
               )}
 
-
               {trade?.FT1_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
                   <Text style={styles.notbuy}>
@@ -147,7 +145,6 @@ const FnoIndex = () => {
                   </Text>
                 </View>
               )}
-
 
               {trade?.FT2_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
@@ -165,7 +162,6 @@ const FnoIndex = () => {
                 </View>
               )}
 
-
               {trade?.FT3_type === 'false' ? (
                 <View style={[styles.circle, {backgroundColor: '#fff'}]}>
                   <Text style={styles.notbuy}>
@@ -181,7 +177,7 @@ const FnoIndex = () => {
                   </Text>
                 </View>
               )}
-            </View> */}
+            </View>
 
             {/* <================Botton Area=============> */}
             <View style={styles.bgarea2}>

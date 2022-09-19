@@ -7,14 +7,18 @@ import {
   TouchableOpacity,
   View,
   Linking,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {TextInput} from 'react-native-paper';
 import RazorpayCheckout from 'react-native-razorpay';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Appreciation = () => {
-  const [amount, setAmount] = useState('');
+  const [money, setMoney] = useState();
   const [desc, setDesc] = useState('');
+  const [paymentId, setPaymentId] = useState('');
 
   const trupee = () => {
     var options = {
@@ -22,7 +26,7 @@ const Appreciation = () => {
       image: 'https://i.imgur.com/3g7nmJC.png',
       currency: 'INR',
       key: 'rzp_test_rUafkCJLwIeF1t',
-      amount: amount * 100,
+      amount: money * 100,
       name: 'Pranay',
       prefill: {
         email: 'void@razorpay.com',
@@ -32,13 +36,43 @@ const Appreciation = () => {
       theme: {color: '#F37254'},
     };
     RazorpayCheckout.open(options)
-      .then(data => {
-        // handle success
-        alert(`Success: ${data.razorpay_payment_id}`);
+      .then(SuccessResponse => {
+        console.log(SuccessResponse.razorpay_payment_id);
+        const paymentId = SuccessResponse.razorpay_payment_id;
+        setPaymentId(paymentId);
+        console.log(paymentId);
+        if (SuccessResponse.razorpay_payment_id !== '') {
+          success();
+        }
+        alert(`${SuccessResponse.razorpay_payment_id}`);
       })
       .catch(error => {
         // handle failure
         alert(`Error: ${error.code} | ${error.description}`);
+      });
+  };
+
+  const success = async () => {
+    console.log(money, desc, paymentId);
+    axios
+      .post(
+        `http://65.0.183.149:8000/user/add_appriciation`,
+        {
+          amt: money,
+          desc: desc,
+          razorpay_payment_id: paymentId,
+        },
+        {
+          headers: {
+            'auth-token': await AsyncStorage.getItem('auth-token'),
+          },
+        },
+      )
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
       });
   };
 
@@ -98,8 +132,8 @@ const Appreciation = () => {
                 <TextInput
                   label="Amount"
                   mode="outlined"
-                  value={amount}
-                  onChangeText={setAmount}
+                  value={money}
+                  onChangeText={setMoney}
                   keyboardType="numeric"
                 />
               </View>
