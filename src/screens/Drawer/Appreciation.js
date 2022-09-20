@@ -16,41 +16,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Appreciation = () => {
+  const [paymentId, setPaymentId] = useState('');
   const [money, setMoney] = useState();
   const [desc, setDesc] = useState('');
-  const [paymentId, setPaymentId] = useState('');
-
-  const trupee = () => {
-    var options = {
-      description: 'Credits towards consultation',
-      image: 'https://i.imgur.com/3g7nmJC.png',
-      currency: 'INR',
-      key: 'rzp_test_rUafkCJLwIeF1t',
-      amount: money * 100,
-      name: 'Pranay',
-      prefill: {
-        email: 'void@razorpay.com',
-        contact: '9191919191',
-        name: 'Razorpay Software',
-      },
-      theme: {color: '#F37254'},
-    };
-    RazorpayCheckout.open(options)
-      .then(SuccessResponse => {
-        console.log(SuccessResponse.razorpay_payment_id);
-        const paymentId = SuccessResponse.razorpay_payment_id;
-        setPaymentId(paymentId);
-        console.log(paymentId);
-        if (SuccessResponse.razorpay_payment_id !== '') {
-          success();
-        }
-        alert(`${SuccessResponse.razorpay_payment_id}`);
-      })
-      .catch(error => {
-        // handle failure
-        alert(`Error: ${error.code} | ${error.description}`);
-      });
-  };
 
   const success = async () => {
     console.log(money, desc, paymentId);
@@ -69,10 +37,49 @@ const Appreciation = () => {
         },
       )
       .then(response => {
-        console.log(response.data);
+        console.log(response.data.data);
+        setMoney('');
+        setDesc('');
+        setPaymentId('');
+        Alert.alert('Thankyou For Appriciation..❤');
       })
       .catch(error => {
         console.log(error);
+      });
+  };
+
+  const trupee = () => {
+    var options = {
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'rzp_test_rUafkCJLwIeF1t',
+      amount: money * 100,
+      name: 'Pranay',
+      prefill: {
+        email: 'void@razorpay.com',
+        contact: '9191919191',
+        name: 'Razorpay Software',
+      },
+      theme: {color: '#F37254'},
+    };
+    RazorpayCheckout.open(options)
+      .then(data => {
+        //console.log(data.razorpay_payment_id);
+        const pData = JSON.stringify(data.razorpay_payment_id);
+        //console.log('InJson', pData);
+        const payId = pData;
+        setPaymentId(payId);
+        //console.log('@@@', payId);
+
+        if (data.razorpay_payment_id !== '') {
+          success();
+        }
+        //alert(`${data.razorpay_payment_id}`);
+      })
+      .catch(error => {
+        // handle failure
+        alert(`Error: ${error.code} | ${error.description}`);
       });
   };
 

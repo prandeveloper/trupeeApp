@@ -74,10 +74,10 @@ const LoginScreen = () => {
         console.log(response.data.msg);
         if (response.data.token != null) {
           _storeData(response.data.token);
-          if (response.data.msg === 'Welcome Back') {
-            navigation.replace('MemberPlan');
-          } else {
+          if (response.data.msg !== 'Welcome Back') {
             navigation.replace('AfterSignUp');
+          } else {
+            navigation.replace('MemberPlan');
           }
         } else {
           console.log('no token!');

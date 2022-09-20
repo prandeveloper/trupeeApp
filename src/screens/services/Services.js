@@ -17,9 +17,10 @@ import axiosConfig from '../../../axiosConfig';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RazorpayCheckout from 'react-native-razorpay';
-import { clockRunning } from 'react-native-reanimated';
+import {clockRunning} from 'react-native-reanimated';
 
 const Services = ({navigation}) => {
+  const [user, setUser] = useState({});
   const [plan, setPlan] = useState([]);
   const [code, setCode] = React.useState('');
   const [selectedItem, setSelectedItem] = useState('');
@@ -56,8 +57,23 @@ const Services = ({navigation}) => {
     //getData();
     getPlan();
     getWallet();
+    getUser();
   }, [storeddata]);
 
+  //<==========================Get User Api===========>
+  const getUser = async () => {
+    axios
+      .get(`http://65.0.183.149:8000/user/viewoneuser`, {
+        headers: {'auth-token': await AsyncStorage.getItem('auth-token')},
+      })
+      .then(response => {
+        console.log(response.data.data);
+        setUser(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   // Get API =====================>
 
   const getPlan = async () => {
@@ -132,7 +148,7 @@ const Services = ({navigation}) => {
         `http://65.0.183.149:8000/user/addMemeberShip`,
         {
           planId: selectedItem,
-          razorpay_payment_id:paymentId,
+          razorpay_payment_id: paymentId,
         },
         {
           headers: {
@@ -142,14 +158,13 @@ const Services = ({navigation}) => {
       )
       .then(response => {
         console.log(response.data);
-        if(response.data.message === 'success'){
-          Alert.alert('Membership Activated')
+        if (response.data.message === 'success') {
+          Alert.alert('Membership Activated');
         }
         console.log(response.data.data.planId);
         if (response.data.data.planId != null) {
           _storeData(response.data.data.planId);
           navigation.replace('Home');
-
         }
       })
       .catch(error => {
@@ -178,16 +193,15 @@ const Services = ({navigation}) => {
         .then(data => {
           const paymentId = data.razorpay_payment_id;
           setPaymentId(paymentId);
-          console.log('PPP',paymentId);
+          console.log('PPP', paymentId);
           if (
             data.razorpay_payment_id != '' &&
             data.razorpay_payment_id != null &&
             data.razorpay_payment_id != undefined
           ) {
             paidPlan();
-          }
-          else{
-            Alert.alert('Payment Failed')
+          } else {
+            Alert.alert('Payment Failed');
           }
         })
         .catch(error => {
@@ -232,7 +246,9 @@ const Services = ({navigation}) => {
           <View style={styles.subView}>
             <Card style={styles.mainCard}>
               <Card.Content>
-                <Paragraph>Subscription Type:</Paragraph>
+                <Paragraph>
+                  Subscription Type : {user.planId?.pack_name}
+                </Paragraph>
                 <Paragraph>Start Date:</Paragraph>
                 <Paragraph>Expiry Date</Paragraph>
               </Card.Content>

@@ -38,18 +38,17 @@ const AfterSignUp = ({navigation}) => {
     }
   };
   const getData = async () => {
-      const plan = await AsyncStorage.getItem('plan');
-      if (plan !== null) {
-        console.log('success');
-        console.log(plan);
-        Alert.alert("Welcome to Trupee")
-        setStoreddata(plan);
-        navigation.replace('Home');
-      }else{
-        navigation.navigate('AfterSignUp')
-        //Alert.alert('Something Went Wrong')
-      }
-     
+    const plan = await AsyncStorage.getItem('plan');
+    if (plan !== null) {
+      console.log('success');
+      console.log(plan);
+      Alert.alert('Welcome to Trupee');
+      setStoreddata(plan);
+      navigation.replace('Home');
+    } else {
+      navigation.navigate('AfterSignUp');
+      //Alert.alert('Something Went Wrong')
+    }
   };
   useEffect(() => {
     getData();
@@ -131,7 +130,7 @@ const AfterSignUp = ({navigation}) => {
         `http://65.0.183.149:8000/user/addMemeberShip`,
         {
           planId: selectedItem,
-          razorpay_payment_id:paymentId,
+          razorpay_payment_id: paymentId,
         },
         {
           headers: {
@@ -141,17 +140,17 @@ const AfterSignUp = ({navigation}) => {
       )
       .then(response => {
         console.log(response.data);
-        if(response.data.message === 'success'){
-          Alert.alert('Membership Activated')
+        if (response.data.message === 'success') {
+          Alert.alert('Membership Activated');
         }
         console.log(response.data.data.razorpay_payment_id);
-        if (response.data.data.razorpay_payment_id != "") {
+        if (response.data.data.razorpay_payment_id != '') {
           _storeData(response.data.data.planId);
           navigation.replace('Home');
-}else{
-  navigation.navigate('AfterSignUp')
-  Alert.alert('Something Went Wrong')
-}
+        } else {
+          navigation.navigate('AfterSignUp');
+          Alert.alert('Something Went Wrong');
+        }
       })
       .catch(error => {
         console.log(error);
@@ -165,7 +164,7 @@ const AfterSignUp = ({navigation}) => {
         description: 'Credits towards consultation',
         image: 'https://i.imgur.com/3g7nmJC.png',
         currency: 'INR',
-        key: 'rzp_test_rUafkCJLwIeF1t', // Your api key
+        key: 'rzp_test_rUafkCJLwIeF1t',
         amount: discPrice * 100,
         name: wallet?.firstname,
         prefill: {
@@ -179,16 +178,15 @@ const AfterSignUp = ({navigation}) => {
         .then(data => {
           const paymentId = data.razorpay_payment_id;
           setPaymentId(paymentId);
-          console.log('PPP',paymentId);
+          console.log('PPP', paymentId);
           if (
             data.razorpay_payment_id != '' &&
             data.razorpay_payment_id != null &&
             data.razorpay_payment_id != undefined
           ) {
             paidPlan();
-          }
-          else{
-            Alert.alert('Payment Failed')
+          } else {
+            Alert.alert('Payment Failed');
           }
         })
         .catch(error => {
@@ -230,7 +228,7 @@ const AfterSignUp = ({navigation}) => {
       </View>
       <ScrollView>
         <View>
-        <View style={styles.subView}>
+          <View style={styles.subView}>
             <View style={styles.topView}>
               <Text style={styles.topText}>
                 Welcome to Trupee community. Over 10K+ subscriber are investing
@@ -400,18 +398,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topView: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginHorizontal: 40,
-  marginVertical: 15,
-},
-topText: {
-  textAlign: 'center',
-  color: '#a82682',
-  fontSize: 16,
-  fontWeight: '700',
-},
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 40,
+    marginVertical: 15,
+  },
+  topText: {
+    textAlign: 'center',
+    color: '#a82682',
+    fontSize: 16,
+    fontWeight: '700',
+  },
   viewOne: {
     marginHorizontal: 5,
     marginVertical: 20,
@@ -507,4 +505,3 @@ topText: {
     textAlign: 'center',
   },
 });
-

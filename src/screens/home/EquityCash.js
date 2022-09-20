@@ -196,7 +196,7 @@ const EquityCash = () => {
               </View>
               <View style={styles.botomview2}>
                 <Text style={styles.bottomText}>P&L</Text>
-                {trade?.pl_type === 'Loss' ? (
+                {trade?.pl < 0 ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
                     ₹ {trade?.pl} | {trade?.pl_per}%
                   </Text>

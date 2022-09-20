@@ -38,18 +38,17 @@ const MemberPlan = ({navigation}) => {
     }
   };
   const getData = async () => {
-      const plan = await AsyncStorage.getItem('plan');
-      if (plan !== null) {
-        console.log('success');
-        console.log(plan);
-        Alert.alert("Welcome to Trupee")
-        setStoreddata(plan);
-        navigation.replace('Home');
-      }else{
-        navigation.navigate('MemberPlan')
-        Alert.alert('Something Went Wrong')
-      }
-     
+    const plan = await AsyncStorage.getItem('plan');
+    if (plan !== null) {
+      console.log('success');
+      console.log(plan);
+      Alert.alert('Welcome to Trupee');
+      setStoreddata(plan);
+      navigation.replace('Home');
+    } else {
+      navigation.navigate('MemberPlan');
+      //Alert.alert('Something Went Wrong')
+    }
   };
   useEffect(() => {
     getData();
@@ -131,7 +130,7 @@ const MemberPlan = ({navigation}) => {
         `http://65.0.183.149:8000/user/addMemeberShip`,
         {
           planId: selectedItem,
-          razorpay_payment_id:paymentId,
+          razorpay_payment_id: paymentId,
         },
         {
           headers: {
@@ -141,17 +140,17 @@ const MemberPlan = ({navigation}) => {
       )
       .then(response => {
         console.log(response.data);
-        if(response.data.message === 'success'){
-          Alert.alert('Membership Activated')
+        if (response.data.message === 'success') {
+          Alert.alert('Membership Activated');
         }
         console.log(response.data.data.razorpay_payment_id);
         if (response.data.data.razorpay_payment_id != null) {
           _storeData(response.data.data.planId);
           navigation.replace('Home');
-}else{
-  navigation.navigate('MemberPlan')
-  Alert.alert('Something Went Wrong')
-}
+        } else {
+          navigation.navigate('MemberPlan');
+          Alert.alert('Something Went Wrong');
+        }
       })
       .catch(error => {
         console.log(error);
@@ -169,7 +168,7 @@ const MemberPlan = ({navigation}) => {
         amount: (discPrice - wallet.amount) * 100,
         name: wallet?.firstname,
         prefill: {
-          email: wallet?.email,
+          email: 'demo@demo.com',
           contact: wallet?.mobile,
           name: wallet?.firstname,
         },
@@ -177,21 +176,21 @@ const MemberPlan = ({navigation}) => {
       };
       RazorpayCheckout.open(options)
         .then(data => {
-          setPaymentId(data.razorpay_payment_id);
-          console.log('PPP',data.razorpay_payment_id);
+          const payData = JSON.stringify(data.razorpay_payment_id);
+          setPaymentId(payData);
+          console.log('PPP', data.razorpay_payment_id);
           if (
             data.razorpay_payment_id != '' &&
             data.razorpay_payment_id != null &&
             data.razorpay_payment_id != undefined
           ) {
             paidPlan();
-          }
-          else{
-            Alert.alert('Payment Failed')
+          } else {
+            Alert.alert('Payment Failed');
           }
         })
         .catch(error => {
-          console.log(error);
+          //console.log(error);
           alert(`Error: ${error.code} | ${error.description}`);
         });
     } else {
@@ -227,10 +226,9 @@ const MemberPlan = ({navigation}) => {
       <View>
         <SimpleHeader />
       </View>
-      
+
       <ScrollView>
         <View>
-        
           <View style={styles.subView}>
             <Card style={styles.mainCard}>
               <Card.Content>
@@ -496,4 +494,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
