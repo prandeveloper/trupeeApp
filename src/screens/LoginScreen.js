@@ -50,10 +50,11 @@ const LoginScreen = () => {
     try {
       const token = await AsyncStorage.getItem('auth-token');
       if (token !== null) {
+        navigation.replace('Home');
         console.log('success');
-        console.log(token);
-        setStoreddata(token);
-        navigation.replace('MemberPlan');
+        console.log('!!!!!!!', token);
+        //setStoreddata(token);
+        //console.log('@@@@@', storeddata);
       }
     } catch (e) {
       console.log('no Value in login');
@@ -71,13 +72,14 @@ const LoginScreen = () => {
       })
       .then(response => {
         console.log(response.data);
-        console.log(response.data.msg);
+        //console.log(response.data.msg);
         if (response.data.token != null) {
           _storeData(response.data.token);
+          console.log(response.data.planId._id);
           if (response.data.msg !== 'Welcome Back') {
             navigation.replace('AfterSignUp');
           } else {
-            navigation.replace('MemberPlan');
+            navigation.replace('Home');
           }
         } else {
           console.log('no token!');
