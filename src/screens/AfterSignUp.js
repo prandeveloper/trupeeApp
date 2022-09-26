@@ -124,13 +124,13 @@ const AfterSignUp = ({navigation}) => {
   //<============Add Paid plan api===========>
 
   const paidPlan = async () => {
-    console.log(selectedItem, code, paymentId);
+    console.log(selectedItem, JSON.parse(paymentId));
     axios
       .post(
         `http://65.0.183.149:8000/user/addMemeberShip`,
         {
           planId: selectedItem,
-          razorpay_payment_id: paymentId,
+          razorpay_payment_id: JSON.parse(paymentId),
         },
         {
           headers: {
@@ -168,7 +168,7 @@ const AfterSignUp = ({navigation}) => {
         amount: discPrice * 100,
         name: wallet?.firstname,
         prefill: {
-          email: wallet?.email,
+          email: 'demo@demo.com',
           contact: wallet?.mobile,
           name: wallet?.firstname,
         },
@@ -176,14 +176,9 @@ const AfterSignUp = ({navigation}) => {
       };
       RazorpayCheckout.open(options)
         .then(data => {
-          const paymentId = data.razorpay_payment_id;
-          setPaymentId(paymentId);
-          console.log('PPP', paymentId);
-          if (
-            data.razorpay_payment_id != '' &&
-            data.razorpay_payment_id != null &&
-            data.razorpay_payment_id != undefined
-          ) {
+          setPaymentId(JSON.stringify(data.razorpay_payment_id));
+          console.log(paymentId);
+          if (paymentId != '' && paymentId != null && paymentId != undefined) {
             paidPlan();
           } else {
             Alert.alert('Payment Failed');

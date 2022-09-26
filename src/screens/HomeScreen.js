@@ -43,13 +43,15 @@ export default function HomeScreen({navigation, props}) {
               style={styles.dateTextView}
               onPress={() => setModalVisible(true)}>
               <View style={styles.tradeTextView}>
-                <Text style={styles.tradeText}>Trade History</Text>
+                <Text style={styles.tradeText}>Today's P&L</Text>
               </View>
               <View style={styles.tradeTextView}>
-                <Text style={styles.tradeText}>₹ 4000</Text>
+                <Text style={styles.tradeText1}>₹ 4000</Text>
               </View>
               <View style={styles.tradeTextView}>
-                <Text style={styles.tradeText}>{tDate}</Text>
+                <Text style={styles.tradeText2}>
+                  Total Performance | Trade History
+                </Text>
               </View>
             </TouchableOpacity>
             <View style={styles.centeredView}>
@@ -67,15 +69,15 @@ export default function HomeScreen({navigation, props}) {
                     <View style={{flexDirection: 'row'}}>
                       <View>
                         <Text style={styles.modalText}>Today</Text>
-                        <Text style={styles.modalText}>20%</Text>
+                        <Text style={styles.modalText}>₹2000</Text>
                       </View>
                       <View>
                         <Text style={styles.modalText}>Weekly</Text>
-                        <Text style={styles.modalText}>30%</Text>
+                        <Text style={styles.modalText}>₹4000</Text>
                       </View>
                       <View>
                         <Text style={styles.modalText}>Monthly</Text>
-                        <Text style={styles.modalText}>70%</Text>
+                        <Text style={styles.modalText}>₹7000</Text>
                       </View>
                     </View>
                     <TouchableOpacity
@@ -167,17 +169,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dateTextView: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'green',
     borderRadius: 5,
-    padding: 5,
+    padding: 4,
   },
   tradeTextView: {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 2,
   },
-  tradeText: {color: '#000', fontSize: 15, fontWeight: '500'},
+  tradeText: {
+    color: '#000',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  tradeText1: {
+    color: 'green',
+    fontSize: 17,
+    fontWeight: '800',
+  },
+  tradeText2: {
+    color: 'purple',
+    fontSize: 10,
+    fontWeight: '700',
+  },
   logoImg: {
     width: 120,
     height: 45,
