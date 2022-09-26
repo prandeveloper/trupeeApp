@@ -46,7 +46,7 @@ export default function HomeScreen({navigation, props}) {
                 <Text style={styles.tradeText}>Trade History</Text>
               </View>
               <View style={styles.tradeTextView}>
-                <Text style={styles.tradeText}>20%</Text>
+                <Text style={styles.tradeText}>₹ 4000</Text>
               </View>
               <View style={styles.tradeTextView}>
                 <Text style={styles.tradeText}>{tDate}</Text>

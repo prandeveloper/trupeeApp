@@ -13,6 +13,12 @@ import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
 import {styles} from './TradeStyle';
 import ShowMore from 'react-native-show-more-button';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+  AccordionList,
+} from 'accordion-collapse-react-native';
 
 const FnoEquity = () => {
   const [allTrade, setAllTrade] = useState([]);
@@ -198,7 +204,7 @@ const FnoEquity = () => {
 
             {/* <============Seemore=========> */}
             <View>
-              <ShowMore
+              {/* <ShowMore
                 height={0}
                 buttonColor={'blue'}
                 showMoreText="View Trade History"
@@ -285,7 +291,36 @@ const FnoEquity = () => {
                     <Text style={styles.dropTextOne}>22-08-2022</Text>
                   </View>
                 </View>
-              </ShowMore>
+              </ShowMore> */}
+              <Collapse>
+                <CollapseHeader>
+                  <View style={{margin: 5}}>
+                    <Text style={{color: 'blue'}}>View Trade History</Text>
+                  </View>
+                </CollapseHeader>
+                <CollapseBody>
+                  <View style={{flexDirection: 'row'}}>
+                    <View
+                      style={{
+                        flex: 2,
+                        backgroundColor: 'green',
+                        alignItems: 'flex-start',
+                        margin: 3,
+                      }}>
+                      <Text style={{color: '#000'}}>Ta daa!</Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        backgroundColor: 'yellow',
+                        alignItems: 'flex-end',
+                        margin: 3,
+                      }}>
+                      <Text style={{color: '#000'}}>Ta daa!</Text>
+                    </View>
+                  </View>
+                </CollapseBody>
+              </Collapse>
             </View>
           </View>
         ))}

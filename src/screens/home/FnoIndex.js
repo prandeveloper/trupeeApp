@@ -36,6 +36,18 @@ const FnoIndex = () => {
         console.log(error);
       });
   };
+  //  <============ Trade History Get Api ===========>
+  const getTradeHistory = () => {
+    axiosConfig
+      .get(`/tradeHistory/632d6938b50345604a88df10`)
+      .then(response => {
+        console.log(response.data.data);
+        setAllTrade(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     getTrade();
   }, []);
@@ -51,7 +63,7 @@ const FnoIndex = () => {
 
             <View style={styles.bgarea2}>
               <View style={styles.botomview3}>
-                <Text style={styles.bgText}>{trade?.call_type}</Text>
+                <Text style={styles.bgText}>{trade.call_type}</Text>
               </View>
               {/* <View style={styles.botomview4}>
                 <Text style={styles.bottomText1}>

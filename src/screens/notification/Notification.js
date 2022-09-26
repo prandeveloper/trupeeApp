@@ -178,48 +178,24 @@ export default function Notification({navigation}) {
 
         <ScrollView>
           <View style={{marginBottom: 200}}>
-            {/* <================= Image Component Start ============> */}
-
-            <View style={styles.listMainView}>
-              <ListItem bottomDivider>
-                <View style={styles.subView}>
-                  <View style={styles.imageView}>
-                    <Image
-                      source={{
-                        uri: 'https://reactnative.dev/img/tiny_logo.png',
-                      }}
-                      style={styles.imageGraph}
-                    />
-                  </View>
-                  <View style={styles.textView}>
-                    <Text style={styles.headText}>Title</Text>
-                    <Text style={styles.SimpleText}>
-                      Officia adipisicing non mollit consequat magna aute enim
-                      labore veniam pariatur. Pariatur consequat quis consequat
-                      nisi officia deserunt ullamco eiusmod fugiat. Id sunt
-                      laborum occaecat elit occaecat sit aliqua laboris
-                      incididunt laborum irure sint. Officia minim dolore non
-                      nisi aute consequat cupidatat ad ea.
-                    </Text>
-                  </View>
-                </View>
-              </ListItem>
-            </View>
-
-            {/* <================= Trade Component Start ============> */}
+            {/* <==============jkkjkkk============> */}
 
             <View style={styles.listMainView}>
               {notify?.map(trade => (
                 <View style={{borderBottomWidth: 1}}>
                   <View style={styles.bgarea2}>
                     <View style={styles.botomview3}>
-                      <Text style={styles.bgText}>{trade?.call_type}</Text>
+                      <Text style={styles.bgText}>
+                        {trade?.tradeId?.call_type}
+                      </Text>
                     </View>
                   </View>
 
                   <View style={styles.bgarea3}>
                     <View>
-                      <Text style={styles.buy}>{trade?.script_type}</Text>
+                      <Text style={styles.buy}>
+                        {trade?.tradeId?.script_type}
+                      </Text>
                     </View>
                     {trade?.fnoequty_scrpt_name?.scriptName != '' &&
                     trade?.fnoequty_scrpt_name?.scriptName != undefined &&
@@ -490,9 +466,15 @@ export default function Notification({navigation}) {
                     </View>
                     <View style={styles.botomview2}>
                       <Text style={styles.bottomText}>P&L</Text>
-                      <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                        ₹ {trade?.pl} | {trade?.pl_per}%
-                      </Text>
+                      {trade.pl < 0 ? (
+                        <Text style={[styles.bottomText1, , {color: 'red'}]}>
+                          ₹ {trade?.pl} | {trade?.pl_per}%
+                        </Text>
+                      ) : (
+                        <Text style={[styles.bottomText1, , {color: 'green'}]}>
+                          ₹ {trade?.pl} | {trade?.pl_per}%
+                        </Text>
+                      )}
                     </View>
                   </View>
 
@@ -556,10 +538,30 @@ export default function Notification({navigation}) {
                   </View>
                   <View>
                     <Text style={{color: '#000', marginVertical: 5}}>
-                      Target is Achived now you can take out your trade
+                      {trade?.tradeId?.cstmMsg}
                     </Text>
                   </View>
                 </View>
+              ))}
+            </View>
+
+            {/* <================= Image Component Start ============> */}
+            <View style={styles.listMainView}>
+              {notify?.map(trade => (
+                <ListItem bottomDivider key={trade._id}>
+                  <View style={styles.subView}>
+                    <View style={styles.imageView}>
+                      <Image
+                        source={{uri: `${trade?.img}`}}
+                        style={styles.imageGraph}
+                      />
+                    </View>
+                    <View style={styles.textView}>
+                      <Text style={styles.headText}>{trade?.title}</Text>
+                      <Text style={styles.SimpleText}>{trade?.desc}</Text>
+                    </View>
+                  </View>
+                </ListItem>
               ))}
             </View>
           </View>
@@ -673,7 +675,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginVertical: 5,
-    //marginHorizontal: 5,
+    justifyContent: 'center',
   },
 
   buy: {
@@ -776,14 +778,13 @@ const styles = StyleSheet.create({
   },
   //image component
   subView: {
-    margin: 5,
+    margin: 0,
     backgroundColor: '#fff',
   },
-  imageView: {},
+
   imageGraph: {
-    width: '100%',
-    height: 180,
-    resizeMode: 'cover',
+    width: 320,
+    height: 30,
   },
   textView: {
     margin: 2,
