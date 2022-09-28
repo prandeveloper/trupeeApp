@@ -17,6 +17,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Moment from 'react-moment';
 import {styles} from './TradeStyle';
 import ShowMore from 'react-native-show-more-button';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+  AccordionList,
+} from 'accordion-collapse-react-native';
 
 const EquityCash = () => {
   const [allTrade, setAllTrade] = useState([]);
@@ -220,7 +226,7 @@ const EquityCash = () => {
             </View>
             {/* <============Seemore=========> */}
             <View>
-              <ShowMore
+              {/* <ShowMore
                 height={0}
                 buttonColor={'blue'}
                 showMoreText="View Trade History"
@@ -307,7 +313,98 @@ const EquityCash = () => {
                     <Text style={styles.dropTextOne}>22-08-2022</Text>
                   </View>
                 </View>
-              </ShowMore>
+              </ShowMore> */}
+              <Collapse>
+                <CollapseHeader>
+                  <View style={{margin: 5}}>
+                    <Text style={{color: 'blue'}}>View Trade History</Text>
+                  </View>
+                </CollapseHeader>
+                <CollapseBody>
+                  {trade?.t1_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.cash_scrpt_name?.scriptName} @ 1st Target{' '}
+                          {trade?.T1}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  {trade?.t2_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.cash_scrpt_name?.scriptName} @ 2nd Target{' '}
+                          {trade?.T2}
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  {trade?.t3_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.cash_scrpt_name?.scriptName} @ 3rd Target{' '}
+                          {trade?.T3}
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  {trade?.t4_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.cash_scrpt_name?.scriptName} @ 4th Target{' '}
+                          {trade?.T4}
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.cash_scrpt_name?.scriptName} @ 5th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View>
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.cash_scrpt_name?.scriptName} @ 6th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View>
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.cash_scrpt_name?.scriptName} @ 7th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View>
+                </CollapseBody>
+              </Collapse>
             </View>
           </View>
         ))}

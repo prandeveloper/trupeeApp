@@ -17,6 +17,12 @@ import Moment from 'react-moment';
 import {styles} from './TradeStyle';
 //import SeeMore from 'react-native-see-more-inline';
 import ShowMore from 'react-native-show-more-button';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+  AccordionList,
+} from 'accordion-collapse-react-native';
 
 const FnoIndex = () => {
   const [allTrade, setAllTrade] = useState([]);
@@ -228,7 +234,7 @@ const FnoIndex = () => {
             </View>
             {/* <============Seemore=========> */}
             <View>
-              <ShowMore
+              {/* <ShowMore
                 height={0}
                 buttonColor={'blue'}
                 showMoreText="View Trade History"
@@ -303,7 +309,95 @@ const FnoIndex = () => {
                     <Text style={styles.dropTextOne}>22-08-2022</Text>
                   </View>
                 </View>
-              </ShowMore>
+              </ShowMore> */}
+              <Collapse>
+                <CollapseHeader>
+                  <View style={{margin: 5}}>
+                    <Text style={{color: 'blue'}}>View Trade History</Text>
+                  </View>
+                </CollapseHeader>
+                <CollapseBody>
+                  {trade?.FT1_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target{' '}
+                          {trade?.FT1}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  {trade?.FT2_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoindex_scrpt_name?.scriptName} @ 2nd Target{' '}
+                          {trade?.FT2}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  {trade?.FT3_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoindex_scrpt_name?.scriptName} @ 3rd Target{' '}
+                          {trade?.FT3}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                      </View>
+                    </View>
+                  ) : null}
+                  {/* <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoindex_scrpt_name?.scriptName} @ 4th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View>
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoindex_scrpt_name?.scriptName} @ 5th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View>
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoindex_scrpt_name?.scriptName} @ 6th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View>
+                  <View style={styles.showView}>
+                    <View style={styles.insideViewOne}>
+                      <Text style={styles.dropTextOne}>
+                        {trade?.fnoindex_scrpt_name?.scriptName} @ 7th Target
+                      </Text>
+                    </View>
+                    <View style={styles.insideViewTwo}>
+                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                    </View>
+                  </View> */}
+                </CollapseBody>
+              </Collapse>
             </View>
           </View>
         ))}

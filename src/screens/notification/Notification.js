@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -16,12 +17,21 @@ import DatePicker from 'react-native-datepicker';
 import Moment from 'react-moment';
 import ShowMore from 'react-native-show-more-button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+  AccordionList,
+} from 'accordion-collapse-react-native';
+import {styles} from './NotificationStyle';
 
 export default function Notification({navigation}) {
   const [notify, setNotify] = useState([]);
+  const [imgNotify, setImgNotify] = useState([]);
   const [plImage, setPlImage] = useState([]);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const chooseImg = type => {
     let options = {
@@ -85,13 +95,26 @@ export default function Notification({navigation}) {
 
   // <================ Get Notifivation API ==========>
 
+  const getImgNotify = async () => {
+    axiosConfig
+      .get(`/trendingchartby_type/Index`)
+      .then(response => {
+        const notify = response.data.data;
+        setImgNotify(notify);
+        console.log(notify);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
   const getNotify = async () => {
     axiosConfig
       .get(`/notificationList`)
       .then(response => {
         const notify = response.data.data;
         setNotify(notify);
-        console.log(notify);
+        //console.log(notify);
       })
       .catch(error => {
         console.log(error.response);
@@ -99,6 +122,7 @@ export default function Notification({navigation}) {
   };
   useEffect(() => {
     getNotify();
+    getImgNotify();
   }, []);
 
   return (
@@ -115,40 +139,95 @@ export default function Notification({navigation}) {
           </View>
 
           <View style={styles.secondView}>
-            <View style={styles.dateTextView}>
+            <TouchableOpacity
+              style={styles.dateTextView}
+              onPress={() => setModalVisible(true)}>
               <View style={styles.tradeTextView}>
-                <Text style={{color: 'green'}}>Trade History</Text>
+                <Text style={styles.tradeText}>Today's P&L</Text>
               </View>
-              <TouchableOpacity
-                style={styles.calender}
-                onPress={() => setOpen(true)}>
-                <DatePicker
-                  open={open}
-                  date={date}
-                  // minDate="2016-05-01"
-                  // maxDate="2016-06-01"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  onDateChange={setDate}
-                  showIcon={true}
-                  hideText={false}
-                  customStyles={{
-                    dateIcon: {
-                      position: 'absolute',
-                      left: 0,
-                      right: 5,
-
-                      height: 18,
-                      marginBottom: 0,
-                    },
-                    dateInput: {
-                      marginLeft: 5,
-                      borderWidth: 0,
-                      marginBottom: 5,
-                    },
-                  }}
-                />
-              </TouchableOpacity>
+              <View style={styles.tradeTextView}>
+                <Text style={styles.tradeText1}>₹ 4000</Text>
+              </View>
+              <View style={styles.tradeTextView}>
+                <Text style={styles.tradeText2}>
+                  Total Performance | Trade History
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Profit & Loss</Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <View>
+                        <Text style={styles.modalText}>Today</Text>
+                        <Text style={styles.modalText1}>₹ 2000</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.modalText}>Weekly</Text>
+                        <Text style={styles.modalText1}>₹ 4000</Text>
+                      </View>
+                      <View>
+                        <Text style={styles.modalText}>Monthly</Text>
+                        <Text style={styles.modalText1}>₹ 7000</Text>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.calender}
+                      onPress={() => setOpen(true)}>
+                      <Text
+                        style={{
+                          color: '#000',
+                          fontWeight: '600',
+                          fontSize: 15,
+                          marginBottom: 20,
+                        }}>
+                        Select Date to view Trade Record
+                      </Text>
+                      <DatePicker
+                        open={open}
+                        date={date}
+                        mode="date"
+                        format="DD-MM-YYYY"
+                        // minDate="2016-05-01"
+                        // maxDate="2016-06-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        onDateChange={setDate}
+                        showIcon={true}
+                        hideText={false}
+                        customStyles={{
+                          dateIcon: {
+                            position: 'absolute',
+                            left: 5,
+                            right: 5,
+                            height: 18,
+                          },
+                          dateInput: {
+                            marginLeft: 10,
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            padding: 10,
+                          },
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}>
+                      <Text style={styles.textStyle}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
             </View>
           </View>
         </View>
@@ -490,7 +569,7 @@ export default function Notification({navigation}) {
                   </View>
                   {/* <============Seemore=========> */}
                   <View>
-                    <ShowMore
+                    {/* <ShowMore
                       height={0}
                       buttonColor={'blue'}
                       showMoreText="View Trade History"
@@ -528,7 +607,221 @@ export default function Notification({navigation}) {
                           <Text style={styles.dropTextOne}>22-08-2022</Text>
                         </View>
                       </View>
-                    </ShowMore>
+                    </ShowMore> */}
+                    <Collapse>
+                      <CollapseHeader>
+                        <View style={{margin: 5}}>
+                          <Text style={{color: 'blue'}}>
+                            View Trade History
+                          </Text>
+                        </View>
+                      </CollapseHeader>
+                      <CollapseBody>
+                        {trade.t1_type === 'true' ||
+                        trade.FT1_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !=
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 1st
+                                  Target {trade?.T1}+
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 1st
+                                  Target {trade?.T2}+
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 1st
+                                  Target {trade?.FT1}+
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                        {trade.t2_type === 'true' ||
+                        trade.FT2_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !=
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 2st
+                                  Target {trade?.T2}+
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 2st
+                                  Target {trade?.T2}+
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 2st
+                                  Target {trade?.FT2}+
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                        {trade.t3_type === 'true' ||
+                        trade.FT3_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !=
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 3st
+                                  Target {trade?.T3}+
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 3st
+                                  Target {trade?.T3}+
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 3st
+                                  Target {trade?.FT3}+
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                        {trade.t4_type === 'true' ||
+                        trade.FT4_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !=
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 4th
+                                  Target {trade?.T4}+
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 4th
+                                  Target {trade?.T4}+
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 4th
+                                  Target {trade?.FT4}+
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                        {trade.t5_type === 'true' ||
+                        trade.FT5_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !=
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 5th
+                                  Target
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 5th
+                                  Target
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 5th
+                                  Target
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                        {trade.t6_type === 'true' ||
+                        trade.FT6_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !=
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 6th
+                                  Target
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 6th
+                                  Target
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 6th
+                                  Target
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                        {trade.t7_type === 'true' ||
+                        trade.FT7_type === 'true' ? (
+                          <View style={styles.showView}>
+                            <View style={styles.insideViewOne}>
+                              {trade?.fnoequty_scrpt_name?.scriptName !==
+                              undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoequty_scrpt_name?.scriptName} @ 7th
+                                  Target
+                                </Text>
+                              ) : trade?.cash_scrpt_name?.scriptName !==
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.cash_scrpt_name?.scriptName} @ 7th
+                                  Target
+                                </Text>
+                              ) : trade?.fnoindex_scrpt_name?.scriptName !==
+                                undefined ? (
+                                <Text style={styles.dropTextOne}>
+                                  {trade?.fnoindex_scrpt_name?.scriptName} @ 7th
+                                  Target
+                                </Text>
+                              ) : null}
+                            </View>
+                            <View style={styles.insideViewTwo}>
+                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                      </CollapseBody>
+                    </Collapse>
                   </View>
 
                   <View>
@@ -547,12 +840,12 @@ export default function Notification({navigation}) {
 
             {/* <================= Image Component Start ============> */}
             <View style={styles.listMainView}>
-              {notify?.map(trade => (
+              {imgNotify?.map(trade => (
                 <ListItem bottomDivider key={trade._id}>
                   <View style={styles.subView}>
                     <View style={styles.imageView}>
                       <Image
-                        source={{uri: `${trade?.img}`}}
+                        source={{uri: `${trade?.image}`}}
                         style={styles.imageGraph}
                       />
                     </View>
@@ -570,230 +863,3 @@ export default function Notification({navigation}) {
     </SafeAreaView>
   );
 }
-const styles = StyleSheet.create({
-  //Header
-  mainView: {
-    flexDirection: 'row',
-    marginTop: 0,
-    height: 100,
-    backgroundColor: '#FFF',
-    elevation: 10,
-  },
-  firstView: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  secondView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dateTextView: {
-    borderWidth: 2,
-    borderColor: 'green',
-    borderRadius: 5,
-  },
-  tradeTextView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoImg: {
-    width: 120,
-    height: 45,
-    marginLeft: 10,
-  },
-  calenderStyle: {
-    borderColor: '#00b050',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  calenderImage: {
-    height: 25,
-    width: 30,
-  },
-  calenderText: {
-    color: '#000',
-  },
-  calender: {
-    borderWidth: 0,
-    marginRight: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  //Component Css
-  container: {
-    flex: 1,
-  },
-  hello: {
-    alignItems: 'center',
-  },
-  helloText: {
-    color: '#000',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  direction: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  d1: {flex: 7, justifyContent: 'center'},
-  d2: {flex: 1, justifyContent: 'center'},
-  uploadText: {color: '#000', fontWeight: '500'},
-  uploadImage: {color: '#000'},
-  //Scroll Start
-  listMainView: {
-    marginVertical: 5,
-    marginHorizontal: 2,
-    borderBottomColor: '#000',
-  },
-
-  //trade component
-
-  bgarea: {
-    // margin: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  bgText: {
-    backgroundColor: '#a82682',
-    color: '#fff',
-    paddingHorizontal: 3,
-    paddingVertical: 2,
-    fontWeight: '500',
-    textTransform: 'capitalize',
-  },
-  bgarea3: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    marginVertical: 5,
-    //marginHorizontal: 5,
-  },
-  bgarea2: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 5,
-    justifyContent: 'center',
-  },
-
-  buy: {
-    backgroundColor: '#00b050',
-    color: '#000',
-    paddingHorizontal: 3,
-    fontWeight: '500',
-  },
-  notbuy1: {
-    fontSize: 12,
-    color: '#000',
-    paddingHorizontal: 6,
-    fontWeight: '600',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  notbuy: {
-    fontSize: 13,
-    color: '#000',
-    padding: 3,
-    fontWeight: '600',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  circle1: {
-    margin: 3,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 10, height: 10},
-    shadowOpacity: 1,
-    shadowRadius: 50,
-    elevation: 5,
-  },
-  circle: {
-    margin: 3,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 10, height: 10},
-    shadowOpacity: 0.9,
-    shadowRadius: 20,
-    elevation: 5,
-  },
-  botomview1: {
-    flex: 2,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-  botomview2: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-start',
-  },
-  botomview3: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  botomview4: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  bottomText: {
-    color: '#000',
-    fontWeight: '400',
-    fontSize: 13,
-  },
-  bottomText1: {
-    color: '#000',
-    fontWeight: '400',
-    fontSize: 13,
-  },
-  dateText: {
-    fontSize: 10,
-    color: 'gray',
-  },
-
-  showView: {flexDirection: 'row', marginVertical: 10},
-  insideViewOne: {flex: 2, marginLeft: 5},
-  dropTextOne: {color: '#000', fontSize: 12},
-  insideViewTwo: {
-    flex: 1,
-    marginRight: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  //image component
-  subView: {
-    margin: 0,
-    backgroundColor: '#fff',
-  },
-
-  imageGraph: {
-    width: 320,
-    height: 30,
-  },
-  textView: {
-    margin: 2,
-  },
-  headText: {
-    color: '#000',
-    fontWeight: '500',
-  },
-  SimpleText: {
-    color: '#000',
-  },
-});

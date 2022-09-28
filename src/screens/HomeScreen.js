@@ -15,6 +15,8 @@ import AllTrade from './home/AllTrade';
 import FnoEquity from './home/FnoEquity';
 import EquityCash from './home/EquityCash';
 import DatePicker from 'react-native-datepicker';
+//import Moment from 'react-moment';
+import moment from 'moment';
 
 export default function HomeScreen({navigation, props}) {
   const Tab = createMaterialTopTabNavigator();
@@ -22,8 +24,8 @@ export default function HomeScreen({navigation, props}) {
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const tDate = new Date().toDateString();
-  console.log('today', tDate);
+  let mDate = moment({date}).format('DD/MM/YYYY');
+  console.log(mDate);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -69,15 +71,15 @@ export default function HomeScreen({navigation, props}) {
                     <View style={{flexDirection: 'row'}}>
                       <View>
                         <Text style={styles.modalText}>Today</Text>
-                        <Text style={styles.modalText}>₹2000</Text>
+                        <Text style={styles.modalText1}>₹ 2000</Text>
                       </View>
                       <View>
                         <Text style={styles.modalText}>Weekly</Text>
-                        <Text style={styles.modalText}>₹4000</Text>
+                        <Text style={styles.modalText1}>₹ 4000</Text>
                       </View>
                       <View>
                         <Text style={styles.modalText}>Monthly</Text>
-                        <Text style={styles.modalText}>₹7000</Text>
+                        <Text style={styles.modalText1}>₹ 7000</Text>
                       </View>
                     </View>
                     <TouchableOpacity
@@ -143,7 +145,7 @@ export default function HomeScreen({navigation, props}) {
           },
           tabBarStyle: {backgroundColor: 'white', paddingHorizontal: 0},
         }}>
-        <Tab.Screen name="ALL TRADE" component={AllTrade} date={props?.date} />
+        <Tab.Screen name="ALL TRADE" component={AllTrade} date={mDate} />
         <Tab.Screen name="FNO INDEX" component={FnoIndex} />
         <Tab.Screen name="FNO EQUITY" component={FnoEquity} />
         <Tab.Screen name="EQUITY CASH" component={EquityCash} />
@@ -270,5 +272,13 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 15,
     fontWeight: '600',
+  },
+  modalText1: {
+    marginBottom: 15,
+    textAlign: 'center',
+    marginHorizontal: 20,
+    color: 'green',
+    fontSize: 16,
+    fontWeight: '800',
   },
 });
