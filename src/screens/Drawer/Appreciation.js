@@ -79,7 +79,8 @@ const Appreciation = () => {
       })
       .catch(error => {
         // handle failure
-        alert(`Error: ${error.code} | ${error.description}`);
+        Alert.alert('Your Transation was Unsuccessful');
+        // alert(`Error: ${error.code} | ${error.description}`);
       });
   };
 

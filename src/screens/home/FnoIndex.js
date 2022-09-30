@@ -43,17 +43,17 @@ const FnoIndex = () => {
       });
   };
   //  <============ Trade History Get Api ===========>
-  const getTradeHistory = () => {
-    axiosConfig
-      .get(`/tradeHistory/632d6938b50345604a88df10`)
-      .then(response => {
-        console.log(response.data.data);
-        setAllTrade(response.data.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  // const getTradeHistory = () => {
+  //   axiosConfig
+  //     .get(`/tradeHistory/632d6938b50345604a88df10`)
+  //     .then(response => {
+  //       console.log(response.data.data);
+  //       setAllTrade(response.data.data);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
   useEffect(() => {
     getTrade();
   }, []);

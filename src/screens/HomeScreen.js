@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -20,12 +20,14 @@ import moment from 'moment';
 
 export default function HomeScreen({navigation, props}) {
   const Tab = createMaterialTopTabNavigator();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
+  const [tabDate, setTabDate] = useState();
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  let mDate = moment({date}).format('DD/MM/YYYY');
-  console.log(mDate);
+  var mDate = moment({date}).format('DD-MM-YYYY');
+
+  console.log('@@@@', mDate);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -125,7 +127,7 @@ export default function HomeScreen({navigation, props}) {
                     <TouchableOpacity
                       style={[styles.button, styles.buttonClose]}
                       onPress={() => setModalVisible(!modalVisible)}>
-                      <Text style={styles.textStyle}>Close</Text>
+                      <Text style={styles.textStyle}>CLOSE</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -145,7 +147,9 @@ export default function HomeScreen({navigation, props}) {
           },
           tabBarStyle: {backgroundColor: 'white', paddingHorizontal: 0},
         }}>
-        <Tab.Screen name="ALL TRADE" component={AllTrade} date={mDate} />
+        <Tab.Screen name="ALL TRADE">
+          {props => <AllTrade {...props} extraData={mDate} />}
+        </Tab.Screen>
         <Tab.Screen name="FNO INDEX" component={FnoIndex} />
         <Tab.Screen name="FNO EQUITY" component={FnoEquity} />
         <Tab.Screen name="EQUITY CASH" component={EquityCash} />

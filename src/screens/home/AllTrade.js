@@ -22,19 +22,22 @@ import {
   CollapseBody,
   AccordionList,
 } from 'accordion-collapse-react-native';
+import moment from 'moment';
 
-const AllTrade = ({date}) => {
+const AllTrade = ({extraData}) => {
+  //console.log('####', extraData);
+  let fDate = extraData;
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [tDate, setTDate] = useState(date);
 
-  //  <============ All Teafe Get Api ===========>
-  const getTrade = () => {
-    setRefreshing(true);
+  //  <============ Filter Trade Get Api ===========>
+
+  const getFilterTrade = () => {
+    //console.log('aaa', fDate);
     axiosConfig
-      .get(`/tradelist`)
+      .get(`/dateSrchFltr/${fDate}`)
       .then(response => {
-        //console.log(response.data.data);
+        //console.log('filter', response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })
@@ -42,14 +45,39 @@ const AllTrade = ({date}) => {
         console.log(error);
       });
   };
+
   useEffect(() => {
-    getTrade();
-  }, []);
+    if (fDate === mDate) {
+      getTrade();
+    } else {
+      getFilterTrade();
+    }
+  }, [getTrade, getFilterTrade]);
+
+  var mDate = moment(Date()).format('DD-MM-YYYY');
+
+  //console.log('@@@@', mDate);
+  const getTrade = () => {
+    axiosConfig
+      .get(`/tradelist`)
+      .then(response => {
+        //console.log('no filter', response.data.data);
+        setAllTrade(response.data.data);
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={getTrade} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={(getFilterTrade, getTrade)}
+          />
         }>
         {allTrade?.map(trade => (
           <View

@@ -23,9 +23,23 @@ const MyAccount = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [emailValidError, setEmailValidError] = useState('');
   const [mobile, setMobile] = useState();
   const [gender, setGender] = useState('male');
   const [userId, setUserId] = useState('');
+
+  // <============= Email Validation ==============>
+  const handleValidEmail = val => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (val.length === 0) {
+      setEmailValidError('Email Address must be Enter');
+    } else if (reg.test(val) === false) {
+      setEmailValidError('Enter valid Email Address');
+    } else if (reg.test(val) === true) {
+      setEmailValidError('');
+    }
+  };
 
   const getUser = async () => {
     axios
@@ -150,10 +164,19 @@ const MyAccount = ({navigation}) => {
               label="Email"
               outlineColor="green"
               mode="outlined"
-              onChangeText={setEmail}
               value={email}
-              keyboardType="email-address"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={value => {
+                setEmail(value);
+                handleValidEmail(value);
+              }}
             />
+          </View>
+          <View style={{marginLeft: 25}}>
+            {emailValidError ? (
+              <Text style={{color: 'red'}}>{emailValidError}</Text>
+            ) : null}
           </View>
 
           <View style={styles.mainView}>

@@ -69,6 +69,7 @@ const HomeStack = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Register" component={RegisterScreen} />
+
       <Stack.Screen
         name="Home"
         component={TabNavigator}

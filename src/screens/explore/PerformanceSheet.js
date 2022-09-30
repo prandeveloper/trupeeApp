@@ -14,9 +14,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PerformanceSheet = () => {
   const [email, setEmail] = React.useState('');
+  const [emailValidError, setEmailValidError] = useState('');
   const [items, setItems] = React.useState([]);
   const [selectedItem, setSelectedItem] = useState('');
   const [selectedId, setSelectedId] = useState('');
+
+  // <============= Email Validation ==============>
+  const handleValidEmail = val => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (val.length === 0) {
+      setEmailValidError('Email Address must be Enter');
+    } else if (reg.test(val) === false) {
+      setEmailValidError('Enter valid Email Address');
+    } else if (reg.test(val) === true) {
+      setEmailValidError('');
+    }
+  };
 
   // <=============Performance get Api ============>
   useEffect(() => {
@@ -143,10 +157,19 @@ const PerformanceSheet = () => {
                 label="Email"
                 outlineColor="green"
                 mode="outlined"
-                onChangeText={setEmail}
                 value={email}
-                keyboardType="email-address"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={value => {
+                  setEmail(value);
+                  handleValidEmail(value);
+                }}
               />
+            </View>
+            <View>
+              {emailValidError ? (
+                <Text style={{color: 'red'}}>{emailValidError}</Text>
+              ) : null}
             </View>
           </View>
           <View style={styles.section1}>
