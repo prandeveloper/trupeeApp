@@ -21,6 +21,7 @@ const MyAccount = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState('');
+  const [fNameValidError, setFNameValidError] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [emailValidError, setEmailValidError] = useState('');
@@ -38,6 +39,19 @@ const MyAccount = ({navigation}) => {
       setEmailValidError('Enter valid Email Address');
     } else if (reg.test(val) === true) {
       setEmailValidError('');
+    }
+  };
+  // <===========Text Validation=========>
+  const handleFirstName = val => {
+    let reg = /^(?:[A-Za-z]+|\d+)$/;
+    if (val.length === 0) {
+      setFNameValidError('Enter Name');
+      console.log(fNameValidError);
+    } else if (reg.test(val) === false) {
+      setFNameValidError('Enter Valid Name');
+      console.log(fNameValidError);
+    } else if (reg.test(val) === true) {
+      setFNameValidError('');
     }
   };
 
@@ -100,8 +114,11 @@ const MyAccount = ({navigation}) => {
               label="FirstName"
               outlineColor="green"
               mode="outlined"
-              onChangeText={setFirstName}
               value={firstName}
+              onChangeText={value => {
+                setFirstName(value);
+                handleFirstName(value);
+              }}
               keyboardType="default"
               style={[styles.tfield, {width: 120}]}
             />
@@ -114,6 +131,11 @@ const MyAccount = ({navigation}) => {
               keyboardType="default"
               style={[styles.tfield, {width: 120}]}
             />
+          </View>
+          <View style={{marginLeft: 25}}>
+            {fNameValidError ? (
+              <Text style={{color: 'red'}}>{fNameValidError}</Text>
+            ) : null}
           </View>
 
           <View style={styles.mainView}>
@@ -138,13 +160,14 @@ const MyAccount = ({navigation}) => {
 
           <View style={styles.mainView}>
             <Ionicons name="md-calendar" color="green" size={25} />
+            <Text style={{color: '#000'}}>Date Of Birth</Text>
             <DatePicker
-              style={[styles.tfield, {width: 250}]}
+              style={[styles.tfield, {width: 150}]}
               showIcon={false}
               date={date}
               mode="date"
-              placeholder="select date"
-              format="YYYY-MM-DD"
+              placeholder="Enter Date of Birth"
+              format="DD-MM-YYYY"
               maxDate={date}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
@@ -192,10 +215,11 @@ const MyAccount = ({navigation}) => {
               editable={false}
             />
           </View>
-
-          <TouchableOpacity style={styles.touch} onPress={editProfile}>
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
+          {fNameValidError === '' && emailValidError === '' ? (
+            <TouchableOpacity style={styles.touch} onPress={editProfile}>
+              <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>

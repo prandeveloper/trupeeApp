@@ -308,11 +308,11 @@ export default function Notification({navigation}) {
 
                   {/* <===========SL=============> */}
                   <View style={styles.bgarea2}>
-                    {trade?.sl_type === 'false' ? (
+                    {trade?.tradeId.sl_type === 'false' ? (
                       <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
                         <Text style={styles.notbuy1}>
                           SL{'\n'}
-                          {trade?.SL}
+                          {trade?.tradeId.SL}
                         </Text>
                       </View>
                     ) : (
@@ -320,21 +320,21 @@ export default function Notification({navigation}) {
                         style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
                         <Text style={styles.notbuy1}>
                           SL{'\n'}
-                          {trade?.SL}
+                          {trade?.tradeId.SL}
                         </Text>
                       </View>
                     )}
                     {/* <===========T1 =============> */}
-                    {trade?.trl != '' &&
-                    trade?.trl != null &&
-                    trade?.trl != undefined ? (
+                    {trade?.tradeId.trl != '' &&
+                    trade?.tradeId.trl != null &&
+                    trade?.tradeId.trl != undefined ? (
                       <View>
-                        {trade?.trl_type === 'false' ? (
+                        {trade?.tradeId.trl_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               TRL{'\n'}
-                              {trade?.trl}
+                              {trade?.tradeId.trl}
                             </Text>
                           </View>
                         ) : (
@@ -345,19 +345,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               TRL{'\n'}
-                              {trade?.trl}
+                              {trade?.tradeId.trl}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.t1_type === 'false' ? (
+                        {trade?.tradeId.t1_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.T1}
+                              {trade?.tradeId.T1}
                             </Text>
                           </View>
                         ) : (
@@ -368,7 +368,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.T1}
+                              {trade?.tradeId.T1}
                             </Text>
                           </View>
                         )}
@@ -377,16 +377,16 @@ export default function Notification({navigation}) {
 
                     {/* <===========T2 =============> */}
 
-                    {trade?.FT1 != '' &&
-                    trade?.FT1 != null &&
-                    trade?.FT1 != undefined ? (
+                    {trade?.tradeId.FT1 != '' &&
+                    trade?.tradeId.FT1 != null &&
+                    trade?.tradeId.FT1 != undefined ? (
                       <View>
-                        {trade?.FT1_type === 'false' ? (
+                        {trade?.tradeId.FT1_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.FT1}
+                              {trade?.tradeId.FT1}
                             </Text>
                           </View>
                         ) : (
@@ -397,19 +397,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.FT1}
+                              {trade?.tradeId.FT1}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.t2_type === 'false' ? (
+                        {trade?.tradeId.t2_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.T2}
+                              {trade?.tradeId.T2}
                             </Text>
                           </View>
                         ) : (
@@ -420,7 +420,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.T2}
+                              {trade?.tradeId.T2}
                             </Text>
                           </View>
                         )}
@@ -429,16 +429,16 @@ export default function Notification({navigation}) {
 
                     {/* <===========T3 =============> */}
 
-                    {trade?.FT2 != '' &&
-                    trade?.FT2 != null &&
-                    trade?.FT2 != undefined ? (
+                    {trade?.tradeId.FT2 != '' &&
+                    trade?.tradeId.FT2 != null &&
+                    trade?.tradeId.FT2 != undefined ? (
                       <View>
-                        {trade?.FT2_type === 'false' ? (
+                        {trade?.tradeId.FT2_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.FT2}
+                              {trade?.tradeId.FT2}
                             </Text>
                           </View>
                         ) : (
@@ -449,19 +449,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.FT2}
+                              {trade?.tradeId.FT2}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.t3_type === 'false' ? (
+                        {trade?.tradeId.t3_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.T3}
+                              {trade?.tradeId.T3}
                             </Text>
                           </View>
                         ) : (
@@ -472,7 +472,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.T3}
+                              {trade?.tradeId.T3}
                             </Text>
                           </View>
                         )}
@@ -481,16 +481,16 @@ export default function Notification({navigation}) {
 
                     {/* <===========T4 =============> */}
 
-                    {trade?.FT3 != '' &&
-                    trade?.FT3 != null &&
-                    trade?.FT3 != undefined ? (
+                    {trade?.tradeId.FT3 != '' &&
+                    trade?.tradeId.FT3 != null &&
+                    trade?.tradeId.FT3 != undefined ? (
                       <View>
-                        {trade?.FT3_type === 'false' ? (
+                        {trade?.tradeId.FT3_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.FT3}
+                              {trade?.tradeId.FT3}
                             </Text>
                           </View>
                         ) : (
@@ -501,19 +501,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.FT3}
+                              {trade?.tradeId.FT3}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.t4_type === 'false' ? (
+                        {trade?.tradeId.t4_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 4{'\n'}
-                              {trade?.T4}
+                              {trade?.tradeId.T4}
                             </Text>
                           </View>
                         ) : (
@@ -524,7 +524,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 4{'\n'}
-                              {trade?.T4}
+                              {trade?.tradeId.T4}
                             </Text>
                           </View>
                         )}
@@ -631,7 +631,7 @@ export default function Notification({navigation}) {
                                 undefined ? (
                                 <Text style={styles.dropTextOne}>
                                   {trade?.cash_scrpt_name?.scriptName} @ 1st
-                                  Target {trade?.T2}+
+                                  Target {trade?.T1}+
                                 </Text>
                               ) : trade?.fnoindex_scrpt_name?.scriptName !=
                                 undefined ? (
@@ -642,7 +642,19 @@ export default function Notification({navigation}) {
                               ) : null}
                             </View>
                             <View style={styles.insideViewTwo}>
-                              <Text style={styles.dropTextOne}>22-08-2022</Text>
+                              {trade?.FT1time !== '' ? (
+                                <Text style={styles.dropTextOne}>
+                                  <Moment element={Text} format="llll">
+                                    {trade?.FT1time}
+                                  </Moment>
+                                </Text>
+                              ) : (
+                                <Text style={styles.dropTextOne}>
+                                  <Moment element={Text} format="lll">
+                                    {trade?.T1time}
+                                  </Moment>
+                                </Text>
+                              )}
                             </View>
                           </View>
                         ) : null}
