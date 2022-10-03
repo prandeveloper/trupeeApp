@@ -17,6 +17,7 @@ import EquityCash from './home/EquityCash';
 import DatePicker from 'react-native-datepicker';
 //import Moment from 'react-moment';
 import moment from 'moment';
+import axios from 'axios';
 
 export default function HomeScreen({navigation, props}) {
   const Tab = createMaterialTopTabNavigator();
@@ -24,8 +25,24 @@ export default function HomeScreen({navigation, props}) {
   const [tabDate, setTabDate] = useState();
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [todayProfit, setTodayProfit] = useState({});
 
-  var mDate = moment({date}).format('DD-MM-YYYY');
+  const getTodayProfit = () => {
+    axios
+      .get(`http://65.0.183.149:8000/admin/today_profit_loss`)
+      .then(response => {
+        console.log(response.data);
+        setTodayProfit(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getTodayProfit();
+  }, []);
+
+  var mDate = moment({date}).format('DD/MM/YYYY');
 
   console.log('@@@@', mDate);
 
@@ -50,7 +67,9 @@ export default function HomeScreen({navigation, props}) {
                 <Text style={styles.tradeText}>Today's P&L</Text>
               </View>
               <View style={styles.tradeTextView}>
-                <Text style={styles.tradeText1}>₹ 4000</Text>
+                <Text style={styles.tradeText1}>
+                  ₹{todayProfit?.total_prft_loss}
+                </Text>
               </View>
               <View style={styles.tradeTextView}>
                 <Text style={styles.tradeText2}>
@@ -73,7 +92,9 @@ export default function HomeScreen({navigation, props}) {
                     <View style={{flexDirection: 'row'}}>
                       <View>
                         <Text style={styles.modalText}>Today</Text>
-                        <Text style={styles.modalText1}>₹ 2000</Text>
+                        <Text style={styles.modalText1}>
+                          ₹ {todayProfit?.total_prft_loss}
+                        </Text>
                       </View>
                       <View>
                         <Text style={styles.modalText}>Weekly</Text>
@@ -150,9 +171,15 @@ export default function HomeScreen({navigation, props}) {
         <Tab.Screen name="ALL TRADE">
           {props => <AllTrade {...props} extraData={mDate} />}
         </Tab.Screen>
-        <Tab.Screen name="FNO INDEX" component={FnoIndex} />
-        <Tab.Screen name="FNO EQUITY" component={FnoEquity} />
-        <Tab.Screen name="EQUITY CASH" component={EquityCash} />
+        <Tab.Screen name="FNO INDEX">
+          {props => <FnoIndex {...props} extraData={mDate} />}
+        </Tab.Screen>
+        <Tab.Screen name="FNO EQUITY">
+          {props => <FnoEquity {...props} extraData={mDate} />}
+        </Tab.Screen>
+        <Tab.Screen name="EQUITY CASH">
+          {props => <EquityCash {...props} extraData={mDate} />}
+        </Tab.Screen>
       </Tab.Navigator>
     </SafeAreaView>
   );

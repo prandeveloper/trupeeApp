@@ -186,7 +186,7 @@ const AfterSignUp = ({navigation}) => {
         })
         .catch(error => {
           console.log(error);
-          alert(`Error: ${error.code} | ${error.description}`);
+          Alert.alert('Your Transation was Unsuccessful');
         });
     } else {
       freePlan();

@@ -15,6 +15,7 @@ import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Moment from 'react-moment';
+import moment from 'moment';
 import {styles} from './TradeStyle';
 import ShowMore from 'react-native-show-more-button';
 import {
@@ -24,17 +25,35 @@ import {
   AccordionList,
 } from 'accordion-collapse-react-native';
 
-const EquityCash = () => {
+const EquityCash = ({extraData}) => {
+  let allDate = extraData;
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  //  <============ All Teafe Get Api ===========>
+  var fDate = moment(Date()).format('DD/MM/YYYY');
+  //console.log('@@@@', fDate);
+
+  //  <============ Filter Trade Get Api ===========>
+
+  const getFilterTrade = () => {
+    //console.log('aaa', allDate);
+    axiosConfig
+      .get(`/dateSrchFltr/${allDate}`)
+      .then(response => {
+        console.log('filter', response.data.data);
+        setAllTrade(response.data.data);
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
   const getTrade = () => {
-    setRefreshing(true);
     axiosConfig
       .get(`/AppCashList`)
       .then(response => {
-        //console.log(response.data.data);
+        //console.log('no filter', response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })
@@ -43,8 +62,30 @@ const EquityCash = () => {
       });
   };
   useEffect(() => {
-    getTrade();
-  }, []);
+    if (allDate === fDate) {
+      getTrade();
+    } else {
+      getFilterTrade();
+    }
+  }, [getTrade, getFilterTrade]);
+
+  // //  <============ All Teafe Get Api ===========>
+  // const getTrade = () => {
+  //   setRefreshing(true);
+  //   axiosConfig
+  //     .get(`/AppCashList`)
+  //     .then(response => {
+  //       //console.log(response.data.data);
+  //       setAllTrade(response.data.data);
+  //       setRefreshing(false);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getTrade();
+  // }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

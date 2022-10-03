@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
+import moment from 'moment';
 import {styles} from './TradeStyle';
 //import SeeMore from 'react-native-see-more-inline';
 import ShowMore from 'react-native-show-more-button';
@@ -24,17 +25,35 @@ import {
   AccordionList,
 } from 'accordion-collapse-react-native';
 
-const FnoIndex = () => {
+const FnoIndex = ({extraData}) => {
+  let allDate = extraData;
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  //  <============ All Teafe Get Api ===========>
+  var fDate = moment(Date()).format('DD/MM/YYYY');
+  //console.log('@@@@', fDate);
+
+  //  <============ Filter Trade Get Api ===========>
+
+  const getFilterTrade = () => {
+    //console.log('aaa', allDate);
+    axiosConfig
+      .get(`/dateSrchFltr/${allDate}`)
+      .then(response => {
+        console.log('filter', response.data.data);
+        setAllTrade(response.data.data);
+        setRefreshing(false);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
   const getTrade = () => {
-    setRefreshing(true);
     axiosConfig
       .get(`/AppindexList`)
       .then(response => {
-        //console.log(response.data.data);
+        //console.log('no filter', response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })
@@ -42,21 +61,32 @@ const FnoIndex = () => {
         console.log(error);
       });
   };
-  //  <============ Trade History Get Api ===========>
-  // const getTradeHistory = () => {
+  useEffect(() => {
+    if (allDate === fDate) {
+      getTrade();
+    } else {
+      getFilterTrade();
+    }
+  }, [getTrade, getFilterTrade]);
+
+  // //  <============ All Teafe Get Api ===========>
+  // const getTrade = () => {
+  //   setRefreshing(true);
   //   axiosConfig
-  //     .get(`/tradeHistory/632d6938b50345604a88df10`)
+  //     .get(`/AppindexList`)
   //     .then(response => {
-  //       console.log(response.data.data);
+  //       //console.log(response.data.data);
   //       setAllTrade(response.data.data);
+  //       setRefreshing(false);
   //     })
   //     .catch(error => {
   //       console.log(error);
   //     });
   // };
-  useEffect(() => {
-    getTrade();
-  }, []);
+
+  // useEffect(() => {
+  //   getTrade();
+  // }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -37,6 +37,7 @@ const Profile = ({navigation}) => {
       .then(response => {
         console.log(response.data);
         AsyncStorage.removeItem('auth-token');
+        AsyncStorage.removeItem('plan');
         navigation.replace('Login');
       })
       .catch(error => {
@@ -67,18 +68,17 @@ const Profile = ({navigation}) => {
     title: 'Share via',
     message: 'New Trading Tip App for you with Best Features',
     url: 'https://play.google.com/store/apps/details?id=com.tradzoo.app',
-    
   };
 
-  const onShare = async() =>{
+  const onShare = async () => {
     Share.open(shareOptions)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    err && console.log(err);
-  });
-  }
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        err && console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       <View>
@@ -104,7 +104,7 @@ const Profile = ({navigation}) => {
                   routes: [{name: 'Login'}],
                 });
                 console.log('Logout Successfull');
-                await AsyncStorage.multiRemove(['auth-token','plan'])
+                await AsyncStorage.multiRemove(['auth-token', 'plan']);
               }}>
               <Ionicons name="power" size={22} color={'green'} />
               <Text style={styles.btnLogout}>Logout</Text>
@@ -319,7 +319,28 @@ const Profile = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.btn} onPress={deleteData}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() =>
+              Alert.alert(
+                '',
+                'Are you sure you want to Delete this Account?',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      deleteData();
+                    },
+                  },
+                ],
+                {cancelable: false},
+              )
+            }>
             <View style={styles.eachSection}>
               <Ionicons
                 name="trash-bin"

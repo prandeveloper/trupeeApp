@@ -26,37 +26,29 @@ import moment from 'moment';
 
 const AllTrade = ({extraData}) => {
   //console.log('####', extraData);
-  let fDate = extraData;
+  let allDate = extraData;
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
+  var fDate = moment(Date()).format('DD/MM/YYYY');
+
+  //console.log('@@@@', fDate);
   //  <============ Filter Trade Get Api ===========>
 
   const getFilterTrade = () => {
-    //console.log('aaa', fDate);
+    //console.log('aaa', allDate);
     axiosConfig
-      .get(`/dateSrchFltr/${fDate}`)
+      .get(`/dateSrchFltr/${allDate}`)
       .then(response => {
-        //console.log('filter', response.data.data);
+        console.log('filter', response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.response);
       });
   };
 
-  useEffect(() => {
-    if (fDate === mDate) {
-      getTrade();
-    } else {
-      getFilterTrade();
-    }
-  }, [getTrade, getFilterTrade]);
-
-  var mDate = moment(Date()).format('DD-MM-YYYY');
-
-  //console.log('@@@@', mDate);
   const getTrade = () => {
     axiosConfig
       .get(`/tradelist`)
@@ -69,6 +61,13 @@ const AllTrade = ({extraData}) => {
         console.log(error);
       });
   };
+  useEffect(() => {
+    if (allDate === fDate) {
+      getTrade();
+    } else {
+      getFilterTrade();
+    }
+  }, [getTrade, getFilterTrade]);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -76,12 +76,12 @@ const LoginScreen = () => {
         if (response.data.token != null) {
           _storeData(response.data.token);
           //console.log(response.data.planId._id);
-          navigation.replace('AfterSignUp');
-          // if (response.data.msg !== 'Welcome Back') {
-          //   navigation.replace('AfterSignUp');
-          // } else {
-          //   navigation.replace('');
-          // }
+          //navigation.replace('AfterSignUp');
+          if (response.data.msg !== 'Welcome Back') {
+            navigation.replace('AfterSignUp');
+          } else {
+            navigation.replace('MemberPlan');
+          }
         } else {
           console.log('no token!');
         }
@@ -122,6 +122,7 @@ const LoginScreen = () => {
                   value={mobile}
                   onChangeText={setMobile}
                   keyboardType="number-pad"
+                  maxLength={10}
                 />
               </View>
             </View>

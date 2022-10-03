@@ -23,11 +23,11 @@ const Services = ({navigation}) => {
   const [user, setUser] = useState({});
   const [plan, setPlan] = useState([]);
   const [selectedItem, setSelectedItem] = useState('');
-  //const [packnames, setPacknames] = useState('');
+  const [packnames, setPacknames] = useState('');
   const [discPrice, setDiscPrice] = useState('');
   const [wallet, setWallet] = useState({});
   const [paymentId, setPaymentId] = useState();
-  //const [storeddata, setStoreddata] = useState('');
+  const [storeddata, setStoreddata] = useState('');
 
   //<===================== StorePlan id in Localstorage========>
 
@@ -200,7 +200,7 @@ const Services = ({navigation}) => {
         })
         .catch(error => {
           console.log(error);
-          alert(`Error: ${error.code} | ${error.description}`);
+          Alert.alert('Your Transation was Unsuccessful');
         });
     } else {
       freePlan();
