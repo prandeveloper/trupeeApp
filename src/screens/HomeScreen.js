@@ -42,7 +42,7 @@ export default function HomeScreen({navigation, props}) {
     getTodayProfit();
   }, []);
 
-  var mDate = moment({date}).format('DD/MM/YYYY');
+  var mDate = moment({date}).format('DD-MM-YYYY');
 
   console.log('@@@@', mDate);
 

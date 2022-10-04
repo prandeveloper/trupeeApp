@@ -30,7 +30,7 @@ const AllTrade = ({extraData}) => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  var fDate = moment(Date()).format('DD/MM/YYYY');
+  var fDate = moment(Date()).format('DD-MM-YYYY');
 
   //console.log('@@@@', fDate);
   //  <============ Filter Trade Get Api ===========>
@@ -40,7 +40,7 @@ const AllTrade = ({extraData}) => {
     axiosConfig
       .get(`/dateSrchFltr/${allDate}`)
       .then(response => {
-        console.log('filter', response.data.data);
+        //console.log('filter', response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })
@@ -561,7 +561,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT1_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT1time}
+                            </Moment>
+                          </Text>
+                        ) : t1_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T1time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}
@@ -587,7 +599,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT2_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT2time}
+                            </Moment>
+                          </Text>
+                        ) : t2_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T2time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}
@@ -613,7 +637,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT3_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT3time}
+                            </Moment>
+                          </Text>
+                        ) : t3_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T3time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}

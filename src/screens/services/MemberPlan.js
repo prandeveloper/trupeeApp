@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {Button, Card, Paragraph, Title} from 'react-native-paper';
+import {Button, Card, Paragraph} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleHeader from '../../components/SimpleHeader';
 import axiosConfig from '../../../axiosConfig';
@@ -19,7 +19,6 @@ import RazorpayCheckout from 'react-native-razorpay';
 
 const MemberPlan = ({navigation}) => {
   const [plan, setPlan] = useState([]);
-  // const [code, setCode] = React.useState('');
   const [selectedItem, setSelectedItem] = useState('');
   const [packnames, setPacknames] = useState('');
   const [discPrice, setDiscPrice] = useState('');
@@ -29,6 +28,21 @@ const MemberPlan = ({navigation}) => {
 
   //<===================== StorePlan id in Localstorage========>
 
+  const getData = async () => {
+    const plan = await AsyncStorage.getItem('plan');
+    if (plan !== null) {
+      console.log('success');
+      console.log(plan);
+      Alert.alert('Welcome to Trupee');
+
+      //setStoreddata(plan);
+      navigation.replace('Home');
+    } else {
+      navigation.navigate('MemberPlan');
+      //Alert.alert('Something Went Wrong')
+    }
+  };
+
   const _storeData = async planId => {
     try {
       await AsyncStorage.setItem('plan', planId);
@@ -37,19 +51,7 @@ const MemberPlan = ({navigation}) => {
       console.log('Some error in setting Plan');
     }
   };
-  const getData = async () => {
-    const plan = await AsyncStorage.getItem('plan');
-    if (plan !== null) {
-      console.log('success');
-      console.log(plan);
-      Alert.alert('Welcome to Trupee');
-      setStoreddata(plan);
-      navigation.replace('Home');
-    } else {
-      navigation.navigate('MemberPlan');
-      //Alert.alert('Something Went Wrong')
-    }
-  };
+
   useEffect(() => {
     getData();
     getPlan();
@@ -124,7 +126,7 @@ const MemberPlan = ({navigation}) => {
   //<============Add Paid plan api===========>
 
   const paidPlan = async () => {
-    console.log(selectedItem, code, paymentId);
+    console.log(selectedItem, paymentId);
     axios
       .post(
         `http://65.0.183.149:8000/user/addMemeberShip`,

@@ -26,7 +26,7 @@ const FnoEquity = ({extraData}) => {
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  var fDate = moment(Date()).format('DD/MM/YYYY');
+  var fDate = moment(Date()).format('DD-MM-YYYY');
   //console.log('@@@@', fDate);
 
   //  <============ Filter Trade Get Api ===========>
@@ -36,7 +36,7 @@ const FnoEquity = ({extraData}) => {
     axiosConfig
       .get(`/dateSrchFltr/${allDate}`)
       .then(response => {
-        console.log('filter', response.data.data);
+        //console.log('filter', response.data.data);
         setAllTrade(response.data.data);
         setRefreshing(false);
       })

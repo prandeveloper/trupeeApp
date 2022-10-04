@@ -21,7 +21,7 @@ const OnboardingScreen = ({navigation}) => {
       navigation.replace('Login');
       //navigation.replace('Login', {name: 'Login'});
     }
-  }, 1000);
+  }, 2000);
   return (
     <View style={styles.container}>
       <ImageBackground source={bgImg} resizeMode="cover" style={styles.image}>
