@@ -97,7 +97,7 @@ export default function Notification({navigation}) {
 
   const getImgNotify = async () => {
     axiosConfig
-      .get(`/trendingchartby_type/Index`)
+      .get(`/get_notification`)
       .then(response => {
         const notify = response.data.data;
         setImgNotify(notify);
@@ -264,17 +264,13 @@ export default function Notification({navigation}) {
                 <View style={{borderBottomWidth: 1}}>
                   <View style={styles.bgarea2}>
                     <View style={styles.botomview3}>
-                      <Text style={styles.bgText}>
-                        {trade?.tradeId?.call_type}
-                      </Text>
+                      <Text style={styles.bgText}>{trade?.call_type}</Text>
                     </View>
                   </View>
 
                   <View style={styles.bgarea3}>
                     <View>
-                      <Text style={styles.buy}>
-                        {trade?.tradeId?.script_type}
-                      </Text>
+                      <Text style={styles.buy}>{trade?.script_type}</Text>
                     </View>
                     {trade?.fnoequty_scrpt_name?.scriptName != '' &&
                     trade?.fnoequty_scrpt_name?.scriptName != undefined &&
@@ -308,11 +304,11 @@ export default function Notification({navigation}) {
 
                   {/* <===========SL=============> */}
                   <View style={styles.bgarea2}>
-                    {trade?.tradeId.sl_type === 'false' ? (
+                    {trade?.sl_type === 'false' ? (
                       <View style={[styles.circle1, {backgroundColor: '#fff'}]}>
                         <Text style={styles.notbuy1}>
                           SL{'\n'}
-                          {trade?.tradeId.SL}
+                          {trade?.SL}
                         </Text>
                       </View>
                     ) : (
@@ -320,21 +316,21 @@ export default function Notification({navigation}) {
                         style={[styles.circle1, {backgroundColor: '#ef9a9a'}]}>
                         <Text style={styles.notbuy1}>
                           SL{'\n'}
-                          {trade?.tradeId.SL}
+                          {trade?.SL}
                         </Text>
                       </View>
                     )}
                     {/* <===========T1 =============> */}
-                    {trade?.tradeId.trl != '' &&
-                    trade?.tradeId.trl != null &&
-                    trade?.tradeId.trl != undefined ? (
+                    {trade?.trl != '' &&
+                    trade?.trl != null &&
+                    trade?.trl != undefined ? (
                       <View>
-                        {trade?.tradeId.trl_type === 'false' ? (
+                        {trade?.trl_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               TRL{'\n'}
-                              {trade?.tradeId.trl}
+                              {trade?.trl}
                             </Text>
                           </View>
                         ) : (
@@ -345,19 +341,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               TRL{'\n'}
-                              {trade?.tradeId.trl}
+                              {trade?.trl}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.tradeId.t1_type === 'false' ? (
+                        {trade?.t1_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.tradeId.T1}
+                              {trade?.T1}
                             </Text>
                           </View>
                         ) : (
@@ -368,7 +364,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.tradeId.T1}
+                              {trade?.T1}
                             </Text>
                           </View>
                         )}
@@ -377,16 +373,16 @@ export default function Notification({navigation}) {
 
                     {/* <===========T2 =============> */}
 
-                    {trade?.tradeId.FT1 != '' &&
-                    trade?.tradeId.FT1 != null &&
-                    trade?.tradeId.FT1 != undefined ? (
+                    {trade?.FT1 != '' &&
+                    trade?.FT1 != null &&
+                    trade?.FT1 != undefined ? (
                       <View>
-                        {trade?.tradeId.FT1_type === 'false' ? (
+                        {trade?.FT1_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.tradeId.FT1}
+                              {trade?.FT1}
                             </Text>
                           </View>
                         ) : (
@@ -397,19 +393,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 1{'\n'}
-                              {trade?.tradeId.FT1}
+                              {trade?.FT1}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.tradeId.t2_type === 'false' ? (
+                        {trade?.t2_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.tradeId.T2}
+                              {trade?.T2}
                             </Text>
                           </View>
                         ) : (
@@ -420,7 +416,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.tradeId.T2}
+                              {trade?.T2}
                             </Text>
                           </View>
                         )}
@@ -429,16 +425,16 @@ export default function Notification({navigation}) {
 
                     {/* <===========T3 =============> */}
 
-                    {trade?.tradeId.FT2 != '' &&
-                    trade?.tradeId.FT2 != null &&
-                    trade?.tradeId.FT2 != undefined ? (
+                    {trade?.FT2 != '' &&
+                    trade?.FT2 != null &&
+                    trade?.FT2 != undefined ? (
                       <View>
-                        {trade?.tradeId.FT2_type === 'false' ? (
+                        {trade?.FT2_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.tradeId.FT2}
+                              {trade?.FT2}
                             </Text>
                           </View>
                         ) : (
@@ -449,19 +445,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 2{'\n'}
-                              {trade?.tradeId.FT2}
+                              {trade?.FT2}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.tradeId.t3_type === 'false' ? (
+                        {trade?.t3_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.tradeId.T3}
+                              {trade?.T3}
                             </Text>
                           </View>
                         ) : (
@@ -472,7 +468,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.tradeId.T3}
+                              {trade?.T3}
                             </Text>
                           </View>
                         )}
@@ -481,16 +477,16 @@ export default function Notification({navigation}) {
 
                     {/* <===========T4 =============> */}
 
-                    {trade?.tradeId.FT3 != '' &&
-                    trade?.tradeId.FT3 != null &&
-                    trade?.tradeId.FT3 != undefined ? (
+                    {trade?.FT3 != '' &&
+                    trade?.FT3 != null &&
+                    trade?.FT3 != undefined ? (
                       <View>
-                        {trade?.tradeId.FT3_type === 'false' ? (
+                        {trade?.FT3_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.tradeId.FT3}
+                              {trade?.FT3}
                             </Text>
                           </View>
                         ) : (
@@ -501,19 +497,19 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 3{'\n'}
-                              {trade?.tradeId.FT3}
+                              {trade?.FT3}
                             </Text>
                           </View>
                         )}
                       </View>
                     ) : (
                       <View>
-                        {trade?.tradeId.t4_type === 'false' ? (
+                        {trade?.t4_type === 'false' ? (
                           <View
                             style={[styles.circle, {backgroundColor: '#fff'}]}>
                             <Text style={styles.notbuy}>
                               T₹ 4{'\n'}
-                              {trade?.tradeId.T4}
+                              {trade?.T4}
                             </Text>
                           </View>
                         ) : (
@@ -524,7 +520,7 @@ export default function Notification({navigation}) {
                             ]}>
                             <Text style={styles.notbuy}>
                               T₹ 4{'\n'}
-                              {trade?.tradeId.T4}
+                              {trade?.T4}
                             </Text>
                           </View>
                         )}
@@ -569,45 +565,6 @@ export default function Notification({navigation}) {
                   </View>
                   {/* <============Seemore=========> */}
                   <View>
-                    {/* <ShowMore
-                      height={0}
-                      buttonColor={'blue'}
-                      showMoreText="View Trade History"
-                      showLessText="Hide Trade History">
-                      <View style={styles.showView}>
-                        <View style={styles.insideViewOne}>
-                          <Text style={styles.dropTextOne}>
-                            {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                            {trade?.active_value} - {trade?.active_value2}
-                          </Text>
-                        </View>
-                        <View style={styles.insideViewTwo}>
-                          <Text style={styles.dropTextOne}>22-08-2022</Text>
-                        </View>
-                      </View>
-                      <View style={styles.showView}>
-                        <View style={styles.insideViewOne}>
-                          <Text style={styles.dropTextOne}>
-                            {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                            {trade?.active_value} - {trade?.active_value2}
-                          </Text>
-                        </View>
-                        <View style={styles.insideViewTwo}>
-                          <Text style={styles.dropTextOne}>22-08-2022</Text>
-                        </View>
-                      </View>
-                      <View style={styles.showView}>
-                        <View style={styles.insideViewOne}>
-                          <Text style={styles.dropTextOne}>
-                            {trade?.fnoindex_scrpt_name?.scriptName} @{' '}
-                            {trade?.active_value} - {trade?.active_value2}
-                          </Text>
-                        </View>
-                        <View style={styles.insideViewTwo}>
-                          <Text style={styles.dropTextOne}>22-08-2022</Text>
-                        </View>
-                      </View>
-                    </ShowMore> */}
                     <Collapse>
                       <CollapseHeader>
                         <View style={{margin: 5}}>
@@ -843,7 +800,7 @@ export default function Notification({navigation}) {
                   </View>
                   <View>
                     <Text style={{color: '#000', marginVertical: 5}}>
-                      {trade?.tradeId?.cstmMsg}
+                      {trade?.cstmMsg}
                     </Text>
                   </View>
                 </View>
@@ -857,7 +814,7 @@ export default function Notification({navigation}) {
                   <View style={styles.subView}>
                     <View style={styles.imageView}>
                       <Image
-                        source={{uri: `${trade?.image}`}}
+                        source={{uri: `${trade?.img[0]}`}}
                         style={styles.imageGraph}
                       />
                     </View>
