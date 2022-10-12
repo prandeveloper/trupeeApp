@@ -46,11 +46,19 @@ const LoginScreen = () => {
       console.log('Some error in setting token');
     }
   };
+
+  const storePlan = async _id => {
+    try {
+      await AsyncStorage.setItem('plan', _id);
+      console.log('Plan Saved');
+    } catch (error) {
+      console.log('Some error in setting plan');
+    }
+  };
   const getData = async () => {
     try {
       const token = await AsyncStorage.getItem('auth-token');
       if (token !== null) {
-        //navigation.replace('Home');
         console.log('success');
         console.log('!!!!!!!', token);
         //setStoreddata(token);
@@ -75,8 +83,6 @@ const LoginScreen = () => {
 
         if (response.data.token != null) {
           _storeData(response.data.token);
-          //console.log(response.data.planId._id);
-          //navigation.replace('AfterSignUp');
           if (response.data.msg !== 'Welcome Back') {
             navigation.replace('AfterSignUp');
           } else {
@@ -84,6 +90,11 @@ const LoginScreen = () => {
           }
         } else {
           console.log('no token!');
+        }
+        if (response.data.planId._id !== null) {
+          storePlan(response.data.planId._id);
+        } else {
+          console.log('no Plan Id');
         }
       })
       .catch(error => {

@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {ListItem, Image} from 'react-native-elements';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axiosConfig from '../../../axiosConfig';
+import axios from 'axios';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'react-moment';
 import ShowMore from 'react-native-show-more-button';
@@ -32,6 +33,43 @@ export default function Notification({navigation}) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [todayProfit, setTodayProfit] = useState({});
+  const [weeklyProfit, setWeeklyProfit] = useState({});
+  const [monthlyProfit, setMonthlyProfit] = useState({});
+
+  const getTodayProfit = () => {
+    axios
+      .get(`http://65.0.183.149:8000/admin/today_profit_loss`)
+      .then(response => {
+        //console.log(response.data);
+        setTodayProfit(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  const getWeeklyProfit = () => {
+    axios
+      .get(`http://65.0.183.149:8000/admin/weekely_profit_loss`)
+      .then(response => {
+        //console.log(response.data);
+        setWeeklyProfit(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  const getMonthlyProfit = () => {
+    axios
+      .get(`http://65.0.183.149:8000/admin/monthly_profit_loss`)
+      .then(response => {
+        //console.log(response.data);
+        setMonthlyProfit(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const chooseImg = type => {
     let options = {
@@ -123,6 +161,9 @@ export default function Notification({navigation}) {
   useEffect(() => {
     getNotify();
     getImgNotify();
+    getTodayProfit();
+    getWeeklyProfit();
+    getMonthlyProfit();
   }, []);
 
   return (
@@ -146,7 +187,15 @@ export default function Notification({navigation}) {
                 <Text style={styles.tradeText}>Today's P&L</Text>
               </View>
               <View style={styles.tradeTextView}>
-                <Text style={styles.tradeText1}>₹ 4000</Text>
+                {todayProfit?.total_prft_loss < 0 ? (
+                  <Text style={[styles.tradeText1, {color: 'red'}]}>
+                    ₹ {todayProfit?.total_prft_loss}
+                  </Text>
+                ) : (
+                  <Text style={[styles.tradeText1, {color: 'green'}]}>
+                    ₹ {todayProfit?.total_prft_loss}
+                  </Text>
+                )}
               </View>
               <View style={styles.tradeTextView}>
                 <Text style={styles.tradeText2}>
@@ -169,15 +218,39 @@ export default function Notification({navigation}) {
                     <View style={{flexDirection: 'row'}}>
                       <View>
                         <Text style={styles.modalText}>Today</Text>
-                        <Text style={styles.modalText1}>₹ 2000</Text>
+                        {todayProfit?.total_prft_loss < 0 ? (
+                          <Text style={[styles.modalText1, {color: 'red'}]}>
+                            ₹ {todayProfit?.total_prft_loss}
+                          </Text>
+                        ) : (
+                          <Text style={[styles.modalText1, {color: 'green'}]}>
+                            ₹ {todayProfit?.total_prft_loss}
+                          </Text>
+                        )}
                       </View>
                       <View>
                         <Text style={styles.modalText}>Weekly</Text>
-                        <Text style={styles.modalText1}>₹ 4000</Text>
+                        {weeklyProfit?.weekly_profit_loss < 0 ? (
+                          <Text style={[styles.modalText1, {color: 'red'}]}>
+                            ₹ {weeklyProfit?.weekly_profit_loss}
+                          </Text>
+                        ) : (
+                          <Text style={[styles.modalText1, {color: 'green'}]}>
+                            ₹ {weeklyProfit?.weekly_profit_loss}
+                          </Text>
+                        )}
                       </View>
                       <View>
                         <Text style={styles.modalText}>Monthly</Text>
-                        <Text style={styles.modalText1}>₹ 7000</Text>
+                        {monthlyProfit?.thirtydays_prft_loss < 0 ? (
+                          <Text style={[styles.modalText1, {color: 'red'}]}>
+                            ₹ {monthlyProfit?.thirtydays_prft_loss}
+                          </Text>
+                        ) : (
+                          <Text style={[styles.modalText1, {color: 'green'}]}>
+                            ₹ {monthlyProfit?.thirtydays_prft_loss}
+                          </Text>
+                        )}
                       </View>
                     </View>
                     <TouchableOpacity
@@ -223,7 +296,7 @@ export default function Notification({navigation}) {
                     <TouchableOpacity
                       style={[styles.button, styles.buttonClose]}
                       onPress={() => setModalVisible(!modalVisible)}>
-                      <Text style={styles.textStyle}>Close</Text>
+                      <Text style={styles.textStyle}>CLOSE</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

@@ -567,7 +567,7 @@ const AllTrade = ({extraData}) => {
                               {trade?.FT1time}
                             </Moment>
                           </Text>
-                        ) : t1_type === 'true' ? (
+                        ) : trade?.t1_type === 'true' ? (
                           <Text style={styles.dropTextOne}>
                             <Moment element={Text} format="lll">
                               {trade?.T1time}
@@ -605,7 +605,7 @@ const AllTrade = ({extraData}) => {
                               {trade?.FT2time}
                             </Moment>
                           </Text>
-                        ) : t2_type === 'true' ? (
+                        ) : trade?.t2_type === 'true' ? (
                           <Text style={styles.dropTextOne}>
                             <Moment element={Text} format="lll">
                               {trade?.T2time}
@@ -643,7 +643,7 @@ const AllTrade = ({extraData}) => {
                               {trade?.FT3time}
                             </Moment>
                           </Text>
-                        ) : t3_type === 'true' ? (
+                        ) : trade?.t3_type === 'true' ? (
                           <Text style={styles.dropTextOne}>
                             <Moment element={Text} format="lll">
                               {trade?.T3time}
@@ -675,7 +675,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT4_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT4time}
+                            </Moment>
+                          </Text>
+                        ) : trade?.t4_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T4time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}

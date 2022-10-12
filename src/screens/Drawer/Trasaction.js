@@ -7,146 +7,69 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ListItem} from 'react-native-elements';
-// import axios from 'axios';
-// import moment from 'moment';
+import axios from 'axios';
+import moment from 'moment';
 // import NotifyHeader from './header/NotifyHeader';
 
 export default function Trasaction({navigation}) {
-  //const [trans, setTrans] = useState([]);
+  const [trans, setTrans] = useState([]);
 
-  //   const getTrans = async () => {
-  //     axios
-  //       .get('http://65.0.80.5:5000/api/admin/user_transaction_list', {
-  //         headers: {
-  //           'user-token': await AsyncStorage.getItem('user-token'),
-  //         },
-  //       })
-  //       .then(response => {
-  //         const trans = response.data.data;
-  //         setTrans(trans);
-  //         console.log('data', trans);
-  //       })
-  //       .catch(error => {
-  //         console.log(error.response);
-  //       });
-  //   };
-  //   useEffect(() => {
-  //     if (AsyncStorage.getItem('user-token')) {
-  //       getTrans();
-  //     }
-  //   }, []);
+  const getTrans = async () => {
+    axios
+      .get('http://65.0.183.149:8000/admin/UsermembershipPayment', {
+        headers: {
+          'auth-token': await AsyncStorage.getItem('auth-token'),
+        },
+      })
+      .then(response => {
+        const trans = response.data.data;
+        setTrans(trans);
+        console.log(trans);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+  useEffect(() => {
+    if (AsyncStorage.getItem('user-token')) {
+      getTrans();
+    }
+  }, []);
 
   return (
     <SafeAreaView>
       <ScrollView>
         <View>
-          <ListItem bottomDivider margin={5}>
-            <Icon name="money" color="blue" size={25} />
-            <ListItem.Content>
-              <ListItem.Title style={{color: 'black', fontSize: 15}}>
-                Transaction ID : 546987456321
-              </ListItem.Title>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 15,
-                  margin: 3,
-                  fontWeight: '600',
-                }}>
-                INR: ₹5000
-                {/* Amount : {tra?.amount} */}
-              </ListItem.Subtitle>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 12,
-                  fontWeight: '600',
-                }}>
-                Date : 12-05-2022
-              </ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-          <ListItem bottomDivider margin={5}>
-            <Icon name="money" color="blue" size={25} />
-            <ListItem.Content>
-              <ListItem.Title style={{color: 'black', fontSize: 15}}>
-                Transaction ID : 546987456321
-              </ListItem.Title>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 15,
-                  margin: 3,
-                  fontWeight: '600',
-                }}>
-                INR: ₹5000
-                {/* Amount : {tra?.amount} */}
-              </ListItem.Subtitle>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 12,
-                  fontWeight: '600',
-                }}>
-                Date : 12-05-2022
-              </ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-          <ListItem bottomDivider margin={5}>
-            <Icon name="money" color="blue" size={25} />
-            <ListItem.Content>
-              <ListItem.Title style={{color: 'black', fontSize: 15}}>
-                Transaction ID : 546987456321
-              </ListItem.Title>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 15,
-                  margin: 3,
-                  fontWeight: '600',
-                }}>
-                INR: ₹5000
-                {/* Amount : {tra?.amount} */}
-              </ListItem.Subtitle>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 12,
-                  fontWeight: '600',
-                }}>
-                Date : 12-05-2022
-              </ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-          <ListItem bottomDivider margin={5}>
-            <Icon name="money" color="blue" size={25} />
-            <ListItem.Content>
-              <ListItem.Title style={{color: 'black', fontSize: 15}}>
-                Transaction ID : 546987456321
-              </ListItem.Title>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 15,
-                  margin: 3,
-                  fontWeight: '600',
-                }}>
-                INR: ₹5000
-                {/* Amount : {tra?.amount} */}
-              </ListItem.Subtitle>
-              <ListItem.Subtitle
-                style={{
-                  color: 'black',
-                  fontSize: 12,
-                  fontWeight: '600',
-                }}>
-                Date : 12-05-2022
-              </ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
+          {trans.map(transList => (
+            <ListItem bottomDivider margin={5} key={transList?._id}>
+              <Icon name="money" color="blue" size={25} />
+              <ListItem.Content>
+                <ListItem.Title style={{color: 'black', fontSize: 13}}>
+                  Transaction ID : {transList?._id}
+                </ListItem.Title>
+                <ListItem.Subtitle
+                  style={{
+                    color: 'black',
+                    fontSize: 13,
+                    margin: 3,
+                    fontWeight: '600',
+                  }}>
+                  Amount: ₹{transList?.planId?.des_price}
+                </ListItem.Subtitle>
+                <ListItem.Subtitle
+                  style={{
+                    color: 'black',
+                    fontSize: 12,
+                    fontWeight: '600',
+                  }}>
+                  Date : {transList?.date}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
