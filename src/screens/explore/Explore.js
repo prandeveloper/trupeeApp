@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import SimpleHeader from '../../components/SimpleHeader';
+
 const Explore = ({navigation}) => {
   return (
     <SafeAreaView style={{}}>

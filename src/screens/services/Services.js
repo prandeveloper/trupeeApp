@@ -39,19 +39,7 @@ const Services = ({navigation}) => {
       console.log('Some error in setting Plan');
     }
   };
-  // const getData = async () => {
-  //   try {
-  //     const plan = await AsyncStorage.getItem('plan');
-  //     if (plan !== null) {
-  //       console.log('success');
-  //       console.log(plan);
-  //       setStoreddata(plan);
-  //       navigation.replace('Home');
-  //     }
-  //   } catch (e) {
-  //     console.log('no Value in login');
-  //   }
-  // };
+
   useEffect(() => {
     //getData();
     getPlan();
@@ -182,7 +170,7 @@ const Services = ({navigation}) => {
         amount: (discPrice - wallet.amount) * 100,
         name: wallet?.firstname,
         prefill: {
-          email: wallet?.email,
+          email: 'demo@demo.com',
           contact: wallet?.mobile,
           name: wallet?.firstname,
         },
@@ -336,38 +324,12 @@ const Services = ({navigation}) => {
                 </Text>
               </View>
               <View style={styles.viewThree}>
-                <Text style={{color: '#000'}}>Use My Wallet Balance</Text>
+                <Text style={{color: '#000'}}>Wallet Balance</Text>
                 {/* <Text>Use My Wallet Balance</Text> */}
               </View>
             </View>
           </View>
-          {/* <View style={styles.subView}>
-            <View style={styles.viewThree}>
-              <Text style={{fontWeight: '700', color: 'black'}}>
-                Have a Promo Code?
-              </Text>
-            </View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View style={styles.viewThree}>
-                <TextInput
-                  placeholderTextColor={'gray'}
-                  placeholder="Enter Code Here"
-                  style={styles.input}
-                  onChangeText={setCode}
-                  value={code}
-                  color="#000"
-                />
-              </View>
-               <View style={styles.viewFour}>
-                <TouchableOpacity
-                  style={styles.buttonStyle}
-                  onPress={applyCode}>
-                  <Text style={styles.buttonText}>Apply</Text>
-                </TouchableOpacity>
-              </View> 
-            </View>
-          </View> */}
+
           <View style={styles.subView}>
             <View style={styles.bottomStyle}>
               <Text style={[styles.viewThree, {color: '#000'}]}>

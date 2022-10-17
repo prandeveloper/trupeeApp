@@ -1,23 +1,16 @@
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
   RefreshControl,
-  Modal,
-  Pressable,
-  Alert,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
 import moment from 'moment';
 import {styles} from './TradeStyle';
-//import SeeMore from 'react-native-see-more-inline';
-import ShowMore from 'react-native-show-more-button';
 import {
   Collapse,
   CollapseHeader,
@@ -101,13 +94,6 @@ const FnoIndex = ({extraData}) => {
               <View style={styles.botomview3}>
                 <Text style={styles.bgText}>{trade.call_type}</Text>
               </View>
-              {/* <View style={styles.botomview4}>
-                <Text style={styles.bottomText1}>
-                  <Moment element={Text} format="lll">
-                    {trade.createdAt}
-                  </Moment>
-                </Text>
-              </View> */}
             </View>
 
             {/* <================BUY Area=============> */}
@@ -240,9 +226,9 @@ const FnoIndex = ({extraData}) => {
               </View>
               <View style={styles.botomview2}>
                 <Text style={styles.bottomText}>P&L</Text>
-                {trade?.pl < 0 ? (
+                {trade?.sl_type === 'true' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.pl} | {trade?.pl_per}%
+                    ₹ {trade?.loss} | {trade?.loss_per}%
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
@@ -264,82 +250,6 @@ const FnoIndex = ({extraData}) => {
             </View>
             {/* <============Seemore=========> */}
             <View>
-              {/* <ShowMore
-                height={0}
-                buttonColor={'blue'}
-                showMoreText="View Trade History"
-                showLessText="Hide Trade History">
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 2nd Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 3rd Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 4th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 5th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 6th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoindex_scrpt_name?.scriptName} @ 7th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-              </ShowMore> */}
               <Collapse>
                 <CollapseHeader>
                   <View style={{margin: 5}}>
@@ -347,6 +257,22 @@ const FnoIndex = ({extraData}) => {
                   </View>
                 </CollapseHeader>
                 <CollapseBody>
+                  {trade?.sl_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoindex_scrpt_name?.scriptName} SL EXIT
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.slTime}
+                          </Moment>
+                        </Text>
+                      </View>
+                    </View>
+                  ) : null}
                   {trade?.FT1_type === 'true' ? (
                     <View style={styles.showView}>
                       <View style={styles.insideViewOne}>
@@ -471,6 +397,15 @@ const FnoIndex = ({extraData}) => {
             </View>
           </View>
         ))}
+        <View style={styles.refreshView}>
+          <TouchableOpacity
+            style={styles.refreshTouch}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={getTrade} />
+            }>
+            <Text style={styles.refreshText}>REFRESH</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

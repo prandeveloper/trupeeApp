@@ -14,7 +14,6 @@
 // import PropTypes from 'prop-types';
 // import React, {useState, useEffect} from 'react';
 // import {styles} from './WalkStyle';
-// import ShowMore from 'react-native-show-more-button';
 // import DatePicker from 'react-native-datepicker';
 // import {TabNavigator} from '../../navigation/TabNavigator';
 // import {
@@ -313,61 +312,13 @@
 //   overlay: 'svg', // Can be either view or svg
 // })(Walkthrough);
 
-import React, {useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import dings from '../../assets/notification.mp3';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {View, Text} from 'react-native';
+import React from 'react';
 
-var Sound = require('react-native-sound');
-
-Sound.setCategory('Playback');
-
-var ding = new Sound(dings, error => {
-  if (error) {
-    console.log('failed to load the sound', error);
-    return;
-  }
-  // if loaded successfully
-  console.log(
-    'duration in seconds: ' +
-      ding.getDuration() +
-      'number of channels: ' +
-      ding.getNumberOfChannels(),
-  );
-});
-const Walkthrough = () => {
-  useEffect(() => {
-    ding.setVolume(1);
-    return () => {
-      ding.release();
-    };
-  }, []);
-  const playPause = () => {
-    ding.play(success => {
-      if (success) {
-        console.log('successfully finished playing');
-      } else {
-        console.log('playback failed due to audio decoding errors');
-      }
-    });
-  };
+export default function Walkthrough() {
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.playBtn} onPress={playPause}>
-        <Ionicons name={'ios-play-outline'} size={36} color={'#fff000'} />
-      </TouchableOpacity>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{color: '#000'}}>Walkthrough</Text>
     </View>
   );
-};
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000',
-  },
-  playBtn: {
-    padding: 20,
-  },
-});
-export default Walkthrough;
+}

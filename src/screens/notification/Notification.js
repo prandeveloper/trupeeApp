@@ -11,12 +11,11 @@ import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ListItem, Image} from 'react-native-elements';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import axiosConfig from '../../../axiosConfig';
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'react-moment';
-import ShowMore from 'react-native-show-more-button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Collapse,

@@ -133,5 +133,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
+  refreshView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 30,
+  },
+  refreshTouch: {
+    backgroundColor: 'green',
+    borderRadius: 20,
+  },
+  refreshText: {
+    color: '#FFF',
+    fontWeight: '700',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+  },
 });
 export {styles};

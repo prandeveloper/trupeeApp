@@ -1,19 +1,16 @@
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
   RefreshControl,
-  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import axiosConfig from '../../../axiosConfig';
 import Moment from 'react-moment';
 import moment from 'moment';
 import {styles} from './TradeStyle';
-import ShowMore from 'react-native-show-more-button';
 import {
   Collapse,
   CollapseHeader,
@@ -65,23 +62,6 @@ const FnoEquity = ({extraData}) => {
     }
   }, [getTrade, getFilterTrade]);
 
-  // //  <============ All Teafe Get Api ===========>
-  // const getTrade = () => {
-  //   setRefreshing(true);
-  //   axiosConfig
-  //     .get(`/AppOptionList`)
-  //     .then(response => {
-  //       //console.log(response.data.data);
-  //       setAllTrade(response.data.data);
-  //       setRefreshing(false);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
-  // useEffect(() => {
-  //   getTrade();
-  // }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -95,13 +75,6 @@ const FnoEquity = ({extraData}) => {
               <View style={styles.botomview3}>
                 <Text style={styles.bgText}>{trade?.call_type}</Text>
               </View>
-              {/* <View style={styles.botomview4}>
-                <Text style={styles.bottomText1}>
-                  <Moment element={Text} format="lll">
-                    {trade.createdAt}
-                  </Moment>
-                </Text>
-              </View> */}
             </View>
 
             {/* <================BUY Area=============> */}
@@ -220,9 +193,9 @@ const FnoEquity = ({extraData}) => {
               </View>
               <View style={styles.botomview2}>
                 <Text style={styles.bottomText}>P&L</Text>
-                {trade?.pl < 0 ? (
+                {trade?.sl_type === 'true' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.pl} | {trade?.pl_per}%
+                    ₹ {trade?.loss} | {trade?.loss_per}%
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
@@ -245,94 +218,6 @@ const FnoEquity = ({extraData}) => {
 
             {/* <============Seemore=========> */}
             <View>
-              {/* <ShowMore
-                height={0}
-                buttonColor={'blue'}
-                showMoreText="View Trade History"
-                showLessText="Hide Trade History">
-                {trade?.t1_type === 'true' ? (
-                  <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target{' '}
-                        {trade?.T1}
-                      </Text>
-                    </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
-                    </View>
-                  </View>
-                ) : null}
-                {trade?.t2_type === 'true' ? (
-                  <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 2nd Target{' '}
-                        {trade?.T2}
-                      </Text>
-                    </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
-                    </View>
-                  </View>
-                ) : null}
-                {trade?.t3_type === 'true' ? (
-                  <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 3rd Target{' '}
-                        {trade?.T3}
-                      </Text>
-                    </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
-                    </View>
-                  </View>
-                ) : null}
-                {trade?.t4_type === 'true' ? (
-                  <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 4th Target{' '}
-                        {trade?.T4}
-                      </Text>
-                    </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
-                    </View>
-                  </View>
-                ) : null}
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 5th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 6th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    <Text style={styles.dropTextOne}>
-                      {trade?.fnoequty_scrpt_name?.scriptName} @ 7th Target
-                    </Text>
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-              </ShowMore> */}
               <Collapse>
                 <CollapseHeader>
                   <View style={{margin: 5}}>
@@ -340,6 +225,22 @@ const FnoEquity = ({extraData}) => {
                   </View>
                 </CollapseHeader>
                 <CollapseBody>
+                  {trade?.sl_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoequty_scrpt_name?.scriptName} SL EXIT
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.slTime}
+                          </Moment>
+                        </Text>
+                      </View>
+                    </View>
+                  ) : null}
                   {trade?.t1_type === 'true' ? (
                     <View style={styles.showView}>
                       <View style={styles.insideViewOne}>
@@ -349,7 +250,11 @@ const FnoEquity = ({extraData}) => {
                         </Text>
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T1time}
+                          </Moment>
+                        </Text>
                       </View>
                     </View>
                   ) : null}
@@ -362,7 +267,11 @@ const FnoEquity = ({extraData}) => {
                         </Text>
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T2time}
+                          </Moment>
+                        </Text>
                       </View>
                     </View>
                   ) : null}
@@ -375,7 +284,11 @@ const FnoEquity = ({extraData}) => {
                         </Text>
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T3time}
+                          </Moment>
+                        </Text>
                       </View>
                     </View>
                   ) : null}
@@ -388,45 +301,79 @@ const FnoEquity = ({extraData}) => {
                         </Text>
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T4time}
+                          </Moment>
+                        </Text>
                       </View>
                     </View>
                   ) : null}
-                  {/* <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 5th Target
-                      </Text>
+                  {trade?.t5_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoequty_scrpt_name?.scriptName} @ 5th Target{' '}
+                          {trade?.T5}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T5time}
+                          </Moment>
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
+                  ) : null}
+                  {trade?.t6_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoequty_scrpt_name?.scriptName} @ 6th Target{' '}
+                          {trade?.T6}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T6time}
+                          </Moment>
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 6th Target
-                      </Text>
+                  ) : null}
+                  {trade?.t7_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoequty_scrpt_name?.scriptName} @ 7th Target{' '}
+                          {trade?.T7}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.T7time}
+                          </Moment>
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
-                    </View>
-                  </View>
-                  <View style={styles.showView}>
-                    <View style={styles.insideViewOne}>
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 7th Target
-                      </Text>
-                    </View>
-                    <View style={styles.insideViewTwo}>
-                      <Text style={styles.dropTextOne}>22-08-2022</Text>
-                    </View>
-                  </View> */}
+                  ) : null}
                 </CollapseBody>
               </Collapse>
             </View>
           </View>
         ))}
+        <View style={styles.refreshView}>
+          <TouchableOpacity
+            style={styles.refreshTouch}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={getTrade} />
+            }>
+            <Text style={styles.refreshText}>REFRESH</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

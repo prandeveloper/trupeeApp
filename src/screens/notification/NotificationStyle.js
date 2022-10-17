@@ -287,13 +287,19 @@ const styles = StyleSheet.create({
   },
   //image component
   subView: {
-    margin: 0,
     backgroundColor: '#fff',
+  },
+  imageView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 330,
+    height: 300,
   },
 
   imageGraph: {
-    width: 320,
-    height: 250,
+    width: 300,
+    height: 280,
   },
   textView: {
     margin: 2,

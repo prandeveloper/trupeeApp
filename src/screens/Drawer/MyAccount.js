@@ -7,14 +7,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Alert,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-datepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {TextInput} from 'react-native-paper';
 
 const MyAccount = ({navigation}) => {

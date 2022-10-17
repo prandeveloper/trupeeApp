@@ -1,21 +1,15 @@
 import {
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   RefreshControl,
-  Modal,
-  Pressable,
-  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {windowWidth} from '../../utils/Dimensions';
 import Moment from 'react-moment';
 import axiosConfig from '../../../axiosConfig';
 import {styles} from './TradeStyle';
-import ShowMore from 'react-native-show-more-button';
 import {
   Collapse,
   CollapseHeader,
@@ -25,7 +19,6 @@ import {
 import moment from 'moment';
 
 const AllTrade = ({extraData}) => {
-  //console.log('####', extraData);
   let allDate = extraData;
   const [allTrade, setAllTrade] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -320,9 +313,9 @@ const AllTrade = ({extraData}) => {
               </View>
               <View style={styles.botomview2}>
                 <Text style={styles.bottomText}>P&L</Text>
-                {trade?.pl < 0 ? (
+                {trade?.sl_type === 'true' ? (
                   <Text style={[styles.bottomText1, , {color: 'red'}]}>
-                    ₹ {trade?.pl} | {trade?.pl_per}%
+                    ₹ {trade?.loss} | {trade?.loss_per}%
                   </Text>
                 ) : (
                   <Text style={[styles.bottomText1, , {color: 'green'}]}>
@@ -344,194 +337,6 @@ const AllTrade = ({extraData}) => {
             </View>
             {/* <============Seemore=========> */}
             <View>
-              {/* <ShowMore
-                height={0}
-                buttonColor={'blue'}
-                showMoreText="View Trade History"
-                showLessText="Hide Trade History">
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-                <View style={styles.showView}>
-                  <View style={styles.insideViewOne}>
-                    {trade?.fnoequty_scrpt_name?.scriptName != '' &&
-                    trade?.fnoequty_scrpt_name?.scriptName != undefined &&
-                    trade?.fnoequty_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoequty_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.cash_scrpt_name?.scriptName != '' &&
-                      trade?.cash_scrpt_name?.scriptName != undefined &&
-                      trade?.cash_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.cash_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : trade?.fnoindex_scrpt_name?.scriptName != '' &&
-                      trade?.fnoindex_scrpt_name?.scriptName != undefined &&
-                      trade?.fnoindex_scrpt_name?.scriptName != null ? (
-                      <Text style={styles.dropTextOne}>
-                        {trade?.fnoindex_scrpt_name?.scriptName} @ 1st Target
-                      </Text>
-                    ) : null}
-                  </View>
-                  <View style={styles.insideViewTwo}>
-                    <Text style={styles.dropTextOne}>22-08-2022</Text>
-                  </View>
-                </View>
-              </ShowMore> */}
               <Collapse>
                 <CollapseHeader>
                   <View style={{margin: 5}}>
@@ -539,6 +344,35 @@ const AllTrade = ({extraData}) => {
                   </View>
                 </CollapseHeader>
                 <CollapseBody>
+                  {trade.sl_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        {trade?.fnoequty_scrpt_name?.scriptName != undefined ? (
+                          <Text style={styles.dropTextOne}>
+                            {trade?.fnoequty_scrpt_name?.scriptName} SL EXIT
+                          </Text>
+                        ) : trade?.cash_scrpt_name?.scriptName != undefined ? (
+                          <Text style={styles.dropTextOne}>
+                            {trade?.cash_scrpt_name?.scriptName} SL EXIT
+                          </Text>
+                        ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                          undefined ? (
+                          <Text style={styles.dropTextOne}>
+                            {trade?.fnoindex_scrpt_name?.scriptName} SL EXIT
+                          </Text>
+                        ) : null}
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        {trade?.sl_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.slTime}
+                            </Moment>
+                          </Text>
+                        ) : null}
+                      </View>
+                    </View>
+                  ) : null}
                   {trade.t1_type === 'true' || trade.FT1_type === 'true' ? (
                     <View style={styles.showView}>
                       <View style={styles.insideViewOne}>
@@ -712,7 +546,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT5_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT5time}
+                            </Moment>
+                          </Text>
+                        ) : trade?.t5_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T5time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}
@@ -737,7 +583,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT6_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT6time}
+                            </Moment>
+                          </Text>
+                        ) : trade?.t6_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T6time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}
@@ -763,7 +621,19 @@ const AllTrade = ({extraData}) => {
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        <Text style={styles.dropTextOne}>22-08-2022</Text>
+                        {trade?.FT7_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.FT7time}
+                            </Moment>
+                          </Text>
+                        ) : trade?.t7_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="lll">
+                              {trade?.T7time}
+                            </Moment>
+                          </Text>
+                        ) : null}
                       </View>
                     </View>
                   ) : null}

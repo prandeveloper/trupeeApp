@@ -3,8 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -211,25 +209,25 @@ export const TabNavigator = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'HOME') {
             iconName = focused
               ? require('../Images/Icons/home-colour-icon1.png')
               : require('../Images/Icons/home-colour-icon.png');
-          } else if (route.name === 'Services') {
+          } else if (route.name === 'SERVICES') {
             iconName = focused
               ? require('../Images/Icons/service-plan-colour-icon1.png')
               : require('../Images/Icons/service-plan-icon1.png');
           }
-          if (route.name === 'Explore') {
+          if (route.name === 'EXPLORE') {
             iconName = focused
               ? require('../Images/Icons/explore-colour-icon1.png')
               : require('../Images/Icons/explore-icon1.png');
-          } else if (route.name === 'Notification') {
+          } else if (route.name === 'NOTIFICATION') {
             iconName = focused
               ? require('../Images/Icons/notification-colour-icon1.png')
               : require('../Images/Icons/notification-icon1.png');
           }
-          if (route.name === 'Profile') {
+          if (route.name === 'PROFILE') {
             iconName = focused
               ? require('../Images/Icons/profile-colour-icon1.png')
               : require('../Images/Icons/profile-icon1.png');
@@ -244,32 +242,32 @@ export const TabNavigator = () => {
             />
           );
         },
-        activeTintColor: 'tomato',
+        activeTintColor: 'green',
         inactiveTintColor: 'black',
       })}
       options={{headerShown: false}}>
       <Tab.Screen
-        name="Home"
+        name="HOME"
         component={HomeScreen}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Services"
+        name="SERVICES"
         component={Services}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Explore"
+        name="EXPLORE"
         component={Explore}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Notification"
+        name="NOTIFICATION"
         component={Notification}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Profile"
+        name="PROFILE"
         component={Profile}
         options={{headerShown: false}}
       />
@@ -277,16 +275,6 @@ export const TabNavigator = () => {
   );
 };
 
-// const getTabBarVisibility = route => {
-//   // console.log(route);
-//   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
-//   // console.log(routeName);
-
-//   if (routeName == 'GameDetails') {
-//     return 'none';
-//   }
-//   return 'flex';
-// };
 const styles = StyleSheet.create({
   bottomImage: {
     height: 25,
