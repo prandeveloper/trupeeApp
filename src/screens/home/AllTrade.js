@@ -373,6 +373,38 @@ const AllTrade = ({extraData}) => {
                       </View>
                     </View>
                   ) : null}
+                  {trade.trl_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        {trade?.fnoequty_scrpt_name?.scriptName != undefined ? (
+                          <Text style={styles.dropTextOne}>
+                            {trade?.fnoequty_scrpt_name?.scriptName} TRL{' '}
+                            {trade?.trl}+
+                          </Text>
+                        ) : trade?.cash_scrpt_name?.scriptName != undefined ? (
+                          <Text style={styles.dropTextOne}>
+                            {trade?.cash_scrpt_name?.scriptName} TRL{' '}
+                            {trade?.trl}+
+                          </Text>
+                        ) : trade?.fnoindex_scrpt_name?.scriptName !=
+                          undefined ? (
+                          <Text style={styles.dropTextOne}></Text>
+                            {trade?.fnoindex_scrpt_name?.scriptName} TRL{' '}
+                            {trade?.trl}+
+                          </Text>
+                        ) : null}
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        {trade?.sl_type === 'true' ? (
+                          <Text style={styles.dropTextOne}>
+                            <Moment element={Text} format="llll">
+                              {trade?.trlTime}
+                            </Moment>
+                          </Text>
+                        ) : null}
+                      </View>
+                    </View>
+                  ) : null}
                   {trade.t1_type === 'true' || trade.FT1_type === 'true' ? (
                     <View style={styles.showView}>
                       <View style={styles.insideViewOne}>
