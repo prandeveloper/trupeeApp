@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   },
 
   imageGraph: {
-    width: 300,
+    width: 320,
     height: 280,
   },
   textView: {

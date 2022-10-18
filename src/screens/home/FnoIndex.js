@@ -273,6 +273,23 @@ const FnoIndex = ({extraData}) => {
                       </View>
                     </View>
                   ) : null}
+                  {trade?.trl_type === 'true' ? (
+                    <View style={styles.showView}>
+                      <View style={styles.insideViewOne}>
+                        <Text style={styles.dropTextOne}>
+                          {trade?.fnoindex_scrpt_name?.scriptName} TRL{' '}
+                          {trade?.trl}+
+                        </Text>
+                      </View>
+                      <View style={styles.insideViewTwo}>
+                        <Text style={styles.dropTextOne}>
+                          <Moment element={Text} format="llll">
+                            {trade?.trlTime}
+                          </Moment>
+                        </Text>
+                      </View>
+                    </View>
+                  ) : null}
                   {trade?.FT1_type === 'true' ? (
                     <View style={styles.showView}>
                       <View style={styles.insideViewOne}>

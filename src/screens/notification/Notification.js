@@ -24,6 +24,26 @@ import {
   AccordionList,
 } from 'accordion-collapse-react-native';
 import {styles} from './NotificationStyle';
+import dings from '../../assets/notifySound.mpeg';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+var Sound = require('react-native-sound');
+
+Sound.setCategory('Playback');
+
+var ding = new Sound(dings, error => {
+  if (error) {
+    console.log('failed to load the sound', error);
+    return;
+  }
+  // if loaded successfully
+  console.log(
+    'duration in seconds: ' +
+      ding.getDuration() +
+      'number of channels: ' +
+      ding.getNumberOfChannels(),
+  );
+});
 
 export default function Notification({navigation}) {
   const [notify, setNotify] = useState([]);
@@ -35,6 +55,22 @@ export default function Notification({navigation}) {
   const [todayProfit, setTodayProfit] = useState({});
   const [weeklyProfit, setWeeklyProfit] = useState({});
   const [monthlyProfit, setMonthlyProfit] = useState({});
+
+  useEffect(() => {
+    ding.setVolume(1);
+    return () => {
+      ding.release();
+    };
+  }, []);
+  const playPause = () => {
+    ding.play(success => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+  };
 
   const getTodayProfit = () => {
     axios
@@ -139,6 +175,7 @@ export default function Notification({navigation}) {
         const notify = response.data.data;
         setImgNotify(notify);
         console.log(notify);
+        //playPause();
       })
       .catch(error => {
         console.log(error.response);
@@ -881,6 +918,7 @@ export default function Notification({navigation}) {
 
             {/* <================= Image Component Start ============> */}
             <View style={styles.listMainView}>
+              {imgNotify.map.length === +1 ? playPause() : null}
               {imgNotify?.map(trade => (
                 <ListItem bottomDivider key={trade._id}>
                   <View style={styles.subView}>
