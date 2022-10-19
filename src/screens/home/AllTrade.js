@@ -388,14 +388,14 @@ const AllTrade = ({extraData}) => {
                           </Text>
                         ) : trade?.fnoindex_scrpt_name?.scriptName !=
                           undefined ? (
-                          <Text style={styles.dropTextOne}></Text>
+                          <Text style={styles.dropTextOne}>
                             {trade?.fnoindex_scrpt_name?.scriptName} TRL{' '}
                             {trade?.trl}+
                           </Text>
                         ) : null}
                       </View>
                       <View style={styles.insideViewTwo}>
-                        {trade?.sl_type === 'true' ? (
+                        {trade?.trl_type === 'true' ? (
                           <Text style={styles.dropTextOne}>
                             <Moment element={Text} format="llll">
                               {trade?.trlTime}
