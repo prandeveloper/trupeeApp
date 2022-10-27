@@ -231,8 +231,8 @@ const Services = ({navigation}) => {
                 <Paragraph>
                   Subscription Type : {user.planId?.pack_name}
                 </Paragraph>
-                <Paragraph>Start Date:</Paragraph>
-                <Paragraph>Expiry Date</Paragraph>
+                <Paragraph>Start Date : {user?.start_date}</Paragraph>
+                <Paragraph>Expiry Date : {user?.expdate}</Paragraph>
               </Card.Content>
             </Card>
           </View>

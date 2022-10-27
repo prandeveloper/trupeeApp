@@ -60,7 +60,7 @@ const FnoEquity = ({extraData}) => {
     } else {
       getFilterTrade();
     }
-  }, [getTrade, getFilterTrade]);
+  }, [allTrade, getFilterTrade]);
 
   return (
     <SafeAreaView style={styles.container}>

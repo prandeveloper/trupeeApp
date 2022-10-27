@@ -60,7 +60,7 @@ const FnoIndex = ({extraData}) => {
     } else {
       getFilterTrade();
     }
-  }, [getTrade, getFilterTrade]);
+  }, [allTrade, getFilterTrade]);
 
   // //  <============ All Teafe Get Api ===========>
   // const getTrade = () => {
